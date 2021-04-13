@@ -1,8 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QFileDialog, QTextEdit, 
   QPushButton, QLabel, QVBoxLayout, QTreeWidget, QTreeWidgetItem, QMenuBar, QMenu)
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg, numpy as np, pandas as pd
+import numpy as np, pandas as pd
 import sys, os
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -12,17 +11,27 @@ from matplotlib import pyplot as plt
 import mplcursors
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None):
-        fig = Figure()
-        # fig.canvas.mpl_connect('button_press_event', onclick)
-        self.axes = fig.add_subplot(111)
-        self.axes.set_xscale('log')
-        self.axes.set_xlim([20,20000])
-        self.axes.set_ylim(auto=True)
-        self.axes.grid()
-        self.axes.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+  def __init__(self, parent=None):
+    # Canvas init
+    fig = Figure()
+    fig.canvas.mpl_connect('button_press_event', self.onclick)
+    self.ax = fig.add_subplot(111)
+    self._setStyle()
+    super(MplCanvas, self).__init__(fig)
 
-        super(MplCanvas, self).__init__(fig)
+  def _setStyle(self):
+    # axes' style
+    self.ax.set_xscale('log')
+    self.ax.set_xlim([20,20000])
+    self.ax.set_ylim(auto=True)
+    self.ax.grid()
+    self.ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
+
+  # handle mouse onclick event
+  def onclick(self,event):
+    print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
+        ('double' if event.dblclick else 'single', event.button,
+        event.x, event.y, event.xdata, event.ydata))
 
 class PlotGraph(QWidget):
   """Widget for visualize data"""
@@ -64,8 +73,11 @@ class PlotGraph(QWidget):
     items = self.tree.selectedItems()
     x = []
     for i in range(len(items)):
-        x.append(str(self.tree.selectedItems()[i].parent().text(0) + self.tree.selectedItems()[i].text(0)))
-    print (x)
+      if (items[i].parent()):
+        x.append(str(items[i].parent().text(0) + ' - ' + items[i].text(0)))
+      else:
+        x.append(items[i].text(0))
+    print (self.tree.currentIndex().row(), '. ', x)
 
   def appendChildonTree(self):
     root=QTreeWidgetItem(self.tree)
@@ -73,6 +85,7 @@ class PlotGraph(QWidget):
     for i in range(len(self.data.columns)):
       child=QTreeWidgetItem()
       child.setText(0,self.data.columns[i])
+      child.setCheckState(0, 2)
       root.addChild(child)
     self.tree.addTopLevelItem(root)
 
@@ -108,20 +121,18 @@ class PlotGraph(QWidget):
   def plotData(self):
     self.data = self.get_text_file()
     print(self.data)
-    lines = []
+
     for col in self.data.columns[:-1]:
-        line, = self.canvas.axes.plot(self.data["Frequency"], self.data[col], label=col)
-        lines.append(line)
-    mplcursors.cursor(lines, highlight=True, highlight_kwargs=dict(linewidth=5))
-    self.canvas.axes.legend(loc='lower left')
-    # self.data.plot("Frequency", ax = self.canvas.axes)
+      line, = self.canvas.ax.plot(self.data["Frequency"], self.data[col], label=col)
+      # self.canvas.lines.append(line)
+    # mplcursors.cursor(self.canvas.ax.lines, highlight=True, highlight_kwargs=dict(linewidth=5))
+    self.canvas.ax.legend(loc='lower left')
+    # self.data.plot("Frequency", ax = self.canvas.ax)
     self.canvas.draw()
     self.appendChildonTree()
 
-  def onclick(event):
-        print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
-              ('double' if event.dblclick else 'single', event.button,
-              event.x, event.y, event.xdata, event.ydata))
+  
+    
 
 class MyApp(QMainWindow):
   """App's Main Window."""
