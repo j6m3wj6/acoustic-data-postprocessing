@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QFileDialog, QTextEdit, 
-  QPushButton, QLabel, QVBoxLayout, QTreeWidget, QTreeWidgetItem, QMenuBar, QMenu)
+from PyQt5.QtWidgets import *
 import numpy as np, pandas as pd
 import sys, os
 import matplotlib
@@ -10,14 +9,16 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 import mplcursors
 
+_defaultLineWidth = 2
+
 class MplCanvas(FigureCanvasQTAgg):
   def __init__(self, parent=None):
     # Canvas init
-    fig = Figure()
-    fig.canvas.mpl_connect('button_press_event', self.onclick)
-    self.ax = fig.add_subplot(111)
+    self.fig = Figure()
+    # fig.canvas.mpl_connect('button_press_event', self.onclick)
+    self.ax = self.fig.add_subplot(111)
     self._setStyle()
-    super(MplCanvas, self).__init__(fig)
+    super(MplCanvas, self).__init__(self.fig)
 
   def _setStyle(self):
     # axes' style
@@ -27,33 +28,45 @@ class MplCanvas(FigureCanvasQTAgg):
     self.ax.grid()
     self.ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
 
-  # handle mouse onclick event
-  def onclick(self,event):
-    print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
-        ('double' if event.dblclick else 'single', event.button,
-        event.x, event.y, event.xdata, event.ydata))
-
 class PlotGraph(QWidget):
   """Widget for visualize data"""
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.initUI()
+    self.data = pd.DataFrame()
 # User Interface
   def initUI(self):
     self._createButton()
     self._createCanvas()
+    self.canvas.fig.canvas.mpl_connect('button_press_event', self.canvas_handleClick)
     self._createTreeList()
+    self._createComboBox()
+    self._createInput()
 
     layout = QVBoxLayout()
-    layout.addWidget(self.button1)
     layout.addWidget(self.toolbar)
-    layout.addWidget(self.canvas)
-    layout.addWidget(self.tree)
+
+    hboxLayout_canvas = QHBoxLayout()
+    # hboxLayout.addStretch()
+    hboxLayout_canvas.addWidget(self.canvas)
+    hboxLayout_canvas.addWidget(self.tree)
+    layout.addLayout(hboxLayout_canvas)
+
+    hboxLayout_btn = QHBoxLayout()
+    # hboxLayout.addStretch()
+    hboxLayout_btn.addWidget(self.btn_importData)
+    hboxLayout_btn.addWidget(self.btn_shift)
+    hboxLayout_btn.addWidget(self.cbox_shift)
+    hboxLayout_btn.addWidget(self.le_input)
+    layout.addLayout(hboxLayout_btn)
+
     self.setLayout(layout)
   
   def _createButton(self):
-    self.button1 = QPushButton('Upload data')
-    self.button1.clicked.connect(self.plotData)
+    self.btn_importData = QPushButton('Upload data')
+    self.btn_importData.clicked.connect(self.plotData)
+    self.btn_shift = QPushButton('Shift')
+    self.btn_shift.clicked.connect(self.curveShift)
 
   def _createCanvas(self):
     self.canvas = MplCanvas(self)
@@ -63,31 +76,111 @@ class PlotGraph(QWidget):
     self.tree=QTreeWidget()
     self.tree.setColumnCount(2)
     self.tree.setHeaderLabels(['Key','Value'])
-    self.tree.setColumnWidth(0,150)
+    self.tree.setColumnWidth(0,300)
     self.tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-    self.tree.itemClicked.connect(self.printItemText)
-    self.tree.expandAll()
+    self.tree.itemClicked.connect(self.tree_handleClick)
+    self.tree.itemChanged.connect(self.tree_handleChange)
 
-# Functions
-  def printItemText(self):
+  def _createComboBox(self):
+    self.cbox_shift = QComboBox()
+    self.cbox_shift.currentIndexChanged.connect(self.cbox_handleChange)
+    # self.display()
+  
+  def _createInput(self):
+    self.le_input = QLineEdit()
+    
+
+# Reset Functions
+  def _resetLineWidth(self):
+    for line in self.canvas.ax.lines:
+      line.set_linewidth(_defaultLineWidth)
+
+# Handle Functions
+  def tree_handleChange(self, item): 
+    print("Change")
+    # index = self.tree.currentIndex().row()
+    if not item.parent(): return
+    index = item.parent().indexOfChild(item)
+    print(item.text(0), index, item.checkState(0))
+    if (item.checkState(0) == 0):
+      self.canvas.ax.lines[index].set_visible(False)
+    else: self.canvas.ax.lines[index].set_visible(True)
+    self.canvas.draw()
+    # if not item.parent():
+    #   print("Change ", item.text(0), "　and it is a root")
+    # else:
+    #   print("Change ", item.text(0), "　and its root is " , item.parent().text(0))
+    
+  def tree_handleClick(self):
+    print("Click")
     items = self.tree.selectedItems()
     x = []
     for i in range(len(items)):
-      if (items[i].parent()):
-        x.append(str(items[i].parent().text(0) + ' - ' + items[i].text(0)))
-      else:
+      if not items[i].parent():
         x.append(items[i].text(0))
-    print (self.tree.currentIndex().row(), '. ', x)
+      else:
+        x.append(str(items[i].parent().text(0) + ' - ' + items[i].text(0)))
+    index = self.tree.currentIndex().row()
+    self._resetLineWidth()
+    if (index != -1):
+      self.canvas.ax.lines[index].set_linewidth(4)
+      self.canvas.draw()
 
+  def canvas_handleClick(self, event):
+    # print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
+    #     ('double' if event.dblclick else 'single', event.button,
+    #     event.x, event.y, event.xdata, event.ydata))
+    if self.data.empty or not event.inaxes: return
+
+    line_i = self._findSelectedLine(event.xdata, event.ydata)
+    if (line_i == -1):
+      self._resetLineWidth()
+    else:
+      self.canvas.ax.lines[line_i].set_linewidth(4)
+      self.canvas.draw()
+
+  def _findSelectedLine(self, cursor_x, cursor_y):
+    min_i = 0
+    max_i = len(self.data["Frequency"])    
+    while (max_i - min_i > 1):
+      middle_i = int((max_i - min_i)/2) + min_i
+      if (cursor_x > float(self.data['Frequency'][middle_i])):
+        min_i = middle_i
+      else:
+        max_i = middle_i
+    if (cursor_x - self.data['Frequency'][min_i] > self.data['Frequency'][max_i] - cursor_x):
+      freq_i = max_i
+    else:
+      freq_i = min_i
+    
+    error = float('inf')
+    for i in range(len(self.data.iloc[freq_i])):
+      # print(abs(cursor_y - float(self.data.iloc[freq_i][i])), error)
+      if (abs(cursor_y - float(self.data.iloc[freq_i][i])) < error):
+        error = abs(cursor_y - float(self.data.iloc[freq_i][i]))
+        line_i = i
+    # print(line_i)
+    if (error > 1): return -1
+    return line_i
+
+  def cbox_handleChange(self):
+    print(self.cbox_shift.currentText())
+    
+
+# Import data
   def appendChildonTree(self):
     root=QTreeWidgetItem(self.tree)
     root.setText(0,'Curve')
-    for i in range(len(self.data.columns)):
-      child=QTreeWidgetItem()
+    root.setCheckState(0, 2)
+    for i in range(len(self.data.columns[:-1])):
+      child = QTreeWidgetItem()
       child.setText(0,self.data.columns[i])
       child.setCheckState(0, 2)
       root.addChild(child)
     self.tree.addTopLevelItem(root)
+    self.tree.expandAll()
+
+    self.cbox_shift.addItems(self.data.columns)
 
   def get_text_file(self):
     dialog = QFileDialog()
@@ -117,9 +210,27 @@ class PlotGraph(QWidget):
           return dtbl
       else:
         pass
-
+  
+  def get_bose(self):
+    with open('bose.txt', 'r', encoding='UTF-8') as file:
+      headers = file.readlines()[:3]
+      print(headers[0])
+      title = headers[0]
+      curves = headers[1].split('\t\t')
+      curves = [c.replace('"', '').strip() for c in curves]
+      
+      dtbl = pd.read_table('bose.txt',  skiprows=2)
+      freq = dtbl.iloc[:, 0]
+      freq = [float(f.replace(',', '').strip()) for f in freq]
+      dtbl = dtbl.iloc[:, [i%2==1 for i in range(len(dtbl.columns))]]
+      dtbl.columns = curves
+      
+      dtbl['Frequency'] = freq
+      file.close()
+    return dtbl
   def plotData(self):
-    self.data = self.get_text_file()
+    # self.data = self.get_text_file()
+    self.data = self.get_bose()
     print(self.data)
 
     for col in self.data.columns[:-1]:
@@ -131,9 +242,21 @@ class PlotGraph(QWidget):
     self.canvas.draw()
     self.appendChildonTree()
 
-  
+# Operations
+  def curveShift(self):
+    print("Shift", self.cbox_shift.currentText(), self.le_input.text())
+    try:
+      offset = float(self.le_input.text())
+    except ValueError:
+      print('ERROR: can not turn ' + self.le_input.text())
+      return
+    new_data = [d+offset for d in self.data[self.cbox_shift.currentText()]]
+    # also change origin data
+    # self.data[self.cbox_shift.currentText()] = new_data
     
-
+    self.canvas.ax.lines[self.cbox_shift.currentIndex()].set_data(self.data["Frequency"], new_data)
+    self.canvas.draw()
+    
 class MyApp(QMainWindow):
   """App's Main Window."""
   def __init__(self, parent=None):
@@ -143,10 +266,9 @@ class MyApp(QMainWindow):
 
   def initUI(self):  
     self.setWindowTitle("Python Menus & Toolbars")
-    self.resize(800, 600)
+    self.resize(1400, 600)
     self.setCentralWidget(PlotGraph())
     self._createMenuBar()
-
 
   def _createMenuBar(self):
     menuBar = QMenuBar(self)
@@ -158,11 +280,8 @@ class MyApp(QMainWindow):
     helpMenu = menuBar.addMenu("&Help")
     self.setMenuBar(menuBar)
 
-
-
 def main():
   app = QApplication(sys.argv)
-  #main = PlotGraph()
   main = MyApp()
   main.show()
   sys.exit(app.exec_())
