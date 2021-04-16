@@ -64,7 +64,7 @@ class InteractiveLegend(object):
 
     def on_pick(self, event):
 
-        #print event.artist
+        # print event.artist
         handle = event.artist
         for lookup_artist in self.lookup_artists:
             if handle in lookup_artist:
