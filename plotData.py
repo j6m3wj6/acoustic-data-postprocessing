@@ -7,9 +7,10 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
-import mplcursors
+# import mplcursors
+from matplotlib.backend_bases import MouseButton
 
-_defaultLineWidth = 2
+_defaultLineWidth = 1.5
 
 class MplCanvas(FigureCanvasQTAgg):
   def __init__(self, parent=None):
@@ -113,6 +114,8 @@ class PlotGraph(QWidget):
   def _resetLineWidth(self):
     for line in self.canvas.ax.lines:
       line.set_linewidth(_defaultLineWidth)
+      # self.canvas.draw()
+    
 
 # Handle Functions
   def tree_handleCheck(self, item): 
@@ -157,14 +160,16 @@ class PlotGraph(QWidget):
     # print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
     #     ('double' if event.dblclick else 'single', event.button,
     #     event.x, event.y, event.xdata, event.ydata))
-    if self.data.empty or not event.inaxes: pass
+    if self.data.empty or not event.inaxes: return
 
     line_i = self._findSelectedLine(event.xdata, event.ydata)
     if (line_i == -1):
       self._resetLineWidth()
+    elif (event.button == MouseButton.RIGHT and self.canvas.ax.lines[line_i].get_linewidth() == 4):
+      self.canvas.ax.lines[line_i].set_linewidth(_defaultLineWidth)
     else:
       self.canvas.ax.lines[line_i].set_linewidth(4)
-      self.canvas.draw()
+    self.canvas.draw()
 
   def _findSelectedLine(self, cursor_x, cursor_y):
     min_i = 0
