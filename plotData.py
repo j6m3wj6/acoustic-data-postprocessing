@@ -30,7 +30,7 @@ class MplCanvas(FigureCanvasQTAgg):
     # axes' style
     self.ax.set_xscale('log')
     self.ax.set_xlim([20,20000])
-    self.ax.set_ylim(auto=True) 
+    self.ax.set_ylim([20,100])s
     self.ax.grid()
     self.ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
     self.fig.tight_layout()
@@ -207,7 +207,7 @@ class PlotGraph(QWidget):
     if (error > 1): return -1
     return line_i
   
-  def _findYdata(self, cursor_x, cursor_y):
+  def _findYdata(self, cursor_x, cursor_y, line_index):
     left_x = 0
     right_x = len(self.xdata_freq)
     while (right_x - left_x > 1):
@@ -219,22 +219,18 @@ class PlotGraph(QWidget):
     
     left_freq = self.xdata_freq[left_x]
     right_freq = self.xdata_freq[right_x]
-    left_ydata = self.ydata.iloc[left_x][0]
-    right_ydata = self.ydata.iloc[right_x][0]
+    left_ydata = self.ydata.iloc[left_x][line_index]
+    right_ydata = self.ydata.iloc[right_x][line_index]
 
     estimate_ydata = left_ydata + ((cursor_x - left_freq) / (right_freq - left_freq))*(right_ydata - left_ydata)
     return estimate_ydata
 
   def on_mouse_move(self, event):
-    if not event.inaxes:
-      # self._last_index = None
-      need_redraw = self.canvas.set_cross_hair_visible(False)
-      if need_redraw:
-          self.canvas.draw()
+    if self.ydata.empty or not event.inaxes: return
     else:
       self.canvas.set_cross_hair_visible(True)
       x = event.xdata
-      y = self._findYdata(event.xdata, event.ydata)
+      y = self._findYdata(event.xdata, event.ydata, 0)
 
       self.canvas.horizontal_line.set_ydata(y)
       self.canvas.vertical_line.set_xdata(x)
@@ -314,12 +310,9 @@ class PlotGraph(QWidget):
     # print(self.xdata_freq)
 
     for col in self.ydata.columns:
-      line, = self.canvas.ax.plot(self.xdata_freq, self.ydata[col], label=col, marker='o')
+      line, = self.canvas.ax.plot(self.xdata_freq, self.ydata[col], label=col) # marker='o'
 
-    # mplcursors.cursor(self.canvas.ax.lines, highlight=True, highlight_kwargs=dict(linewidth=5))
     self.canvas.ax.legend(bbox_to_anchor=(1.04,1), loc="upper left")
-    
-    # self.data_freq_x ax = self.canvas.ax)
     self.canvas.draw()
     self.appendChildonTree()
 
