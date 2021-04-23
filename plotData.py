@@ -64,6 +64,7 @@ class PlotGraph(QWidget):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.initUI()
+    self.dataDict = {}
     self.data = pd.DataFrame()
 # User Interface
   def initUI(self):
