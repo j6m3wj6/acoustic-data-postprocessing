@@ -28,23 +28,23 @@ class draggable_lines:
             self.follower = self.c.mpl_connect("motion_notify_event", self.followmouse)
             self.releaser = self.c.mpl_connect("button_press_event", self.releaseonclick)
 
-    # def followmouse(self, event):
-    #     if self.o == "h":
-    #         self.line.set_ydata([event.ydata, event.ydata])
-    #     else:
-    #         self.line.set_xdata([event.xdata, event.xdata])
-    #     self.c.draw_idle()
+    def followmouse(self, event):
+        if self.o == "h":
+            self.line.set_ydata([event.ydata, event.ydata])
+        else:
+            self.line.set_xdata([event.xdata, event.xdata])
+        self.c.draw_idle()
 
-    # def releaseonclick(self, event):
-    #     if self.o == "h":
-    #         self.XorY = self.line.get_ydata()[0]
-    #     else:
-    #         self.XorY = self.line.get_xdata()[0]
+    def releaseonclick(self, event):
+        # if self.o == "h":
+        #     self.XorY = self.line.get_ydata()[0]
+        # else:
+        #     self.XorY = self.line.get_xdata()[0]
 
-    #     print (self.XorY)
+        # print (self.XorY)
 
-    #     self.c.mpl_disconnect(self.releaser)
-    #     self.c.mpl_disconnect(self.follower)
+        self.c.mpl_disconnect(self.releaser)
+        self.c.mpl_disconnect(self.follower)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)

@@ -12,21 +12,23 @@ from matplotlib.backend_bases import MouseButton
 _defaultLineWidth = 1.5
 _highlightLineWidth = 4
 
+
 class MplCanvas(FigureCanvasQTAgg):
   def __init__(self, parent=None):
     # Canvas init
     self.fig, _ = plt.subplots()
     self.fig.figsize=(12,4)
-
     super(MplCanvas, self).__init__(self.fig)
     self.fig.tight_layout()
     self.fig.subplots_adjust(right=0.8)
     self.myPlotDict = {'main': self.fig.axes[0]}
     self.setStyle(self.myPlotDict['main'])
-    self.horizontal_line = self.myPlotDict['main'].axhline(color='k', lw=0.8, ls='--')
-    self.vertical_line = self.myPlotDict['main'].axvline(color='k', lw=0.8, ls='--')
-    self.text = self.myPlotDict['main'].text(0.72, 0.9, '', transform=self.myPlotDict['main'].transAxes)
 
+    self.h_line = self.myPlotDict['main'].axhline(y=70, color='k', lw=0.8, ls='--', picker=5, visible=False)
+    self.v_line = self.myPlotDict['main'].axvline(x=1000, color='k', lw=0.8, ls='--', picker=5, visible=False)
+    self.text = self.myPlotDict['main'].text(0.72, 0.9, '', transform=self.myPlotDict['main'].transAxes)
+    self.mpl_connect('pick_event', self.clickonline)
+  
   def setStyle(self, ax):
     # axes' style
     ax.set_xscale('log')
@@ -47,34 +49,66 @@ class MplCanvas(FigureCanvasQTAgg):
     return main_ylim
 
   def set_cross_hair_visible(self, visible):
-    need_redraw = self.horizontal_line.get_visible() != visible
-    self.horizontal_line.set_visible(visible)
-    self.vertical_line.set_visible(visible)
+    need_redraw = self.h_line.get_visible() != visible
+    self.h_line.set_visible(visible)
+    self.v_line.set_visible(visible)
     self.text.set_visible(visible)
+
     return need_redraw
 
+  def clickonline(self, event):
+    print('clickonline', event, event.artist)
+    if event.artist == self.h_line or event.artist == self.v_line:
+      print("line selected ", event.artist)
+      self.follower = self.mpl_connect("motion_notify_event", lambda event: self.followmouse(event, 'h'))
+      self.releaser = self.mpl_connect("button_press_event", lambda event: self.releaseonclick(event, 'h'))
+  
+  def followmouse(self, event, artist):
+    # print('followmouse', artist)
+    if artist == 'h':
+      self.h_line.set_ydata([event.ydata, event.ydata])
+    else:
+      self.v_line.set_xdata([event.xdata, event.xdata])
+    self.draw_idle()
+
+  def releaseonclick(self, event, artist):
+    print('releaseonclick', artist)
+    # if artist == 'h':
+    #   self.XorY = self.h_line.get_ydata()[0]
+    # else:
+    #   self.XorY = self.v_line.get_xdata()[0]
+    # print (self.XorY)
+    self.mpl_disconnect(lambda event: self.followmouse(event, 'h'))
+    self.mpl_disconnect(self.releaser)
+
+
 class MyToolBar(NavigationToolbar2QT):
-    def __init__(self,canvas_,parent_):
-      NavigationToolbar2QT.__init__(self,canvas_,parent_)
+  def __init__(self, canvas_, parent_):
+    NavigationToolbar2QT.__init__(self, canvas_, parent_)
 
-      self.toolitems.append(('Cursor', 'Select', "select", 'cursor'))
-      # print(self.toolitems)
+    self.toolitems.append(('Cursor', 'Select', "select", 'cursor'))
+    # print(self.toolitems)
 
-      a = self.addAction(self._icon('Select' + '.png'),
-                  'Cursor', getattr(self, 'cursor'))
-      if ('cursor' in self._actions.keys()): pass
-      else:
-        self._actions['cursor'] = a
-        a.setCheckable(True)
-        a.setToolTip('Select')
-      
+    a = self.addAction(self._icon('Select' + '.png'),
+                'Cursor', getattr(self, 'cursor'))
+    if ('cursor' in self._actions.keys()): pass
+    else:
+      self._actions['cursor'] = a
+      a.setCheckable(True)
+      a.setToolTip('Select')
+    self.cursor = a
 
-    def cursor(self):
-      print("You clicked the selection tool")
-      # for action in self.actions():
-      #   if (action.text() == 'Cursor'):
-      #       print(action.text(), action.isChecked())
-      print(self.actions()[-1].isChecked())
+  def cursor(self):
+    
+    self.canvas.set_cross_hair_visible(self.cursor.isChecked())
+    self.canvas.draw()
+
+    # x = []
+    # for title, ax in self.canvas.myPlotDict.items():
+    #   for line in ax.lines:
+    #     if (line.get_linewidth() == _highlightLineWidth):
+    #       x.append(line.get_label())
+    # print(x)
 
 
 class PlotGraph(QWidget):
@@ -89,7 +123,7 @@ class PlotGraph(QWidget):
   def initUI(self):
     # create components
     self._createCanvas()
-    self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
+    # self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
 
     self._createTreeList()
     self._createButton()
@@ -188,23 +222,22 @@ class PlotGraph(QWidget):
     self.canvas.draw()
 
 # Canvas Functions
-
   def canvas_handleClick(self, event):
     print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
         ('double' if event.dblclick else 'single', event.button,
         event.x, event.y, event.xdata, event.ydata))
-    if not self.dataDict or not event.inaxes: return
-    # title, line_i = self._findSelectedLine(event.xdata, event.ydata)
-    # if (line_i == -1):
-    #   self._resetLineWidth()
-    # elif (event.button == MouseButton.RIGHT and\
-    #       self.canvas.myPlotDict[title].lines[line_i].get_linewidth() == 4):
-    #   self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_defaultLineWidth)
-    # else:
-    #   self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_highlightLineWidth)
-    # self.canvas.draw()
+    if not self.dataDict or not event.inaxes or self.toolbar.cursor.isChecked(): return
+    title, line_i = self._pickLine(event.xdata, event.ydata)
+    if (line_i == -1):
+      self._resetLineWidth()
+    elif (event.button == MouseButton.RIGHT and\
+          self.canvas.myPlotDict[title].lines[line_i].get_linewidth() == 4):
+      self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_defaultLineWidth)
+    else:
+      self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_highlightLineWidth)
+    self.canvas.draw()
 
-  def _findSelectedLine(self, cursor_x, cursor_y):
+  def _pickLine(self, cursor_x, cursor_y):
     error = float('inf')
     title = ''
     for _t, data in self.dataDict.items():
@@ -231,35 +264,34 @@ class PlotGraph(QWidget):
     if (error > 1): return '', -1
     return title, (line_i-1)
   
-#   def _findYdata(self, cursor_x, cursor_y, line_index):
-#     left_x = 0
-#     right_x = len(self.data['Frequency'])
-#     while (right_x - left_x > 1):
-#       middle_freq = int((right_x - left_x)/2) + left_x
-#       if (cursor_x > float(self.data['Frequency'][middle_freq])):
-#         left_x = middle_freq
-#       else:
-#         right_x = middle_freq
-    
-#     left_freq = self.data['Frequency'][left_x]
-#     right_freq = self.data['Frequency'][right_x]
-#     left_ydata = self.data.iloc[left_x][line_index]
-#     right_ydata = self.data.iloc[right_x][line_index]
+  # def _trackYdata(self, cursor_x, cursor_y, line_index):
+    # left_x = 0
+    # right_x = len(self.data['Frequency'])
+    # while (right_x - left_x > 1):
+    #   middle_freq = int((right_x - left_x)/2) + left_x
+    #   if (cursor_x > float(self.data['Frequency'][middle_freq])):
+    #     left_x = middle_freq
+    #   else:
+    #     right_x = middle_freq
+    # left_freq = self.data['Frequency'][left_x]
+    # right_freq = self.data['Frequency'][right_x]
+    # left_ydata = self.data.iloc[left_x][line_index]
+    # right_ydata = self.data.iloc[right_x][line_index]
 
-#     estimate_ydata = left_ydata + ((cursor_x - left_freq) / (right_freq - left_freq))*(right_ydata - left_ydata)
-#     return estimate_ydata
+    # estimate_ydata = left_ydata + ((cursor_x - left_freq) / (right_freq - left_freq))*(right_ydata - left_ydata)
+    # return estimate_ydata
 
   def on_mouse_move(self, event):
     if not event.inaxes: return
     else:
-      visible = self.toolbar.actions()[-1].isChecked()
+      visible = self.toolbar.cursor.isChecked()
       self.canvas.set_cross_hair_visible(visible)
       x = event.xdata
-      # y = self._findYdata(event.xdata, event.ydata, 0)
+      # y = self._trackYdata(event.xdata, event.ydata, 0)
       y = event.ydata
 
-      self.canvas.horizontal_line.set_ydata(y)
-      self.canvas.vertical_line.set_xdata(x)
+      self.canvas.h_line.set_ydata(y)
+      self.canvas.v_line.set_xdata(x)
       self.canvas.text.set_text('x=%1.2f, y=%1.2f' % (x, y))
       self.canvas.draw()
 
