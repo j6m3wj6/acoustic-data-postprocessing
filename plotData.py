@@ -53,6 +53,8 @@ class MyToolBar(NavigationToolbar2QT):
           (None, None, None, None),
           ('Subplots', 'putamus parum claram', 'subplots', 'configure_subplots'),
           ('Save', 'sollemnes in futurum', 'filesave', 'save_figure'),
+          ("Customize", "Edit axis, curve and image parameters",
+         "qt4_editor_options", "edit_parameters"),
           ('Port', 'Select', "select", 'select_tool'),
           )
       NavigationToolbar2QT.__init__(self,canvas_,parent_)
@@ -70,7 +72,7 @@ class PlotGraph(QWidget):
   def initUI(self):
     # create components
     self._createCanvas()
-    # self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
+    self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
 
     self._createTreeList()
     self._createButton()

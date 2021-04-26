@@ -18,40 +18,64 @@ class MplCanvas(FigureCanvasQTAgg):
     self.fig, _ = plt.subplots()
     self.fig.figsize=(12,4)
 
-    # self._setStyle()
     super(MplCanvas, self).__init__(self.fig)
     self.fig.tight_layout()
     self.fig.subplots_adjust(right=0.8)
     self.myPlotDict = {'main': self.fig.axes[0]}
+    self.setStyle(self.myPlotDict['main'])
+    self.horizontal_line = self.myPlotDict['main'].axhline(color='k', lw=0.8, ls='--')
+    self.vertical_line = self.myPlotDict['main'].axvline(color='k', lw=0.8, ls='--')
+    self.text = self.myPlotDict['main'].text(0.72, 0.9, '', transform=self.myPlotDict['main'].transAxes)
 
-  def _setStyle(self, ax):
+  def setStyle(self, ax):
     # axes' style
     ax.set_xscale('log')
     ax.set_xlim([20,20000])
-    ax.set_ylim([0, 30])
+    ax.set_ylim(auto=True)
     ax.patch.set_alpha(0.0)
     ax.grid()
     ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-    
+  
+  def updata_ylim(self, ylim):
+    ylim = list(ylim)
+    main_ylim = list(self.myPlotDict['main'].get_ylim())
+    if (main_ylim[0] > ylim[0]): main_ylim[0] = ylim[0]
+    if (main_ylim[1] < ylim[1]): main_ylim[1] = ylim[1]
+    for title, ax in self.myPlotDict.items():
+      ax.set_ylim(main_ylim)
+    # self.myPlotDict['main'].set_ylim(main_ylim)
+    return main_ylim
 
+  def set_cross_hair_visible(self, visible):
+    need_redraw = self.horizontal_line.get_visible() != visible
+    self.horizontal_line.set_visible(visible)
+    self.vertical_line.set_visible(visible)
+    self.text.set_visible(visible)
+    return need_redraw
 
 class MyToolBar(NavigationToolbar2QT):
     def __init__(self,canvas_,parent_):
-      self.toolitems = (
-          ('Home', 'Lorem ipsum dolor sit amet', 'home', 'home'),
-          ('Back', 'consectetuer adipiscing elit', 'back', 'back'),
-          ('Forward', 'sed diam nonummy nibh euismod', 'forward', 'forward'),
-          (None, None, None, None),
-          ('Pan', 'tincidunt ut laoreet', 'move', 'pan'),
-          ('Zoom', 'dolore magna aliquam', 'zoom_to_rect', 'zoom'),
-          (None, None, None, None),
-          ('Subplots', 'putamus parum claram', 'subplots', 'configure_subplots'),
-          ('Save', 'sollemnes in futurum', 'filesave', 'save_figure'),
-          ('Port', 'Select', "select", 'select_tool'),
-          )
       NavigationToolbar2QT.__init__(self,canvas_,parent_)
-    def select_tool(self):
+
+      self.toolitems.append(('Cursor', 'Select', "select", 'cursor'))
+      # print(self.toolitems)
+
+      a = self.addAction(self._icon('Select' + '.png'),
+                  'Cursor', getattr(self, 'cursor'))
+      if ('cursor' in self._actions.keys()): pass
+      else:
+        self._actions['cursor'] = a
+        a.setCheckable(True)
+        a.setToolTip('Select')
+      
+
+    def cursor(self):
       print("You clicked the selection tool")
+      # for action in self.actions():
+      #   if (action.text() == 'Cursor'):
+      #       print(action.text(), action.isChecked())
+      print(self.actions()[-1].isChecked())
+
 
 class PlotGraph(QWidget):
   """Widget for visualize data"""
@@ -59,13 +83,14 @@ class PlotGraph(QWidget):
     super().__init__(*args, **kwargs)
     self.initUI()
     self.dataDict = {}
-    self.myAxesIndexDict = {}
     self.data = pd.DataFrame()
+
 # User Interface
   def initUI(self):
     # create components
     self._createCanvas()
-    # self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
+    self.canvas.fig.canvas.mpl_connect('motion_notify_event', self.on_mouse_move)
+
     self._createTreeList()
     self._createButton()
 
@@ -93,8 +118,8 @@ class PlotGraph(QWidget):
 
   def _createCanvas(self):
     self.canvas = MplCanvas(self)
-    self.toolbar = NavigationToolbar2QT(self.canvas, self)
-    # self.canvas.fig.canvas.mpl_connect('button_press_event', self.canvas_handleClick)
+    self.toolbar = MyToolBar(self.canvas, self)
+    self.canvas.mpl_connect('button_press_event', self.canvas_handleClick)
 
   def _createButton(self):
     self.btn_importAPData = QPushButton('Import AP data')
@@ -112,20 +137,19 @@ class PlotGraph(QWidget):
     self.tree.setHeaderLabels(['Key','Value'])
     self.tree.setColumnWidth(0,300)
     self.tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-    # self.tree.itemClicked.connect(self.tree_handleSelect)
+    self.tree.itemClicked.connect(self.tree_handleSelect)
     # self.tree.itemSelectionChanged.connect(self.tree_handleSelect)
     self.tree.itemChanged.connect(self.tree_handleCheck)
 
-# # Reset Functions
-#   def _resetLineWidth(self):
-#     for line in self.canvas.axes.lines:
-#       line.set_linewidth(_defaultLineWidth)
-#       # self.canvas.draw()
-    
+# Reset Functions
+  def _resetLineWidth(self):
+    for title, ax in self.canvas.myPlotDict.items():
+      for line in ax.lines:
+        line.set_linewidth(_defaultLineWidth)
+    self.canvas.draw()   
 
-# # Handle Functions
+# Tree Functions
   def _switchCheckStatusWithFigure(self, title, index, originStatus, legendName):
-    
     if (originStatus == 0):
       self.canvas.myPlotDict[title].lines[index].set_visible(False)
       self.canvas.myPlotDict[title].lines[index].set_label('_nolegend_')
@@ -134,78 +158,78 @@ class PlotGraph(QWidget):
       self.canvas.myPlotDict[title].lines[index].set_label(legendName)
 
   def tree_handleCheck(self, item): 
-    print("Check")
     if not item.parent(): 
       pass
-      # for index in range(item.childCount()):
-      #   it = item.child(index)
-      #   if (item.checkState(0) == 0): it.setCheckState(0, QtCore.Qt.Unchecked)
-      #   else: it.setCheckState(0, QtCore.Qt.Checked)
-      #   print(it.text(0))
-      #   self._switchCheckStatusWithFigure(index, it.checkState(0), it.text(0))
+      title = item.text(0)
+      for index in range(item.childCount()):
+        child = item.child(index)
+        if (item.checkState(0) == 0): child.setCheckState(0, QtCore.Qt.Unchecked)
+        else: child.setCheckState(0, QtCore.Qt.Checked)
+        self._switchCheckStatusWithFigure(title, index, child.checkState(0), child.text(0))
     else:
       title = item.parent().text(0)
       index = item.parent().indexOfChild(item)
-      # print(item.text(0))
       self._switchCheckStatusWithFigure(title, index, item.checkState(0), item.text(0))
 
-      self._replot()
+    self._replot()
 
-#   def tree_handleSelect(self):
-#     # print("Select")
-#     if not self.tree.currentItem(): pass
-#     items = self.tree.selectedItems()
-#     # x = []
-#     # for i in range(len(items)):
-#     #   if not items[i].parent():
-#     #     x.append(items[i].text(0))
-#     #   else:
-#     #     x.append(str(items[i].parent().text(0) + ' - ' + items[i].text(0)))
-#     index = self.tree.currentIndex().row()
+  def tree_handleSelect(self):
+    if not self.tree.currentItem(): return
 
-#     self._resetLineWidth()
-#     if (index != -1):
-#       self.canvas.axes.lines[index].set_linewidth(_highlightLineWidth)
-#       self.canvas.draw()
+    self._resetLineWidth()
+    for item in self.tree.selectedItems():
+      if not item.parent():
+        pass
+      else:
+        title = item.parent().text(0)
+        index = item.parent().indexOfChild(item)
+        print(title, index)
+        self.canvas.myPlotDict[title].lines[index].set_linewidth(_highlightLineWidth)
+    self.canvas.draw()
 
-#   def canvas_handleClick(self, event):
-#     print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
-#         ('double' if event.dblclick else 'single', event.button,
-#         event.x, event.y, event.xdata, event.ydata))
-#     if self.data.empty or not event.inaxes: return
+# Canvas Functions
 
-#     line_i = self._findSelectedLine(event.xdata, event.ydata)
-#     if (line_i == -1):
-#       self._resetLineWidth()
-#     elif (event.button == MouseButton.RIGHT and\
-#           self.canvas.axes.lines[line_i].get_linewidth() == 4):
-#       self.canvas.axes.lines[line_i].set_linewidth(_defaultLineWidth)
-#     else:
-#       self.canvas.axes.lines[line_i].set_linewidth(_highlightLineWidth)
-#     self.canvas.draw()
+  def canvas_handleClick(self, event):
+    print('%s click: button=%d, x=%d, y=%d, xdata=%f, ydata=%f' %
+        ('double' if event.dblclick else 'single', event.button,
+        event.x, event.y, event.xdata, event.ydata))
+    if not self.dataDict or not event.inaxes: return
+    # title, line_i = self._findSelectedLine(event.xdata, event.ydata)
+    # if (line_i == -1):
+    #   self._resetLineWidth()
+    # elif (event.button == MouseButton.RIGHT and\
+    #       self.canvas.myPlotDict[title].lines[line_i].get_linewidth() == 4):
+    #   self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_defaultLineWidth)
+    # else:
+    #   self.canvas.myPlotDict[title].lines[line_i].set_linewidth(_highlightLineWidth)
+    # self.canvas.draw()
 
-#   def _findSelectedLine(self, cursor_x, cursor_y):
-#     min_i = 0
-#     max_i = len(self.data['Frequency'])    
-#     while (max_i - min_i > 1):
-#       middle_i = int((max_i - min_i)/2) + min_i
-#       if (cursor_x > float(self.data['Frequency'][middle_i])):
-#         min_i = middle_i
-#       else:
-#         max_i = middle_i
-#     if (cursor_x - self.data['Frequency'][min_i] > self.data['Frequency'][max_i] - cursor_x):
-#       freq_i = max_i
-#     else:
-#       freq_i = min_i
-#     error = float('inf')
-#     for i in range(len(self.data.iloc[freq_i])):
-#       # print(abs(cursor_y - float(self.data.iloc[freq_i][i])), error)
-#       if (abs(cursor_y - float(self.data.iloc[freq_i][i])) < error):
-#         error = abs(cursor_y - float(self.data.iloc[freq_i][i]))
-#         line_i = i
-#     # print(line_i)
-#     if (error > 1): return -1
-#     return line_i
+  def _findSelectedLine(self, cursor_x, cursor_y):
+    error = float('inf')
+    title = ''
+    for _t, data in self.dataDict.items():
+      min_i = 0
+      max_i = len(data['Frequency'])    
+      while (max_i - min_i > 1):
+        middle_i = int((max_i - min_i)/2) + min_i
+        if (cursor_x > float(data['Frequency'][middle_i])):
+          min_i = middle_i
+        else:
+          max_i = middle_i
+      if (cursor_x - data['Frequency'][min_i] > data['Frequency'][max_i] - cursor_x):
+        freq_i = max_i
+      else:
+        freq_i = min_i
+
+      for i in range(1, len(data.iloc[freq_i])):
+        # print(float(data.iloc[freq_i][i]), error)
+        if (abs(cursor_y - float(data.iloc[freq_i][i])) < error):
+          error = abs(cursor_y - float(data.iloc[freq_i][i]))
+          line_i = i
+          title = _t
+      # print(line_i)
+    if (error > 1): return '', -1
+    return title, (line_i-1)
   
 #   def _findYdata(self, cursor_x, cursor_y, line_index):
 #     left_x = 0
@@ -225,6 +249,19 @@ class PlotGraph(QWidget):
 #     estimate_ydata = left_ydata + ((cursor_x - left_freq) / (right_freq - left_freq))*(right_ydata - left_ydata)
 #     return estimate_ydata
 
+  def on_mouse_move(self, event):
+    if not event.inaxes: return
+    else:
+      visible = self.toolbar.actions()[-1].isChecked()
+      self.canvas.set_cross_hair_visible(visible)
+      x = event.xdata
+      # y = self._findYdata(event.xdata, event.ydata, 0)
+      y = event.ydata
+
+      self.canvas.horizontal_line.set_ydata(y)
+      self.canvas.vertical_line.set_xdata(x)
+      self.canvas.text.set_text('x=%1.2f, y=%1.2f' % (x, y))
+      self.canvas.draw()
 
 # Import data - data preprocessing
   def _get_LEAP_text_file(self):
@@ -244,11 +281,14 @@ class PlotGraph(QWidget):
 
           cols = headers[-1]
           cols = cols.strip().split(" ")
-          cols = [x for x in cols if x][2:]
+          cols = [x for x in cols if x][2:-1]
+          
           cols[0] = 'Frequency'
           cols[1] = curve
 
           data = pd.read_csv(file_dir,  skiprows=11)
+          data = data.iloc[:, :-1]
+
           data.columns = cols
 
           file.close()
@@ -305,7 +345,7 @@ class PlotGraph(QWidget):
     else:
       self.canvas.fig.add_subplot(111)
       self.canvas.myPlotDict[title] = self.canvas.fig.axes[len(self.canvas.fig.axes)-1]
-      self.canvas._setStyle(self.canvas.myPlotDict[title])
+      self.canvas.setStyle(self.canvas.myPlotDict[title])
       return
 
   def plotAPData(self):
@@ -315,8 +355,9 @@ class PlotGraph(QWidget):
 
     for col in data.columns[1:]:
       self.canvas.myPlotDict[title].plot(data['Frequency'], data[col], label=col) # marker='o'
-    self._replot()
-    
+
+    self.canvas.updata_ylim(self.canvas.myPlotDict[title].get_ylim())
+    self._replot()    
     self.appendChildrenTree(title)
 
   def plotLEAPData(self):
@@ -328,8 +369,10 @@ class PlotGraph(QWidget):
     for col in data.columns[1:]:
       self.canvas.myPlotDict[title].plot(data['Frequency'], data[col], label=col) # marker='o'
     
+    self.canvas.updata_ylim(self.canvas.myPlotDict[title].get_ylim())
     self._replot()
     self.appendChildrenTree(title)
+
 
   def _replot(self):
     lines = []
