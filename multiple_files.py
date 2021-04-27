@@ -154,7 +154,6 @@ class PlotGraph(QWidget):
       title = item.parent().text(0)
       index = item.parent().indexOfChild(item)
       self._switchCheckStatusWithFigure(title, index, item.checkState(0), item.text(0))
-
     self._replot()
 
   def tree_handleSelect(self):
