@@ -135,7 +135,6 @@ class PlotGraph(QWidget):
     self.tree.setHeaderLabels(['Key','Value'])
     self.tree.setColumnWidth(0,300)
     self.tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-    # self.tree.itemClicked.connect(self.tree_handleSelect)
     self.tree.itemSelectionChanged.connect(self.tree_handleSelect)
     self.tree.itemChanged.connect(self.tree_handleCheck)
     
