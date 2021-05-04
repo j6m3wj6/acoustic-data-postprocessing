@@ -27,16 +27,17 @@ class MyApp(QMainWindow):
 		MainLayout = QVBoxLayout()
 		#===========
 		PlotAreaWidget = QWidget()
-		self.canvas = MplCanvas(self)
-		self.canvas2 = MplCanvas(self)
-		self.canvas3 = MplCanvas(self)
-		self.canvas4 = MplCanvas(self)
-		self.tree = MyTree(self.canvas)
+		self.canvas = MplCanvas(self, [CurveType.FreqRes, CurveType.IMP])
+		self.canvas2 = MplCanvas(self, [CurveType.THD, CurveType.NoType])
+		self.canvas3 = MplCanvas(self, [CurveType.NoType, CurveType.NoType])
+		self.canvas4 = MplCanvas(self, [CurveType.NoType, CurveType.NoType])
+		self.canvasPool= [self.canvas, self.canvas2, self.canvas3, self.canvas4]
+		self.tree = MyTree(self.canvasPool)
 		#----
 		# grid_layout = self._createCanvasLayout_Main()
 		# grid_layout = self._createCanvasLayout_MainwithScrollArea()
-		grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
-		# grid_layout = self._createCanvasLayout_UpAndDown()
+		# grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
+		grid_layout = self._createCanvasLayout_UpAndDown()
 		# grid_layout = self._createCanvasLayout_Quater()
 		PlotAreaWidget.setLayout(grid_layout)
 		#===========

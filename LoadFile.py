@@ -38,9 +38,7 @@ def load_LEAP_file():
                 curveDatas = []
                 note = ""
 
-                _type = CurveType.NoType
-                if ("Impedance" in title): _type = CurveType.IMP
-                elif ("SPL" in title): _type = CurveType.FreqRes
+                _type = determineTypeByTitle(title)
 
                 curveDatas.append(CurveData(label=label, xdata=freq, ydata=val, _type = _type))
                 curveDatas.append(CurveData(label=label, xdata=freq, ydata=phase, _type = CurveType.Phase))
@@ -67,10 +65,8 @@ def load_AP_file():
             # del data['Summary']
             for key, value in data.items():
                 title = data[key].columns[0].strip()
-                _type = CurveType.NoType
-                if ("Phase" in title): _type = CurveType.Phase 
-                elif ("Impedance" in title): _type = CurveType.IMP
-                elif ("RMS" in title): _type = CurveType.FreqRes
+                
+                _type = determineTypeByTitle(title)
 
                 note = data[key].columns[1].strip()
                 curveDatas = []
@@ -79,7 +75,6 @@ def load_AP_file():
                     label = data[key].iloc[0, curveIndex*2].strip()
                     curve_x = pd.Series(data[key].iloc[3:, curveIndex*2], name='x', dtype=float)
                     curve_y = pd.Series(data[key].iloc[3:, curveIndex*2+1], name='y', dtype=float)
-                    
                     if (curve_x.dtype != float or curve_y.dtype != float): 
                         isline = False
                         continue
@@ -122,10 +117,7 @@ def load_Klippel_file():
                 freq = [float(f.replace(',', '').strip()) for f in freq]
                 freq = pd.Series(freq, name='y', dtype=float)
                 
-                if ("Phase" in title): _type = CurveType.Phase 
-                elif ("Impedance" in title): _type = CurveType.IMP
-                elif ("SPL" in title or "CEA" in title): _type = CurveType.FreqRes
-
+                _type = determineTypeByTitle(title)
 
                 for i in range(int(len(data.columns)/2)):
                     spl = pd.Series(data.iloc[:, i*2+1], name='y', dtype=float)
@@ -136,3 +128,12 @@ def load_Klippel_file():
         else:
             pass
     return path, dataSequence
+
+
+def determineTypeByTitle(title):
+    if ("Phase" in title): return CurveType.Phase 
+    elif ("Impedance" in title): return CurveType.IMP
+    elif ("SPL" in title or "CEA" in title or 'RMS' in title): 
+        return CurveType.FreqRes
+    elif ("THD" in title): return CurveType.THD
+    else: return CurveType.NoType

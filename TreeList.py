@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import *
 from Canvas import *
 
 class MyTree(QTreeWidget):
-	def __init__(self, canvas):
+	def __init__(self, canvasPool):
 		super(QTreeWidget, self).__init__()
-		self.canvas = canvas
+		self.canvasPool = canvasPool
 		self.setColumnCount(2)
 		self.setHeaderLabels(['Label','Note'])
 		self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
@@ -19,6 +19,8 @@ class MyTree(QTreeWidget):
 			pass
 		elif(not item.data(0, QtCore.Qt.UserRole)):
 			pass
+			dataType = item.child(0).data(0, QtCore.Qt.UserRole).type
+			print(dataType)
 			for index in range(item.childCount()):
 				child = item.child(index)
 				child.setCheckState(0, item.checkState(0))
@@ -26,12 +28,23 @@ class MyTree(QTreeWidget):
 
 				if (item.checkState(0) == 0): 
 					curve.line.set_label('_nolegend_')
-					ax = self.canvas._getAxbyType(curve.type)
+					ax = None
+					if (curve.type != CurveType.NoType):
+						for c in self.canvasPool:
+							ax_match = c._getAxbyType(curve.type)
+							if (ax_match): ax = ax_match
+					
+					# ax = self.canvas._getAxbyType(curve.type)
 					if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
 					else: pass		
 				else: 
 					curve.line.set_label(curve.legend)
-					ax = self.canvas._getAxbyType(curve.type)
+					# ax = self.canvas._getAxbyType(curve.type)
+					ax = None
+					if (curve.type != CurveType.NoType):
+						for c in self.canvasPool:
+							ax_match = c._getAxbyType(curve.type)
+							if (ax_match): ax = ax_match
 					if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 					else: pass		
 		else:
@@ -39,17 +52,30 @@ class MyTree(QTreeWidget):
 
 			if (item.checkState(0) == 0): 
 				curve.line.set_label('_nolegend_')
-				ax = self.canvas._getAxbyType(curve.type)
+				# ax = self.canvas._getAxbyType(curve.type)
+				ax = None
+				if (curve.type != CurveType.NoType):
+					for c in self.canvasPool:
+						ax_match = c._getAxbyType(curve.type)
+						if (ax_match): ax = ax_match
 				if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
 				else: pass			
 			else: 
 				curve.line.set_label(curve.legend)
-				ax = self.canvas._getAxbyType(curve.type)
+				# ax = self.canvas._getAxbyType(curve.type)
+				ax = None
+				if (curve.type != CurveType.NoType):
+					for c in self.canvasPool:
+						ax_match = c._getAxbyType(curve.type)
+						if (ax_match): ax = ax_match
 				if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 				else: pass
 
-		self.canvas.ax_IMP.set_visible(bool(self.canvas.ax_IMP.lines))
-		self.canvas.replot()
+		for c in self.canvasPool:
+			c.fig.axes[1].set_visible(bool(c.fig.axes[1].lines))
+			c.replot()
+		# self.canvas.ax_IMP.set_visible(bool(self.canvas.ax_IMP.lines))
+		# self.canvas.replot()
 
 	def handleSelect(self):
 		print("MyTree handleSelect")
@@ -68,7 +94,6 @@ class MyTree(QTreeWidget):
 		fileroot.setText(0, filename)
 		fileroot.setText(1, path)
 		for title, lines in dataSequence.items():
-
 			testroot = QTreeWidgetItem()
 			testroot.setText(0, title)
 			testroot.setCheckState(0, 0)
