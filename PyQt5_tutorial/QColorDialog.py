@@ -43,7 +43,7 @@ class Example(QWidget):
 
     def showDialog(self):
         col = QColorDialog.getColor()
-
+        print(col)
         if col.isValid():
             self.frm.setStyleSheet('QWidget { background-color: %s }'
                                    % col.name())

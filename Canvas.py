@@ -6,6 +6,7 @@ from textwrap import fill
 LINEWIDTH_DEFAULT = 1.5
 LINEWIDTH_HIGHLIGHT = 4
 COLORS = ['sienna', 'r', 'darkorange', 'gold', 'g', 'b', 'purple', 'gray']
+LEGEND_WRAP = 11
 
 class CurveType(Enum):
 	NoType = 'None'
@@ -17,7 +18,7 @@ class CurveType(Enum):
 class CurveData:
 	def __init__(self, label=None, note=None, xdata=None, ydata=None, _type=None, units=[]):
 		self.label = label
-		self.legend = fill(label, 11)
+		self.legend = fill(self.label, 11)
 		self.note = note
 		self.xdata = xdata
 		self.ydata = ydata
@@ -26,7 +27,7 @@ class CurveData:
 		self.line = None
 
 class MplCanvas(FigureCanvasQTAgg):
-	def __init__(self, parent=None, types=[]):
+	def __init__(self, parent=None, types=[], status=False):
 		# Canvas init
 		self.fig, _ = plt.subplots()
 		super(MplCanvas, self).__init__(self.fig)
@@ -39,6 +40,10 @@ class MplCanvas(FigureCanvasQTAgg):
 		self.setAxesStyle()
 
 		self.ax_types = types
+		self.active = status
+
+	def setStatus(self, status):
+		self.active = status
 
 	def setAxStyle(self, ax):
 		ax.set_xscale('log')

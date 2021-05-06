@@ -150,7 +150,7 @@ class PlotGraph(QWidget):
 		return grid_layout
 	def _createCanvasLayout_MainwithScrollArea(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
+		# self.tree.setColumnWidth(0,300)
 
 		scroll = QScrollArea()
 		widget = QWidget()
@@ -203,15 +203,16 @@ class PlotGraph(QWidget):
 		self.canvas3 = MplCanvas(self)
 		self.canvas4 = MplCanvas(self)
 
-		self._createTreeList()
+		# self._createTreeList()
+		self._createScrollTreeLists()
 		self.toolbar = MyToolBar(self.canvas, self)
 		
 		# manage layout
 		mainLayout = QVBoxLayout()
 		# 2
 		# grid_layout = self._createCanvasLayout_Main()
-		# grid_layout = self._createCanvasLayout_MainwithScrollArea()
-		grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
+		grid_layout = self._createCanvasLayout_MainwithScrollArea()
+		# grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
 		# grid_layout = self._createCanvasLayout_UpAndDown()
 		# grid_layout = self._createCanvasLayout_Quater()
 		
@@ -243,6 +244,25 @@ class PlotGraph(QWidget):
 		self.tree.setColumnCount(2)
 		self.tree.setHeaderLabels(['Label','Note'])
 		self.tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+
+	def _createScrollTreeLists(self):
+		self.tree = QScrollArea()
+		widget = QWidget()
+		vboxLayout = QVBoxLayout()
+		widget.setLayout(vboxLayout)
+		self.tree.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+		# scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+		self.tree.setWidget(widget)
+		self.tree.setWidgetResizable(True)
+
+		for i in range(3):
+			tree = QTreeWidget()
+			tree.setColumnCount(2)
+			tree.setHeaderLabels(['Label','Note'])
+			tree.setFixedHeight(500)
+			vboxLayout.addWidget(tree)
+		
+
 	def _createShiftGridGroupBox(self):
 		self.shiftGridGroupBox = QGroupBox()
 		layout = QVBoxLayout()

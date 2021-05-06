@@ -11,6 +11,8 @@ from matplotlib.backend_bases import MouseButton
 from Canvas import *
 from TreeList import *
 from LoadFile import *
+from OperationDialog import *
+
 
 class MyApp(QMainWindow):
 	"""App's Main Window."""
@@ -22,22 +24,23 @@ class MyApp(QMainWindow):
 
 	def initUI(self):  
 		self.setWindowTitle("Python Menus & Toolbars")
-		# self.resize(1600, 800)
+		self.resize(1600, 800)
 		MainWidget = QWidget()
 		MainLayout = QVBoxLayout()
 		#===========
 		PlotAreaWidget = QWidget()
-		self.canvas = MplCanvas(self, [CurveType.FreqRes, CurveType.IMP])
-		self.canvas2 = MplCanvas(self, [CurveType.THD, CurveType.NoType])
-		self.canvas3 = MplCanvas(self, [CurveType.NoType, CurveType.NoType])
-		self.canvas4 = MplCanvas(self, [CurveType.NoType, CurveType.NoType])
-		self.canvasPool= [self.canvas, self.canvas2, self.canvas3, self.canvas4]
-		self.tree = MyTree(self.canvasPool)
+		self.canvasPool = []
+		self.canvasPool.append(MplCanvas(self, [CurveType.FreqRes, CurveType.IMP]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.THD, CurveType.NoType]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
+		
+		self.tree = MyTree(self)
 		#----
-		# grid_layout = self._createCanvasLayout_Main()
+		grid_layout = self._createCanvasLayout_Main()
 		# grid_layout = self._createCanvasLayout_MainwithScrollArea()
 		# grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
-		grid_layout = self._createCanvasLayout_UpAndDown()
+		# grid_layout = self._createCanvasLayout_UpAndDown()
 		# grid_layout = self._createCanvasLayout_Quater()
 		PlotAreaWidget.setLayout(grid_layout)
 		#===========
@@ -63,10 +66,12 @@ class MyApp(QMainWindow):
 	def _createCanvasLayout_Quater(self):
 		grid_layout = QGridLayout()
 		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
-		grid_layout.addWidget(self.canvas3, 0, 1, 1, 1)
-		grid_layout.addWidget(self.canvas4, 1, 1, 1, 1)
+		for c in self.canvasPool:
+			c.setStatus(True)
+		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
+		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
+		grid_layout.addWidget(self.canvasPool[2], 0, 1, 1, 1)
+		grid_layout.addWidget(self.canvasPool[3], 1, 1, 1, 1)
 		grid_layout.addWidget(self.tree, 0, 2, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 2)
@@ -76,8 +81,10 @@ class MyApp(QMainWindow):
 	def _createCanvasLayout_UpAndDown(self):
 		grid_layout = QGridLayout()
 		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
+		self.canvasPool[0].setStatus(True)
+		self.canvasPool[1].setStatus(True)
+		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
+		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
 		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
@@ -86,7 +93,8 @@ class MyApp(QMainWindow):
 	def _createCanvasLayout_Main(self):
 		grid_layout = QGridLayout()
 		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
+		self.canvasPool[0].setStatus(True)
+		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
 		grid_layout.addWidget(self.tree, 0, 1, 1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
@@ -109,8 +117,8 @@ class MyApp(QMainWindow):
 			Label = QLabel('BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla')
 			Label.setFixedWidth(200)
 			hboxLayout.addWidget(Label)
-
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
+		self.canvasPool[0].setStatus(True)
+		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
 		grid_layout.addWidget(scroll, 1, 0, 1, 1)
 		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
@@ -122,10 +130,12 @@ class MyApp(QMainWindow):
 	def _createCanvasLayout_MainwithThreeSmallWindows(self):
 		grid_layout = QGridLayout()
 		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 3)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
-		grid_layout.addWidget(self.canvas3, 1, 1, 1, 1)
-		grid_layout.addWidget(self.canvas4, 1, 2, 1, 1)
+		for c in self.canvasPool:
+			c.setStatus(True)
+		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 3)
+		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
+		grid_layout.addWidget(self.canvasPool[2], 1, 1, 1, 1)
+		grid_layout.addWidget(self.canvasPool[3], 1, 2, 1, 1)
 		grid_layout.addWidget(self.tree, 0, 3, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 2)
@@ -152,13 +162,15 @@ class MyApp(QMainWindow):
 		layout = QVBoxLayout()
 		btn_shift = QPushButton('Shift')
 		# btn_shift.clicked.connect(self.dialog_shift)
-		# btn_shift.clicked.connect(self.curveShift)
-		self.cbox_shift = QComboBox()
-		# self.cbox_shift.currentIndexChanged.connect(se-lf.cbox_handleChange)
+		btn_shift.clicked.connect(self.curveShift)
+		self.cbox_shift_group = QComboBox()
+		self.cbox_shift_curve = QComboBox()
+		# self.cbox_shift.currentIndexChanged.connect(self.cbox_handleChange)
 		self.le_offsetInput = QLineEdit()
 
 		layout.addWidget(btn_shift)
-		layout.addWidget(self.cbox_shift)
+		layout.addWidget(self.cbox_shift_group)
+		layout.addWidget(self.cbox_shift_curve)
 		layout.addWidget(self.le_offsetInput) 
 		self.shiftGridGroupBox.setLayout(layout)
 
@@ -180,7 +192,7 @@ class MyApp(QMainWindow):
 					line = Line2D(it.xdata, it.ydata, label=it.legend, color=COLORS[i%8])
 					it.line = line
 			self.fileDict[path] = dataSequence
-			self.canvas.replot()
+			self.canvasReplot()
 			self.tree.appendChildren(path, dataSequence)
 		else:
 			print("Not support this file!")
@@ -189,13 +201,25 @@ class MyApp(QMainWindow):
 	def clearData(self):
 		for ax in self.canvas.fig.axes:
 	  		ax.lines = []
-		self.canvas.replot()
+		self.canvasReplot()
 		self.tree.clear()
 
+# Btn Func - Shift Data
+	def curveShift(self):
+		treeDict = self.tree.getCheckedItems()
+		print(treeDict)
+		dlg = OperationDialog(mainWindow = self, treeDict=treeDict)
+		dlg.exec()
+		# self.canvasReplot()
+
+	def canvasReplot(self):
+		for c in self.canvasPool:
+			if (c.active): c.replot()
 
 def main():
 	app = QApplication(sys.argv)
 	main = MyApp()
+
 	main.show()
 	sys.exit(app.exec_())
 if __name__ == '__main__':
