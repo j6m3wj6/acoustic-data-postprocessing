@@ -42,7 +42,6 @@ class MplCanvas(FigureCanvasQTAgg):
 		# self.fig.figsize = (12,4)
 		super(MplCanvas, self).__init__(self.fig)
 		self.fig.tight_layout()
-		# self.fig.subplots_adjust(left=0.1, right=0.8, top=0.85, bottom=0.15)
 		self.fig.subplots_adjust(left=0.05, right=0.8, top=0.9)
 
 		self.ax_SPL = self.fig.axes[0]
@@ -149,7 +148,6 @@ class PlotGraph(QWidget):
 		grid_layout.setContentsMargins(10,10,10,10)
 		return grid_layout
 	def _createCanvasLayout_MainwithScrollArea(self):
-		grid_layout = QGridLayout()
 		# self.tree.setColumnWidth(0,300)
 
 		scroll = QScrollArea()
@@ -166,14 +164,17 @@ class PlotGraph(QWidget):
 			Label.setFixedWidth(200)
 			hboxLayout.addWidget(Label)
 
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(scroll, 1, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
+		grid_layout = QGridLayout()
+		grid_layout.addWidget(self.toolbar, 0, 0, 1, 1)
+		grid_layout.addWidget(self.canvas, 1, 0, 1, 1)
+		grid_layout.addWidget(scroll, 2, 0, 1, 1)
+		# grid_layout.addWidget(self.tree, 0, 1, -1, 1)
+		grid_layout.addWidget(self.splitter, 0, 1, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
-		grid_layout.setRowStretch(0, 3)
-		grid_layout.setRowStretch(1, 1)
-		grid_layout.setContentsMargins(10,10,10,10)
+		grid_layout.setRowStretch(1, 3)
+		grid_layout.setRowStretch(2, 1)
+		grid_layout.setContentsMargins(10,0,10,10)
 		return grid_layout
 	def _createCanvasLayout_MainwithThreeSmallWindows(self):
 		grid_layout = QGridLayout()
@@ -203,8 +204,7 @@ class PlotGraph(QWidget):
 		self.canvas3 = MplCanvas(self)
 		self.canvas4 = MplCanvas(self)
 
-		# self._createTreeList()
-		self._createScrollTreeLists()
+		self._createSplitTreeWidgets()
 		self.toolbar = MyToolBar(self.canvas, self)
 		
 		# manage layout
@@ -216,22 +216,9 @@ class PlotGraph(QWidget):
 		# grid_layout = self._createCanvasLayout_UpAndDown()
 		# grid_layout = self._createCanvasLayout_Quater()
 		
-		# 3
-		hboxLayout_btn = QHBoxLayout()
-		vboxlayout_data = QVBoxLayout()
-		vboxlayout_data.addWidget(self.btn_importAPData)
-		vboxlayout_data.addWidget(self.btn_importLEAPData)
-		vboxlayout_data.addWidget(self.btn_importNFSData)
-		vboxlayout_data.addWidget(self.btn_clearData)
-		hboxLayout_btn.addLayout(vboxlayout_data)
-		# 4
-		hboxLayout_btn.addWidget(self.shiftGridGroupBox)
-		hboxLayout_btn.addWidget(QGroupBox())
 
-		mainLayout.addWidget(self.toolbar)
 		mainLayout.addLayout(grid_layout)
-		mainLayout.addLayout(hboxLayout_btn)
-
+		mainLayout.addWidget(self.btn_clearData)
 		self.setLayout(mainLayout)
 
 	def _createButton(self):
@@ -239,29 +226,37 @@ class PlotGraph(QWidget):
 		self.btn_importLEAPData = QPushButton('Import LEAP data')
 		self.btn_importNFSData = QPushButton('Import NFS data')
 		self.btn_clearData = QPushButton('Clear data')
-	def _createTreeList(self):
-		self.tree=QTreeWidget()
-		self.tree.setColumnCount(2)
-		self.tree.setHeaderLabels(['Label','Note'])
-		self.tree.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
-	def _createScrollTreeLists(self):
-		self.tree = QScrollArea()
+	def _createTreeItem(self, label, tree, btn):
 		widget = QWidget()
-		vboxLayout = QVBoxLayout()
-		widget.setLayout(vboxLayout)
-		self.tree.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-		# scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-		self.tree.setWidget(widget)
-		self.tree.setWidgetResizable(True)
+		grid_layout = QGridLayout()
+		widget.setLayout(grid_layout)
 
-		for i in range(3):
-			tree = QTreeWidget()
-			tree.setColumnCount(2)
-			tree.setHeaderLabels(['Label','Note'])
-			tree.setFixedHeight(500)
-			vboxLayout.addWidget(tree)
+		grid_layout.addWidget(QLabel(label), 0, 0, 1, 1)
+		grid_layout.addWidget(btn, 0, 1, 1, 1)
+		grid_layout.addWidget(tree, 1, 0, 1, -1)
+		grid_layout.setContentsMargins(0,0,0,0)
+		return widget
+
+	def _createSplitTreeWidgets(self):
+		self.splitter = QSplitter(Qt.Vertical)
 		
+		self.LEAPtree = QTreeWidget()
+		self.APtree = QTreeWidget()
+		self.Kilppeltree = QTreeWidget()
+		self.trees = [self.LEAPtree, self.APtree, self.Kilppeltree]
+		
+
+		self.splitter.addWidget(self._createTreeItem('LEAP File', self.LEAPtree, self.btn_importLEAPData))
+		self.splitter.addWidget(self._createTreeItem('AP File', self.APtree, self.btn_importAPData))
+		self.splitter.addWidget(self._createTreeItem('Kilppel File', self.Kilppeltree, self.btn_importNFSData))
+
+		
+		for t in self.trees:
+			t.setColumnCount(2)
+			t.setHeaderLabels(['File & Label','Note'])
+			t.setColumnWidth(0, 300) 
+			t.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
 	def _createShiftGridGroupBox(self):
 		self.shiftGridGroupBox = QGroupBox()

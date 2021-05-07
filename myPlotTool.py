@@ -34,8 +34,9 @@ class MyApp(QMainWindow):
 		self.canvasPool.append(MplCanvas(self, [CurveType.THD, CurveType.NoType]))
 		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
 		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
-		
-		self.tree = MyTree(self)
+		self._createButton()
+		self._createShiftGridGroupBox()
+		self.myTree = MyTree(self)
 		#----
 		grid_layout = self._createCanvasLayout_Main()
 		# grid_layout = self._createCanvasLayout_MainwithScrollArea()
@@ -44,35 +45,25 @@ class MyApp(QMainWindow):
 		# grid_layout = self._createCanvasLayout_Quater()
 		PlotAreaWidget.setLayout(grid_layout)
 		#===========
-		self._createButton()
-		self._createShiftGridGroupBox()
-		#----
 		hboxLayout_btn = QHBoxLayout()
-		vboxlayout_data = QVBoxLayout()
-		vboxlayout_data.addWidget(self.btn_importAPData)
-		vboxlayout_data.addWidget(self.btn_importLEAPData)
-		vboxlayout_data.addWidget(self.btn_importNFSData)
-		vboxlayout_data.addWidget(self.btn_clearData)
-		hboxLayout_btn.addLayout(vboxlayout_data)
+		hboxLayout_btn.addWidget(self.btn_clearData)
 		hboxLayout_btn.addWidget(self.shiftGridGroupBox)
-		hboxLayout_btn.addWidget(QGroupBox())
 		#===========
 		MainLayout.addWidget(PlotAreaWidget)
 		MainLayout.addLayout(hboxLayout_btn)
 		MainWidget.setLayout(MainLayout)
 		self.setCentralWidget(MainWidget)
-
+	
 # Arrange PlotArea Layout
 	def _createCanvasLayout_Quater(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
 		for c in self.canvasPool:
 			c.setStatus(True)
 		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
 		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
 		grid_layout.addWidget(self.canvasPool[2], 0, 1, 1, 1)
 		grid_layout.addWidget(self.canvasPool[3], 1, 1, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 2, -1, 1)
+		grid_layout.addWidget(self.myTree, 0, 2, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 2)
 		grid_layout.setColumnStretch(2, 1)
@@ -80,29 +71,26 @@ class MyApp(QMainWindow):
 		return grid_layout
 	def _createCanvasLayout_UpAndDown(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
 		self.canvasPool[0].setStatus(True)
 		self.canvasPool[1].setStatus(True)
 		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
 		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
+		grid_layout.addWidget(self.myTree, 0, 1, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
 		grid_layout.setContentsMargins(10,10,10,10)
 		return grid_layout
 	def _createCanvasLayout_Main(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
 		self.canvasPool[0].setStatus(True)
 		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, 1, 1)
+		grid_layout.addWidget(self.myTree, 0, 1, 1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
 		grid_layout.setContentsMargins(10,10,10,10)
 		return grid_layout
 	def _createCanvasLayout_MainwithScrollArea(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
 
 		scroll = QScrollArea()
 		widget = QWidget()
@@ -120,7 +108,7 @@ class MyApp(QMainWindow):
 		self.canvasPool[0].setStatus(True)
 		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
 		grid_layout.addWidget(scroll, 1, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
+		grid_layout.addWidget(self.myTree, 0, 1, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 1)
 		grid_layout.setRowStretch(0, 3)
@@ -129,14 +117,13 @@ class MyApp(QMainWindow):
 		return grid_layout
 	def _createCanvasLayout_MainwithThreeSmallWindows(self):
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
 		for c in self.canvasPool:
 			c.setStatus(True)
 		grid_layout.addWidget(self.canvasPool[0], 0, 0, 1, 3)
 		grid_layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
 		grid_layout.addWidget(self.canvasPool[2], 1, 1, 1, 1)
 		grid_layout.addWidget(self.canvasPool[3], 1, 2, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 3, -1, 1)
+		grid_layout.addWidget(self.myTree, 0, 3, -1, 1)
 		grid_layout.setColumnStretch(0, 2)
 		grid_layout.setColumnStretch(1, 2)
 		grid_layout.setColumnStretch(2, 2)
@@ -177,14 +164,14 @@ class MyApp(QMainWindow):
 # Btn Func - Plot Data
 	def plotAPData(self):
 		path, dataSequence = load_AP_file()
-		self.plotData(path, dataSequence)
+		self.plotData('AP', path, dataSequence)
 	def plotLEAPData(self):
 		path, dataSequence = load_LEAP_file()
-		self.plotData(path, dataSequence)
+		self.plotData('LEAP', path, dataSequence)
 	def plotKlippelData(self):
 		path, dataSequence = load_Klippel_file()
-		self.plotData(path, dataSequence)
-	def plotData(self, path, dataSequence):
+		self.plotData('Klippel', path, dataSequence)
+	def plotData(self, category, path, dataSequence):
 		if (dataSequence): 
 			for title, cruvesArr in dataSequence.items():
 				for i in range(len(cruvesArr)):
@@ -193,7 +180,7 @@ class MyApp(QMainWindow):
 					it.line = line
 			self.fileDict[path] = dataSequence
 			self.canvasReplot()
-			self.tree.appendChildren(path, dataSequence)
+			self.myTree.appendChildren(category, path, dataSequence)
 		else:
 			print("Not support this file!")
 
@@ -202,13 +189,14 @@ class MyApp(QMainWindow):
 		for ax in self.canvas.fig.axes:
 	  		ax.lines = []
 		self.canvasReplot()
-		self.tree.clear()
+		self.myTree.clear()
 
 # Btn Func - Shift Data
 	def curveShift(self):
-		treeDict = self.tree.getCheckedItems()
+		# treeDict = self.myTree.getCheckedItems()
+		treeDict = self.myTree.getCheckedItems()
 		print(treeDict)
-		dlg = OperationDialog(mainWindow = self, treeDict=treeDict)
+		dlg = OperationDialog(myApp = self, treeDict=treeDict)
 		dlg.exec()
 		# self.canvasReplot()
 

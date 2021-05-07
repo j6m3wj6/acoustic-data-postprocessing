@@ -113,14 +113,17 @@ def load_Klippel_file():
                 curveDatas = []
                 note = ""
                 
-                freq = data.iloc[:, 0]
-                freq = [float(f.replace(',', '').strip()) for f in freq]
-                freq = pd.Series(freq, name='y', dtype=float)
+                # freq = data.iloc[:, 0]
+                # freq = [float(f.replace(',', '').strip()) for f in freq]
+                # freq = pd.Series(freq, name='x', dtype=float)
                 
                 _type = determineTypeByTitle(title)
 
                 for i in range(int(len(data.columns)/2)):
                     spl = pd.Series(data.iloc[:, i*2+1], name='y', dtype=float)
+                    freq = data.iloc[:, i*2]
+                    freq = [float(f.replace(',', '').strip()) for f in freq]
+                    freq = pd.Series(freq, name='x', dtype=float)
                     curveDatas.append(CurveData(label=labels[i], note=note, xdata=freq, ydata=spl, _type = _type))
                 if title in dataSequence: pass
                 else: dataSequence[title] = []
