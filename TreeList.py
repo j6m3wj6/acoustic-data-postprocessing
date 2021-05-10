@@ -58,12 +58,10 @@ class MyTree(QSplitter):
 				# checkedItemsDict[fileroot.text(0)] = {}
 				fileroot_copy = fileroot.clone()
 				for t in range(fileroot.childCount()):
-					print(t, fileroot.child(t))
-
 					test = fileroot.child(t)
-					if (test.checkState(0) == Qt.Checked):
-						test_copy = test.clone()
-						fileroot.addChild(test_copy)
+					if (test.checkState(0) != Qt.Checked):
+						# test_copy = test.clone()
+						fileroot_copy.takeChild(t)
 
 						# if (fileroot.text(0) not in checkedItemsDict.keys()): 
 						# 	checkedItemsDict[fileroot.text(0)] = {}
