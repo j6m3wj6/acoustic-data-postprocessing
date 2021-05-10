@@ -65,8 +65,8 @@ class MplCanvas(FigureCanvasQTAgg):
 	def replot(self):
 		self.ax_main.plot()
 		self.ax_sub.plot()
-		self.ax_main.legend(bbox_to_anchor=(1.04,1), loc="upper left")
-		self.ax_sub.legend(bbox_to_anchor=(1.04,0), loc="lower left")
+		if (self.ax_main.get_legend()): self.ax_main.legend(bbox_to_anchor=(1.04,1), loc="upper left")
+		if (self.ax_sub.get_legend()): self.ax_sub.legend(bbox_to_anchor=(1.04,0), loc="lower left")
 		self.draw()
 
 	def _getAxbyType(self, curveType):

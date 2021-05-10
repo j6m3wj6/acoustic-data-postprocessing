@@ -186,17 +186,18 @@ class MyApp(QMainWindow):
 
 # Btn Func - Clear data
 	def clearData(self):
-		for ax in self.canvas.fig.axes:
-	  		ax.lines = []
-		self.canvasReplot()
+		for c in self.canvasPool:
+			for ax in c.fig.axes:
+	  			ax.lines = []
+			c.replot()
 		self.myTree.clear()
 
 # Btn Func - Shift Data
 	def curveShift(self):
 		# treeDict = self.myTree.getCheckedItems()
-		treeDict = self.myTree.getCheckedItems()
-		print(treeDict)
-		dlg = OperationDialog(myApp = self, treeDict=treeDict)
+		# treeDict = self.myTree.getCheckedItemsTree()
+		# print(treeDict)
+		dlg = OperationDialog(myApp = self)
 		dlg.exec()
 		# self.canvasReplot()
 

@@ -11,18 +11,18 @@ from TreeList import *
 
 class OperationDialog(QDialog):
 	"""Employee dialog."""
-	def __init__(self, parent=None, treeDict = None, myApp = None):
+	def __init__(self, parent=None, myApp = None):
 		super().__init__(parent)
 		self.myApp = myApp
-		self.initUI(treeDict)
+		self.initUI()
 		# self.ui = Ui_Dialog(Dialog = self, window=self.window,  treeDict=treeDict)
 
-	def _createTree(self, treeDict):
-		tree = TreeItem(self.myApp)
-		tree.appendChildrenByTreeDict(treeDict)
-		tree.setColumnCount(2)
-		tree.setColumnWidth(0, 400)
-		tree.setHeaderLabels(['Label','Note'])
+	def _createTree(self):
+		tree = self.myApp.myTree.getCheckedItemsTree()
+		# tree.appendChildrenByTreeDict(treeDict)
+		# tree.setColumnCount(2)
+		# tree.setColumnWidth(0, 400)
+		# tree.setHeaderLabels(['Label','Note'])
 
 		return tree
 
@@ -32,8 +32,9 @@ class OperationDialog(QDialog):
 		self.resize(800, 600)
 		
 		
-		self.treeWidget = self._createTree(treeDict)
-		self.treeWidget.itemSelectionChanged.connect(self.treeWidget.handleSelect)
+		self.treeWidget = self._createTree()
+		self.treeWidget.itemSelectionChanged.disconnect(self.treeWidget.handleSelect)
+		self.treeWidget.itemSelectionChanged.connect(self.handleSelect)
 
 		label = QLabel("Offset")
 		self.lineEdit = QLineEdit()
@@ -55,7 +56,7 @@ class OperationDialog(QDialog):
 		self.setLayout(vboxlayout_main)
 
 	def handleSelect(self):
-		print("MyTree handleSelect2")
+		print("MyDialog handleSelect2")
 
 	def curveShift(self):
 		try:

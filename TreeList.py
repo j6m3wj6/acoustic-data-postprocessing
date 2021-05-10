@@ -15,13 +15,13 @@ class MyTree(QSplitter):
 		
 		self.LEAPtree = TreeItem(self.myApp)
 		self.APtree = TreeItem(self.myApp)
-		self.Kilppeltree = TreeItem(self.myApp)
-		self.trees = [self.LEAPtree, self.APtree, self.Kilppeltree]
+		self.Klippeltree = TreeItem(self.myApp)
+		self.trees = [self.LEAPtree, self.APtree, self.Klippeltree]
 
 		self.setOrientation(Qt.Vertical)
 		self.addWidget(self._createTreeItem('LEAP File', self.LEAPtree, self.myApp.btn_importLEAPData))
 		self.addWidget(self._createTreeItem('AP File', self.APtree, self.myApp.btn_importAPData))
-		self.addWidget(self._createTreeItem('Kilppel File', self.Kilppeltree, self.myApp.btn_importNFSData))
+		self.addWidget(self._createTreeItem('Kilppel File', self.Klippeltree, self.myApp.btn_importNFSData))
 
 		
 		for t in self.trees:
@@ -49,21 +49,35 @@ class MyTree(QSplitter):
 		else:
 			self.Klippeltree.appendChildren(path, dataSequence)
 	
-	def getCheckedItems(self):
-		checkedItemsDict = {}
+	def getCheckedItemsTree(self):
+		root = TreeItem()
+
 		for tree in self.trees:
 			for f in range(tree.topLevelItemCount()):
-				_file = tree.topLevelItem(f)
-				checkedItemsDict[_file.text(0)] = {}
-				for t in range(_file.childCount()):
-					test = _file.child(t)
-					if (test.checkState(0)):
-						checkedItemsDict[_file.text(0)][test.text(0)] = test
-				if (not checkedItemsDict[_file.text(0)]): del checkedItemsDict[_file.text(0)]
-		return checkedItemsDict
+				fileroot = tree.topLevelItem(f)
+				# checkedItemsDict[fileroot.text(0)] = {}
+				fileroot_copy = fileroot.clone()
+				for t in range(fileroot.childCount()):
+					print(t, fileroot.child(t))
+
+					test = fileroot.child(t)
+					if (test.checkState(0) == Qt.Checked):
+						test_copy = test.clone()
+						fileroot.addChild(test_copy)
+
+						# if (fileroot.text(0) not in checkedItemsDict.keys()): 
+						# 	checkedItemsDict[fileroot.text(0)] = {}
+						# checkedItemsDict[fileroot.text(0)][test.text(0)] = test
+				# if (not checkedItemsDict[fileroot.text(0)]): del checkedItemsDict[_file.text(0)]
+				root.addTopLevelItem(fileroot_copy)
+		return root
+
+	def clear(self):
+		for tree in self.trees:
+			tree.clear()
 
 class TreeItem(QTreeWidget):
-	def __init__(self, myApp):
+	def __init__(self, myApp=None):
 		super(QTreeWidget, self).__init__()
 		self.myApp = myApp
 		self.setColumnCount(2)
@@ -133,6 +147,8 @@ class TreeItem(QTreeWidget):
 		fileroot = QTreeWidgetItem(self)
 		fileroot.setText(0, filename)
 		fileroot.setText(1, path)
+		fileroot.setData(0, QtCore.Qt.UserRole, dataSequence)
+
 		for title, lines in dataSequence.items():
 			testroot = QTreeWidgetItem()
 			testroot.setText(0, title)
@@ -151,15 +167,25 @@ class TreeItem(QTreeWidget):
 		firstTest.setCheckState(0, Qt.Checked)
 
 	def appendChildrenByTreeDict(self, treeDict):
-		for f in treeDict.keys():
-			_file = treeDict[f]
-			fileroot = QTreeWidgetItem(self)
-			fileroot.setText(0, f)
+		# for f in treeDict.keys():
+		# 	_file = treeDict[f]
+		# 	fileroot = QTreeWidgetItem(self)
+		# 	fileroot.setText(0, f)
 
-			for testRoot in _file.values():
+			# for testRoot in _file.values():
+			# 	copyItem = testRoot.clone()
+			# 	copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
+			# 	fileroot.addChild(copyItem)		
+		for f in range(treeDict.topLevelItemCount()):
+			fileroot = treeDict.topLevelItem(f)
+			print(f, fileroot)
+			for t in range(fileroot.childCount()):
+				print(t, fileroot.child(t))
+				testRoot = fileroot.child(t)
 				copyItem = testRoot.clone()
 				copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
-				fileroot.addChild(copyItem)			
+				fileroot.addChild(copyItem)	
+
 			self.addTopLevelItem(fileroot)
 		self.expandAll()
 
