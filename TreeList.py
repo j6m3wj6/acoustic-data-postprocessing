@@ -51,24 +51,19 @@ class MyTree(QSplitter):
 	
 	def getCheckedItemsTree(self):
 		root = TreeItem()
-
 		for tree in self.trees:
 			for f in range(tree.topLevelItemCount()):
 				fileroot = tree.topLevelItem(f)
-				# checkedItemsDict[fileroot.text(0)] = {}
 				fileroot_copy = fileroot.clone()
+				fileroot_copy.setData(0, QtCore.Qt.CheckStateRole, None)
 				for t in range(fileroot.childCount()):
 					test = fileroot.child(t)
-					if (test.checkState(0) != Qt.Checked):
-						# test_copy = test.clone()
+					if (test.checkState(0) == Qt.Unchecked):
 						fileroot_copy.takeChild(t)
-
-						# if (fileroot.text(0) not in checkedItemsDict.keys()): 
-						# 	checkedItemsDict[fileroot.text(0)] = {}
-						# checkedItemsDict[fileroot.text(0)][test.text(0)] = test
-				# if (not checkedItemsDict[fileroot.text(0)]): del checkedItemsDict[_file.text(0)]
 				root.addTopLevelItem(fileroot_copy)
 		return root
+
+	
 
 	def clear(self):
 		for tree in self.trees:
@@ -85,13 +80,6 @@ class TreeItem(QTreeWidget):
 		self.itemSelectionChanged.connect(self.handleSelect)
 		self.doubleClicked.connect(self.editText)
 	
-	def _getRightAx(self, _type):
-		ax = None
-		if (_type != CurveType.NoType):
-			for c in self.myApp.canvasPool:
-				ax_match = c._getAxbyType(_type)
-				if (ax_match): ax = ax_match
-		return ax
 
 	def handleCheck(self, item):
 		# print("MyTree handleCheck")
@@ -101,25 +89,25 @@ class TreeItem(QTreeWidget):
 			dataType = item.child(0).data(0, QtCore.Qt.UserRole).type
 			for index in range(item.childCount()):
 				curve = item.child(index).data(0, QtCore.Qt.UserRole)
-				if (item.checkState(0) == 0): 
+				if (item.checkState(0) == Qt.Unchecked): 
 					curve.line.set_label('_nolegend_')
-					ax = self._getRightAx(curve.type)
+					ax = self.myApp.getRightAx(curve.type)
 					if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
-				else: 
+				elif (item.child(index).checkState(0) == Qt.Checked): 
 					curve.line.set_label(fill(curve.label, LEGEND_WRAP))
-					ax = self._getRightAx(curve.type)
+					ax = self.myApp.getRightAx(curve.type)
 					if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 		else:
 			curve = item.data(0, QtCore.Qt.UserRole)
 			curve.label = item.text(0)
 			curve.note = item.text(1)
-			if (item.checkState(0) == 0): 
+			if (item.checkState(0) == Qt.Unchecked): 
 				curve.line.set_label('_nolegend_')
-				ax = self._getRightAx(curve.type)
+				ax = self.myApp.getRightAx(curve.type)
 				if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
 			else: 
 				curve.line.set_label(fill(curve.label, LEGEND_WRAP))
-				ax = self._getRightAx(curve.type)
+				ax = self.myApp.getRightAx(curve.type)
 				if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 		
 		for c in self.myApp.canvasPool:
@@ -128,7 +116,7 @@ class TreeItem(QTreeWidget):
 		self.myApp.canvasReplot()
 
 	def handleSelect(self):
-		print("MyTree handleSelect")
+		# print("MyTree handleSelect")
 		if not self.currentItem(): return
 		for c in self.myApp.canvasPool:
 			if (c.active):
@@ -146,7 +134,7 @@ class TreeItem(QTreeWidget):
 		fileroot.setText(0, filename)
 		fileroot.setText(1, path)
 		fileroot.setData(0, QtCore.Qt.UserRole, dataSequence)
-
+		fileroot.setExpanded(True)
 		for title, lines in dataSequence.items():
 			testroot = QTreeWidgetItem()
 			testroot.setText(0, title)
@@ -160,33 +148,12 @@ class TreeItem(QTreeWidget):
 				# testroot.addChild(child)
 			fileroot.addChild(testroot)
 		self.addTopLevelItem(fileroot)
-		self.expandAll()
-		firstTest = fileroot.child(0)
-		firstTest.setCheckState(0, Qt.Checked)
+		# self.expandAll()
+		# fileroot.child(0).setCheckState(0, Qt.Checked)
 
-	def appendChildrenByTreeDict(self, treeDict):
-		# for f in treeDict.keys():
-		# 	_file = treeDict[f]
-		# 	fileroot = QTreeWidgetItem(self)
-		# 	fileroot.setText(0, f)
-
-			# for testRoot in _file.values():
-			# 	copyItem = testRoot.clone()
-			# 	copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
-			# 	fileroot.addChild(copyItem)		
-		for f in range(treeDict.topLevelItemCount()):
-			fileroot = treeDict.topLevelItem(f)
-			print(f, fileroot)
-			for t in range(fileroot.childCount()):
-				print(t, fileroot.child(t))
-				testRoot = fileroot.child(t)
-				copyItem = testRoot.clone()
-				copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
-				fileroot.addChild(copyItem)	
-
-			self.addTopLevelItem(fileroot)
-		self.expandAll()
-
+	
+	# copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
+	
 	def editText(self, event):
 		# print("double click", event, event.column(), event.row(), event.data())
 		item = self.itemFromIndex(event)

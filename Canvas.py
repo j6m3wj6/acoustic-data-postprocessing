@@ -14,6 +14,8 @@ class CurveType(Enum):
 	IMP = 'Impedance'
 	Phase = 'Phase'
 	THD = 'THD'
+	EX = 'Excursion'
+
 
 class CurveData:
 	def __init__(self, label=None, note=None, xdata=None, ydata=None, _type=None, units=[]):
@@ -23,6 +25,7 @@ class CurveData:
 		self.xdata = xdata
 		self.ydata = ydata
 		self.type = _type
+		self.shifted = 0
 		self.units = units
 		self.line = None
 
@@ -64,18 +67,20 @@ class MplCanvas(FigureCanvasQTAgg):
 	
 	def replot(self):
 		self.ax_main.plot()
-		self.ax_sub.plot()
-		if (self.ax_main.get_legend()): self.ax_main.legend(bbox_to_anchor=(1.04,1), loc="upper left")
-		if (self.ax_sub.get_legend()): self.ax_sub.legend(bbox_to_anchor=(1.04,0), loc="lower left")
+		self.ax_main.legend(bbox_to_anchor=(1.04,1), loc="upper left")
+		
+		if (self.ax_sub.get_visible()):
+			self.ax_sub.plot()
+			self.ax_sub.legend(bbox_to_anchor=(1.04,0), loc="lower left")
 		self.draw()
 
-	def _getAxbyType(self, curveType):
+	def getAxbyType(self, curveType):
 		if (self.ax_types[0] == curveType): 
 			return self.ax_main
 		elif (self.ax_types[1] == curveType):
 			return self.ax_sub
 		else: return None
-	
+
 	def _resetLineWidth(self):
 		for ax in self.fig.axes:
 			for line in ax.lines:
