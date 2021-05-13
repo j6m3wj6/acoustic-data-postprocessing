@@ -14,6 +14,8 @@ class Example(QMainWindow):
 
     def jump_A(self):
         print("Hello A.")
+    def jump_B(self):
+        print("Hello B.")
    
 
     def initUI(self):               
@@ -31,6 +33,10 @@ class Example(QMainWindow):
         AAct.setStatusTip('Jump to first entry with "A"')
         AAct.triggered.connect(self.jump_A)
 
+        BAct = QAction('B', self)
+        BAct.setShortcut('B')
+        BAct.setStatusTip('Jump to first entry with "B"')
+        BAct.triggered.connect(self.jump_B)
 
         # self.statusBar()
 
@@ -42,21 +48,21 @@ class Example(QMainWindow):
         toolbar_main.addAction(exitAct)
 
         toolbar_speed_dial = self.addToolBar('SpeedDial')
-        self.addToolBar(Qt.RightToolBarArea, toolbar_speed_dial)
+        # self.addToolBar(Qt.RightToolBarArea, toolbar_speed_dial)
 
-        # toolbar_speed_dial.setOrientation(Qt.Vertical)
+        toolbar_speed_dial.setOrientation(Qt.Vertical)
 
         toolbar_speed_dial.addAction(AAct)
         toolbar_speed_dial.addAction(BAct)
-        toolbar_speed_dial.addAction(CAct)
+        # toolbar_speed_dial.addAction(CAct)
 
         self.setGeometry(300, 300, 350, 250)
         self.setWindowTitle('Main window')    
-        self.show()
+        
 
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
-    ex = Example()
+    main = Example()
+    main.show()
     sys.exit(app.exec_())

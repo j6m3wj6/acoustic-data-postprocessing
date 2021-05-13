@@ -121,10 +121,11 @@ class TreeItem(QTreeWidget):
 		for c in self.myApp.canvasPool:
 			if (c.active):
 				c._resetLineWidth()
-		for item in self.selectedItems():
-			if not item.data(0, QtCore.Qt.UserRole): pass
+		for it in self.selectedItems():
+			if not it.data(0, QtCore.Qt.UserRole): continue
 			else:
-				curve = item.data(0, QtCore.Qt.UserRole)
+				curve = it.data(0, QtCore.Qt.UserRole)
+				print(curve)
 				curve.line.set_linewidth(LINEWIDTH_HIGHLIGHT)
 		self.myApp.canvasReplot()
 
@@ -133,7 +134,7 @@ class TreeItem(QTreeWidget):
 		fileroot = QTreeWidgetItem(self)
 		fileroot.setText(0, filename)
 		fileroot.setText(1, path)
-		fileroot.setData(0, QtCore.Qt.UserRole, dataSequence)
+		# fileroot.setData(0, QtCore.Qt.UserRole, dataSequence)
 		fileroot.setExpanded(True)
 		for title, lines in dataSequence.items():
 			testroot = QTreeWidgetItem()

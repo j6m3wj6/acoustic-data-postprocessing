@@ -7,8 +7,6 @@ from matplotlib.lines import Line2D
 
 from MyOperationDialogUI import *
 from TreeList import *
-# from UI_OperationDialog import *
-
 
 
 class OperationDialog(QDialog):
@@ -19,18 +17,9 @@ class OperationDialog(QDialog):
 		self.initUI()
 		# self.ui = Ui_Dialog(Dialog = self, window=self.window,  treeDict=treeDict)
 
-	def _createTree(self):
-		tree = self.myApp.myTree.getCheckedItemsTree()
-		tree.setColumnCount(2)
-		tree.setColumnWidth(0, 400)
-		tree.setHeaderLabels(['Label','Note'])
-
-		return tree
-
 	def _createList(self):
 		List = QListWidget()
 		List.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-
 		[self._getActiveCurves(t, List) for t in self.myApp.myTree.trees]
 		return List
 
@@ -67,10 +56,6 @@ class OperationDialog(QDialog):
 		self.listWidget = self._createList()
 		self.listWidget.itemSelectionChanged.connect(self.handleSelect)
 
-		label = QLabel("Offset")
-		self.lineEdit = QLineEdit()
-		pushButton = QPushButton("Shift")
-		pushButton.clicked.connect(self.curveShift)
 		buttonBox = QDialogButtonBox()
 		buttonBox.setOrientation(QtCore.Qt.Horizontal)
 		buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok|QDialogButtonBox.Apply)
@@ -78,11 +63,24 @@ class OperationDialog(QDialog):
 		buttonBox.rejected.connect(self.reject)
 		QtCore.QMetaObject.connectSlotsByName(self)
 
+		self.le_shift = QLineEdit()
+		btn_shift = QPushButton("Shift")
+		btn_shift.clicked.connect(self.curveShift)
+
+		self.le_alignDB = QLineEdit()
+		self.le_alignFreq = QLineEdit()
+		btn_align = QPushButton("Align")
+		btn_align.clicked.connect(self.curveAlign)
+
 		vboxlayout_main = QVBoxLayout()
 		vboxlayout_main.addWidget(self.listWidget)
-		vboxlayout_main.addWidget(label)
-		vboxlayout_main.addWidget(self.lineEdit)
-		vboxlayout_main.addWidget(pushButton)
+		vboxlayout_main.addWidget(QLabel("Offset"))
+		vboxlayout_main.addWidget(self.le_shift)
+		vboxlayout_main.addWidget(btn_shift)
+		vboxlayout_main.addWidget(QLabel("Align"))
+		vboxlayout_main.addWidget(self.le_alignDB)
+		vboxlayout_main.addWidget(self.le_alignFreq)
+		vboxlayout_main.addWidget(btn_align)
 		vboxlayout_main.addWidget(buttonBox)
 		self.setLayout(vboxlayout_main)
 
@@ -100,19 +98,27 @@ class OperationDialog(QDialog):
 
 	def curveShift(self):
 		try:
-			offset = float(self.lineEdit.text())
+			offset = float(self.le_shift.text())
 		except ValueError:
-			print('ERROR: can not turn ' + self.lineEdit.text())
+			print('ERROR: can not turn ' + self.le_shift.text())
 			return
 		
 		for item in self.listWidget.selectedItems():
 			curveData = item.data(Qt.UserRole)
-			line = curveData.line
-			xdata, ydata = line.get_data()
-			new_ydata = [d+(offset-curveData.shifted) for d in ydata]
-			line.set_data(xdata, new_ydata)
-			curveData.shifted += (offset-curveData.shifted)
+			curveData.shift(offset)
 
 		self.myApp.canvasReplot()
 
+	def curveAlign(self):
+		try:
+			alignDB = float(self.le_alignDB.text())
+			alignFreq = float(self.le_alignFreq.text())
+		except ValueError:
+			print('ERROR: can not turn ' + self.le_alignDB.text() + ' and ' + self.le_alignFreq.text())
+			return
 
+		for item in self.listWidget.selectedItems():
+			curveData = item.data(Qt.UserRole)
+			curveData.align(alignDB, alignFreq)
+
+		self.myApp.canvasReplot()

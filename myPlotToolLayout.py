@@ -1,155 +1,144 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-import numpy as np, pandas as pd
-import sys, os
 import matplotlib
 matplotlib.use('Qt5Agg')
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
-from matplotlib.backend_bases import MouseButton
-from enum import Enum
-from textwrap import fill
 from matplotlib.lines import Line2D
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+from matplotlib.backend_bases import MouseButton
 
-_defaultLineWidth = 1.5
-_highlightLineWidth = 4
-COLORS = ['sienna', 'r', 'darkorange', 'gold', 'g', 'b', 'purple', 'gray']
+# Self-defined module
+from Canvas import *
+from TreeList import *
+from LoadFile import *
+from OperationDialog import *
 
-class CurveType(Enum):
-	NoType = 'None'
-	FreqRes = 'Frequency Response'
-	IMP = 'Impedance'
-	Phase = 'Phase'
+PLOTAREA_GRID_ROW = 4
+PLOTAREA_GRID_COL = 10
 
-class CurveData:
-	def __init__(self, label=None, note=None, xdata=None, ydata=None, _type=None, units=[]):
-		self.label = label
-		self.legend = fill(label, 11)
-		self.note = note
-		self.xdata = xdata
-		self.ydata = ydata
-		self.type = _type
-		self.units = units
-		self.line = None
-
-class MplCanvas(FigureCanvasQTAgg):
+class MyApp(QMainWindow):
+	"""App's Main Window."""
 	def __init__(self, parent=None):
-		# Canvas init
-		self.fig, _ = plt.subplots()
-		# constrained_layout=True
-		# self.fig.figsize = (12,4)
-		super(MplCanvas, self).__init__(self.fig)
-		self.fig.tight_layout()
-		self.fig.subplots_adjust(left=0.05, right=0.8, top=0.9)
-
-		self.ax_SPL = self.fig.axes[0]
-		self.ax_SPL.set_title("SPL")
-		self.ax_IMP = self.fig.axes[0].twinx()
-		self.ax_IMP.set_title("IMP")
-		self.ax_IMP.set_visible(False)
-		self.setAxesStyle()
-
-	def setAxStyle(self, ax):
-		# axes' style
-		ax.set_xscale('log')
-		ax.set_xlim([20,20000])
-		ax.set_ylim(auto=True)
-		ax.patch.set_alpha(0.0)
-		ax.grid()
-		ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-	def setAxesStyle(self):
-		for ax in self.fig.axes:
-			ax.set_xscale('log')
-			ax.set_xlim([20,20000])
-			ax.set_ylim(auto=True)
-			ax.grid()
-			ax.grid(which='minor', linestyle=':', linewidth='0.5', color='black')
-			# ax.patch.set_alpha(0.0)
-	
-	def replot(self):
-		self.ax_SPL.plot()
-		self.ax_IMP.plot()
-		self.ax_SPL.legend(bbox_to_anchor=(1.04,1), loc="upper left")
-		self.ax_IMP.legend(bbox_to_anchor=(1.04,0), loc="lower left")
-		self.draw()
-
-	def _getAxbyType(self, curveType):
-		if (curveType == CurveType.FreqRes):
-			return self.ax_SPL
-		elif (curveType == CurveType.IMP):
-			return self.ax_IMP
-		else: return None
-	
-	def _resetLineWidth(self):
-		for ax in self.fig.axes:
-			for line in ax.lines:
-				line.set_linewidth(_defaultLineWidth)
-
-class MyToolBar(NavigationToolbar2QT):
-	def __init__(self,canvas_,parent_):
-	#   self.toolitems = (
-	#       ('Home', 'Lorem ipsum dolor sit amet', 'home', 'home'),
-	#       ('Back', 'consectetuer adipiscing elit', 'back', 'back'),
-	#       ('Forward', 'sed diam nonummy nibh euismod', 'forward', 'forward'),
-	#       (None, None, None, None),
-	#       ('Pan', 'tincidunt ut laoreet', 'move', 'pan'),
-	#       ('Zoom', 'dolore magna aliquam', 'zoom_to_rect', 'zoom'),
-	#       (None, None, None, None),
-	#       ('Subplots', 'putamus parum claram', 'subplots', 'configure_subplots'),
-	#       ('Save', 'sollemnes in futurum', 'filesave', 'save_figure'),
-	#       ("Customize", "Edit axis, curve and image parameters",
-	#      "qt4_editor_options", "edit_parameters"),
-	#       ('Port', 'Select', "select", 'select_tool'),
-	#       )
-	  NavigationToolbar2QT.__init__(self,canvas_,parent_)
-	def select_tool(self):
-	  print("You clicked the selection tool")
-
-class PlotGraph(QWidget):
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+		"""Initializer."""
+		super().__init__(parent)
 		self.initUI()
 		self.fileDict = {}
 
-# User Interface
+	def initUI(self):  
+		self.setWindowTitle("Python Menus & Toolbars")
+		self.resize(1600, 800)
+		MainWidget = QWidget()
+		MainLayout = QVBoxLayout()
+		#===========
+		self.PlotAreaWidget = QWidget()
+		self.canvasPool = []
 
-	def _createCanvasLayout_Quater(self):
+		self.canvasPool.append(MplCanvas(self, [CurveType.FreqRes, CurveType.THD]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.IMP, CurveType.Phase]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.EX, CurveType.NoType]))
+		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
+		
+		self._createButton()
+		self.myTree = MyTree(self)
+		#----
 		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
-		grid_layout.addWidget(self.canvas3, 0, 1, 1, 1)
-		grid_layout.addWidget(self.canvas4, 1, 1, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 2, -1, 1)
-		grid_layout.setColumnStretch(0, 2)
-		grid_layout.setColumnStretch(1, 2)
-		grid_layout.setColumnStretch(2, 1)
-		grid_layout.setContentsMargins(10,10,10,10)
-		return grid_layout
-	def _createCanvasLayout_UpAndDown(self):
-		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, -1, 1)
-		grid_layout.setColumnStretch(0, 2)
-		grid_layout.setColumnStretch(1, 1)
-		grid_layout.setContentsMargins(10,10,10,10)
-		return grid_layout
-	def _createCanvasLayout_Main(self):
-		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 1, 1, 1)
-		grid_layout.setColumnStretch(0, 2)
-		grid_layout.setColumnStretch(1, 1)
-		grid_layout.setContentsMargins(10,10,10,10)
-		return grid_layout
-	def _createCanvasLayout_MainwithScrollArea(self):
-		# self.tree.setColumnWidth(0,300)
+		grid_layout = self._createCanvasLayout_Main(grid_layout)
+		# grid_layout = self._createCanvasLayout_MainwithScrollArea(grid_layout)
+		# grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows(grid_layout)
+		# grid_layout = self._createCanvasLayout_UpAndDown(grid_layout)
+		# grid_layout = self._createCanvasLayout_Quater(grid_layout)
+		self.PlotAreaWidget.setLayout(grid_layout)
+		#===========
+		hboxLayout_btn = QHBoxLayout()
+		hboxLayout_btn.addWidget(self.btn_clearData)
+		hboxLayout_btn.addWidget(self.btn_Layout_Main)
+		hboxLayout_btn.addWidget(self.btn_Layout_UpAndDown)
+		hboxLayout_btn.addWidget(self.btn_Layout_Quater)
+		hboxLayout_btn.addWidget(self.btn_Layout_MainwithScrollArea)
+		hboxLayout_btn.addWidget(self.btn_Layout_MainwithThreeSmallWindows)
+		hboxLayout_btn.addWidget(self.btn_operationDialog)
+		
+		#===========
+		self.splitter = QSplitter(self)		
+		self.splitter.addWidget(self.PlotAreaWidget)
+		self.splitter.addWidget(self.myTree)
+		self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
 
+		MainLayout.addWidget(self.splitter)
+
+		layout = QVBoxLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		handle = self.splitter.handle(1)
+		self.splitter.setHandleWidth(40)
+		# button = QToolButton(handle)
+		# button.setArrowType(QtCore.Qt.LeftArrow)
+		# button.clicked.connect(
+		# 	lambda: self.handleSplitterButton(True))
+		# layout.addWidget(button)
+
+		button = QToolButton(handle)
+		button.setArrowType(QtCore.Qt.RightArrow)
+		button.clicked.connect(
+			lambda: self.handleSplitterButton(False))
+		layout.addWidget(button)
+		# handle.setLayout(layout)
+
+
+		# MainLayout.addWidget(self.PlotAreaWidget)
+		MainLayout.addLayout(hboxLayout_btn)
+		MainWidget.setLayout(MainLayout)
+		self.setCentralWidget(MainWidget)
+
+	def handleSplitterButton(self, left=True):
+		if not all(self.splitter.sizes()):
+			self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
+		elif left:
+			self.splitter.setSizes([0, 1])
+		else:
+			self.splitter.setSizes([1, 0])
+# Arrange PlotArea Layout
+	def _createCanvasLayout_Main(self, layout):	
+		for c in self.canvasPool:
+			c.setStatus(False)
+		self.canvasPool[0].setStatus(True)
+		layout.addWidget(self.canvasPool[0], 0, 0, -1, 1)
+		layout.setColumnStretch(0, 6)
+		layout.setColumnStretch(1, 0)
+		layout.setColumnStretch(2, 0)
+		layout.setRowStretch(0, PLOTAREA_GRID_ROW)
+		layout.setContentsMargins(10,10,10,10)
+		return layout
+	def _createCanvasLayout_Quater(self, layout):
+		for c in self.canvasPool:
+			c.setStatus(True)
+		layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
+		layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
+		layout.addWidget(self.canvasPool[2], 0, 1, 1, 1)
+		layout.addWidget(self.canvasPool[3], 1, 1, 1, 1)
+		layout.setColumnStretch(0, 3)
+		layout.setColumnStretch(1, 3)
+		layout.setColumnStretch(2, 0)
+		layout.setRowStretch(0, PLOTAREA_GRID_ROW/2)
+		layout.setRowStretch(1, PLOTAREA_GRID_ROW/2)
+		layout.setContentsMargins(10,10,10,10)
+		return layout
+	def _createCanvasLayout_UpAndDown(self, layout):
+		for c in self.canvasPool:
+			c.setStatus(False)
+		self.canvasPool[0].setStatus(True)
+		self.canvasPool[1].setStatus(True)
+		layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
+		layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
+		layout.setColumnStretch(0, 6)
+		layout.setColumnStretch(1, 0)
+		layout.setColumnStretch(2, 0)
+		layout.setRowStretch(0, PLOTAREA_GRID_ROW/2)
+		layout.setRowStretch(1, PLOTAREA_GRID_ROW/2)
+		layout.setContentsMargins(10,10,10,10)
+		return layout
+	def _createCanvasLayout_MainwithScrollArea(self, layout):
+		for c in self.canvasPool:
+			c.setStatus(False)
 		scroll = QScrollArea()
 		widget = QWidget()
 		hboxLayout = QHBoxLayout()
@@ -163,138 +152,90 @@ class PlotGraph(QWidget):
 			Label = QLabel('BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla')
 			Label.setFixedWidth(200)
 			hboxLayout.addWidget(Label)
+		self.canvasPool[0].setStatus(True)
+		layout.addWidget(self.canvasPool[0], 0, 0, 1, 1)
+		layout.addWidget(scroll, 1, 0, 1, 1)
+		layout.setColumnStretch(0, 6)
+		layout.setColumnStretch(1, 0)
+		layout.setColumnStretch(2, 0)
+		layout.setRowStretch(0, (PLOTAREA_GRID_ROW)*3/4)
+		layout.setRowStretch(1, (PLOTAREA_GRID_ROW)*1/4)
+		layout.setContentsMargins(10,10,10,10)
+		return layout
+	def _createCanvasLayout_MainwithThreeSmallWindows(self, layout):
+		for c in self.canvasPool:
+			c.setStatus(True)
+		layout.addWidget(self.canvasPool[0], 0, 0, 1, 3)
+		layout.addWidget(self.canvasPool[1], 1, 0, 1, 1)
+		layout.addWidget(self.canvasPool[2], 1, 1, 1, 1)
+		layout.addWidget(self.canvasPool[3], 1, 2, 1, 1)
+		layout.setColumnStretch(0, 2)
+		layout.setColumnStretch(1, 2)
+		layout.setColumnStretch(2, 2)
+		layout.setRowStretch(0, 5)
+		layout.setRowStretch(1, 1)
+		layout.setContentsMargins(10,10,10,10)
+		return layout
 
-		grid_layout = QGridLayout()
-		grid_layout.addWidget(self.toolbar, 0, 0, 1, 1)
-		grid_layout.addWidget(self.canvas, 1, 0, 1, 1)
-		grid_layout.addWidget(scroll, 2, 0, 1, 1)
-		# grid_layout.addWidget(self.tree, 0, 1, -1, 1)
-		grid_layout.addWidget(self.splitter, 0, 1, -1, 1)
-		grid_layout.setColumnStretch(0, 2)
-		grid_layout.setColumnStretch(1, 1)
-		grid_layout.setRowStretch(1, 3)
-		grid_layout.setRowStretch(2, 1)
-		grid_layout.setContentsMargins(10,0,10,10)
-		return grid_layout
-	def _createCanvasLayout_MainwithThreeSmallWindows(self):
-		grid_layout = QGridLayout()
-		self.tree.setColumnWidth(0,300)
-		grid_layout.addWidget(self.canvas, 0, 0, 1, 3)
-		grid_layout.addWidget(self.canvas2, 1, 0, 1, 1)
-		grid_layout.addWidget(self.canvas3, 1, 1, 1, 1)
-		grid_layout.addWidget(self.canvas4, 1, 2, 1, 1)
-		grid_layout.addWidget(self.tree, 0, 3, -1, 1)
-		grid_layout.setColumnStretch(0, 2)
-		grid_layout.setColumnStretch(1, 2)
-		grid_layout.setColumnStretch(2, 2)
-		grid_layout.setColumnStretch(3, 3)
-		grid_layout.setRowStretch(0, 5)
-		grid_layout.setRowStretch(1, 1)
-		grid_layout.setContentsMargins(10,10,10,10)
-		return grid_layout
-
-	def initUI(self):
-		# create components
-		
-		self._createButton()
-		self._createShiftGridGroupBox()
-
-		self.canvas = MplCanvas(self)
-		self.canvas2 = MplCanvas(self)
-		self.canvas3 = MplCanvas(self)
-		self.canvas4 = MplCanvas(self)
-
-		self._createSplitTreeWidgets()
-		self.toolbar = MyToolBar(self.canvas, self)
-		
-		# manage layout
-		mainLayout = QVBoxLayout()
-		# 2
-		# grid_layout = self._createCanvasLayout_Main()
-		grid_layout = self._createCanvasLayout_MainwithScrollArea()
-		# grid_layout = self._createCanvasLayout_MainwithThreeSmallWindows()
-		# grid_layout = self._createCanvasLayout_UpAndDown()
-		# grid_layout = self._createCanvasLayout_Quater()
-		
-
-		mainLayout.addLayout(grid_layout)
-		mainLayout.addWidget(self.btn_clearData)
-		self.setLayout(mainLayout)
-
+# Create Components
 	def _createButton(self):
 		self.btn_importAPData = QPushButton('Import AP data')
 		self.btn_importLEAPData = QPushButton('Import LEAP data')
 		self.btn_importNFSData = QPushButton('Import NFS data')
 		self.btn_clearData = QPushButton('Clear data')
 
-	def _createTreeItem(self, label, tree, btn):
-		widget = QWidget()
-		grid_layout = QGridLayout()
-		widget.setLayout(grid_layout)
+		self.btn_Layout_Main = QPushButton('Main')
+		self.btn_Layout_MainwithScrollArea = QPushButton('Main + Scroll')
+		self.btn_Layout_MainwithThreeSmallWindows = QPushButton('Main + 3')
+		self.btn_Layout_UpAndDown = QPushButton('Up and Down')
+		self.btn_Layout_Quater = QPushButton('Quater')
+		self.btn_Layout_Main.clicked.connect(self.switchToMainLayout)
+		self.btn_Layout_UpAndDown.clicked.connect(self.switchToUpAndDownLayout)
+		self.btn_Layout_Quater.clicked.connect(self.switchToQuaterLayout)
+		self.btn_Layout_MainwithThreeSmallWindows.clicked.connect(self.switchToMainwithThreeSmallWindowsLayout)
+		self.btn_Layout_MainwithScrollArea.clicked.connect(self.switchToMainwithScrollAreaLayout)
 
-		grid_layout.addWidget(QLabel(label), 0, 0, 1, 1)
-		grid_layout.addWidget(btn, 0, 1, 1, 1)
-		grid_layout.addWidget(tree, 1, 0, 1, -1)
-		grid_layout.setContentsMargins(0,0,0,0)
-		return widget
+		self.btn_operationDialog = QPushButton('Operation')
+# Switch Layout	
+	def clearLayout(self, layout):
+		for i in reversed(range(layout.count())):
+			widget = layout.itemAt(i).widget()
+			# print(i, widget)
+			layout.removeWidget(widget)
+			widget.setParent(None)
 
-	def _createSplitTreeWidgets(self):
-		self.splitter = QSplitter(Qt.Vertical)
-		
-		self.LEAPtree = QTreeWidget()
-		self.APtree = QTreeWidget()
-		self.Kilppeltree = QTreeWidget()
-		self.trees = [self.LEAPtree, self.APtree, self.Kilppeltree]
-		
-
-		self.splitter.addWidget(self._createTreeItem('LEAP File', self.LEAPtree, self.btn_importLEAPData))
-		self.splitter.addWidget(self._createTreeItem('AP File', self.APtree, self.btn_importAPData))
-		self.splitter.addWidget(self._createTreeItem('Kilppel File', self.Kilppeltree, self.btn_importNFSData))
-
-		
-		for t in self.trees:
-			t.setColumnCount(2)
-			t.setHeaderLabels(['File & Label','Note'])
-			t.setColumnWidth(0, 300) 
-			t.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-
-	def _createShiftGridGroupBox(self):
-		self.shiftGridGroupBox = QGroupBox()
-		layout = QVBoxLayout()
-		btn_shift = QPushButton('Shift')
-		self.cbox_shift = QComboBox()
-		self.le_offsetInput = QLineEdit()
-
-		layout.addWidget(btn_shift)
-		layout.addWidget(self.cbox_shift)
-		layout.addWidget(self.le_offsetInput) 
-		self.shiftGridGroupBox.setLayout(layout)
-
-		
-class MyApp(QMainWindow):
-	"""App's Main Window."""
-	def __init__(self, parent=None):
-		"""Initializer."""
-		super().__init__(parent)
-		self.initUI()
-
-	def initUI(self):  
-		self.setWindowTitle("Python Menus & Toolbars")
-		self.resize(1600, 800)
-
-		mainLayout = QVBoxLayout()
-		self.canvas = MplCanvas(self)
-
-		self.setCentralWidget(PlotGraph())
-
-
+	def switchToMainLayout(self):
+		layout = self.PlotAreaWidget.layout()
+		self.clearLayout(layout)
+		layout = self._createCanvasLayout_Main(layout)
+		self.PlotAreaWidget.setLayout(layout)	
+	def switchToUpAndDownLayout(self):
+		layout = self.PlotAreaWidget.layout()
+		self.clearLayout(layout)
+		layout = self._createCanvasLayout_UpAndDown(layout)
+		self.PlotAreaWidget.setLayout(layout)
+	def switchToQuaterLayout(self):
+		layout = self.PlotAreaWidget.layout()
+		self.clearLayout(layout)
+		layout = self._createCanvasLayout_Quater(layout)
+		self.PlotAreaWidget.setLayout(layout)
+	def switchToMainwithThreeSmallWindowsLayout(self):
+		layout = self.PlotAreaWidget.layout()
+		self.clearLayout(layout)
+		layout = self._createCanvasLayout_MainwithThreeSmallWindows(layout)
+		self.PlotAreaWidget.setLayout(layout)
+	def switchToMainwithScrollAreaLayout(self):
+		layout = self.PlotAreaWidget.layout()
+		self.clearLayout(layout)
+		layout = self._createCanvasLayout_MainwithScrollArea(layout)
+		self.PlotAreaWidget.setLayout(layout)
 
 def main():
 	app = QApplication(sys.argv)
 	main = MyApp()
+
 	main.show()
 	sys.exit(app.exec_())
-
 if __name__ == '__main__':
 		main()
 
