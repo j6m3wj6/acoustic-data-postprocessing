@@ -200,7 +200,7 @@ class MyApp(QMainWindow):
 	def clearLayout(self, layout):
 		for i in reversed(range(layout.count())):
 			widget = layout.itemAt(i).widget()
-			# print(i, widget)
+			print(i, widget)
 			layout.removeWidget(widget)
 			widget.setParent(None)
 
