@@ -8,7 +8,7 @@ LINEWIDTH_DEFAULT = 1.5
 LINEWIDTH_HIGHLIGHT = 4
 COLORS = ['sienna', 'r', 'darkorange', 'gold', 'g', 'b', 'purple', 'gray']
 COLORS_CMP = ['r', 'b', 'g']
-LEGEND_WRAP = 11
+LEGEND_WRAP = 30
 
 class CurveType(Enum):
 	NoType = 'None'
@@ -22,7 +22,8 @@ class CurveType(Enum):
 class CurveData:
 	def __init__(self, label=None, note=None, xdata=None, ydata=None, _type=None, units=[]):
 		self.label = label
-		self.legend = fill(self.label, 11)
+		# self.legend = fill(self.label, LEGEND_WRAP)
+		# self.legend = fill(self.label, 11)
 		self.note = note
 		self.xdata = xdata
 		self.ydata = ydata
@@ -46,16 +47,22 @@ class CurveData:
 	def set_line(self, xdata, ydata, label, color):
 		self.line = Line2D(xdata, ydata, label=label, color=color, picker=True)
 
+	def get_legend(self):
+		# if (len(self.label) < LEGEND_WRAP): return self.label.ljust(LEGEND_WRAP, ' ')
+		# else: 
+		return fill(self.label, LEGEND_WRAP)
 
 class MplCanvas(FigureCanvasQTAgg):
 	def __init__(self, parent=None, types=[], status=False):
 		# Canvas init
-		self.fig, _ = plt.subplots()
+		# self.fig, _ = plt.subplots()
+		self.fig, _ = plt.subplots(constrained_layout = True)
 		super(MplCanvas, self).__init__(self.fig)
-		self.fig.tight_layout()
-		self.fig.subplots_adjust(right=0.8)
+		# self.fig.tight_layout()
+		# self.fig.subplots_adjust(right=0.8)
 
 		self.ax_main = self.fig.axes[0]
+
 		self.ax_sub = self.fig.axes[0].twinx()
 		self.ax_sub.set_visible(False)
 		self.setAxesStyle()
@@ -87,11 +94,13 @@ class MplCanvas(FigureCanvasQTAgg):
 	
 	def replot(self):
 		self.ax_main.plot()
-		self.ax_main.legend(bbox_to_anchor=(1.04,1), loc="upper left")
+		self.ax_main.legend(bbox_to_anchor=(1.07, .5, .18, .5), loc="upper left", borderaxespad = 0)
+		# self.ax_main.legend(bbox_to_anchor=(1.07, .5, .18, .5), loc="upper left", borderaxespad = 0, mode='expand')
 		
 		if (self.ax_sub.get_visible()):
 			self.ax_sub.plot()
-			self.ax_sub.legend(bbox_to_anchor=(1.04,0), loc="lower left")
+			self.ax_sub.legend(bbox_to_anchor=(1.07, 0, .18, .5), loc="lower left", borderaxespad = 0)
+			# self.ax_sub.legend(bbox_to_anchor=(1.07, 0, .18, .5), loc="lower left", borderaxespad = 0, mode='expand')
 		self.draw()
 
 	def getAxbyType(self, curveType):

@@ -46,10 +46,6 @@ class MyApp(QMainWindow):
 		vboxLayout = QVBoxLayout()
 		self.canvasLayout = QGridLayout()
 		self._setCanvasLayout_Main()
-		# self.canvas_layout = self._createCanvasLayout_MainwithScrollArea(self.canvas_layout)
-		# self.canvas_layout = self._createCanvasLayout_MainwithThreeSmallWindows(self.canvas_layout)
-		# self.canvas_layout = self._createCanvasLayout_UpAndDown(self.canvas_layout)
-		# self.canvas_layout = self._createCanvasLayout_Quater(self.canvas_layout)
 		vboxLayout.addWidget(self.toolbar)
 		vboxLayout.addLayout(self.canvasLayout)
 		self.PlotAreaWidget.setLayout(vboxLayout)
@@ -82,7 +78,41 @@ class MyApp(QMainWindow):
 		MainWidget.setLayout(MainLayout)
 		self.setCentralWidget(MainWidget)
 	
-# Arrange PlotArea Layout
+# Create Components
+	def _createButton(self):
+		self.btn_importAPData = QPushButton('Import AP data')
+		self.btn_importLEAPData = QPushButton('Import LEAP data')
+		self.btn_importNFSData = QPushButton('Import NFS data')
+		self.btn_importAPData.clicked.connect(self.plotAPData)
+		self.btn_importLEAPData.clicked.connect(self.plotLEAPData)
+		self.btn_importNFSData.clicked.connect(self.plotKlippelData)
+		self.btn_clearData = QPushButton('Clear data')
+		self.btn_clearData.clicked.connect(self.clearData)
+
+		self.btn_Layout_Main = QPushButton('Main')
+		self.btn_Layout_MainwithScrollArea = QPushButton('Main + Scroll')
+		self.btn_Layout_MainwithThreeSmallWindows = QPushButton('Main + 3')
+		self.btn_Layout_UpAndDown = QPushButton('Up and Down')
+		self.btn_Layout_Quater = QPushButton('Quater')
+		self.btn_Layout_Main.clicked.connect(lambda: self._setCanvasLayout_Main())
+		self.btn_Layout_UpAndDown.clicked.connect(lambda: self._setCanvasLayout_UpAndDown())
+		self.btn_Layout_Quater.clicked.connect(lambda: self._setCanvasLayout_Quater())
+		self.btn_Layout_MainwithThreeSmallWindows.clicked.connect(lambda: self._setCanvasLayout_MainwithThreeSmall())
+		self.btn_Layout_MainwithScrollArea.clicked.connect(lambda: self._setCanvasLayout_MainwithScrollArea())
+
+		self.btn_operationDialog = QPushButton('Operation')
+		self.btn_operationDialog.clicked.connect(self.operationDialog)
+# Switch Layout	
+	def clearLayout(self, layout):
+		for i in reversed(range(layout.count())):
+			# print(i, layout.itemAt(i))
+
+			if (type(layout.itemAt(i)) == QWidgetItem):
+				widget = layout.itemAt(i).widget()
+				layout.removeWidget(widget)
+				widget.setParent(None)
+			elif (type(layout.itemAt(i)) == QGridLayout):
+				self.clearLayout(layout.itemAt(i))
 	def _setCanvasLayout_Main(self):	
 		self.clearLayout(self.canvasLayout)
 		for c in self.canvasPool:
@@ -169,80 +199,7 @@ class MyApp(QMainWindow):
 		layout.setRowStretch(1, 1)
 		layout.setContentsMargins(10,10,10,10)
 
-# Create Components
-	def _createButton(self):
-		self.btn_importAPData = QPushButton('Import AP data')
-		self.btn_importLEAPData = QPushButton('Import LEAP data')
-		self.btn_importNFSData = QPushButton('Import NFS data')
-		self.btn_importAPData.clicked.connect(self.plotAPData)
-		self.btn_importLEAPData.clicked.connect(self.plotLEAPData)
-		self.btn_importNFSData.clicked.connect(self.plotKlippelData)
-		self.btn_clearData = QPushButton('Clear data')
-		self.btn_clearData.clicked.connect(self.clearData)
-
-		self.btn_Layout_Main = QPushButton('Main')
-		self.btn_Layout_MainwithScrollArea = QPushButton('Main + Scroll')
-		self.btn_Layout_MainwithThreeSmallWindows = QPushButton('Main + 3')
-		self.btn_Layout_UpAndDown = QPushButton('Up and Down')
-		self.btn_Layout_Quater = QPushButton('Quater')
-		self.btn_Layout_Main.clicked.connect(lambda: self._setCanvasLayout_Main())
-		self.btn_Layout_UpAndDown.clicked.connect(lambda: self._setCanvasLayout_UpAndDown())
-		self.btn_Layout_Quater.clicked.connect(lambda: self._setCanvasLayout_Quater())
-		self.btn_Layout_MainwithThreeSmallWindows.clicked.connect(lambda: self._setCanvasLayout_MainwithThreeSmall())
-		self.btn_Layout_MainwithScrollArea.clicked.connect(lambda: self._setCanvasLayout_MainwithScrollArea())
-
-		self.btn_operationDialog = QPushButton('Operation')
-		self.btn_operationDialog.clicked.connect(self.operationDialog)
-# Switch Layout	
-	def clearLayout(self, layout):
-		for i in reversed(range(layout.count())):
-			print(i, layout.itemAt(i))
-
-			if (type(layout.itemAt(i)) == QWidgetItem):
-				widget = layout.itemAt(i).widget()
-				layout.removeWidget(widget)
-				widget.setParent(None)
-			elif (type(layout.itemAt(i)) == QGridLayout):
-				
-				for j in reversed(range(layout.itemAt(i).count())):
-					print(i, layout.itemAt(i).itemAt(j))
-					
-					if (type(layout.itemAt(i).itemAt(j)) == QWidgetItem):
-						widget = layout.itemAt(i).itemAt(j).widget()
-						layout.removeWidget(widget)
-						widget.setParent(None)
-				# layout.removeItem(layout.itemAt(i))
-
-			# layout.removeWidget(widget)
-			# widget.setParent(None)
-
-	# def switchToMainLayout(self):
-	# 	layout = self.PlotAreaWidget.layout()
-	# 	self.clearLayout(layout)
-	# 	layout = self._createCanvasLayout_Main(layout)
-	# 	self.PlotAreaWidget.setLayout(layout)	
-	# def switchToUpAndDownLayout(self):
-	# 	layout = self.canvasLayout
-	# 	self.clearLayout(layout)
-	# 	self._createCanvasLayout_UpAndDown()
-	# 	# self.PlotAreaWidget.setLayout(layout)
-	# def switchToQuaterLayout(self):
-	# 	layout = self.PlotAreaWidget.layout()
-	# 	self.clearLayout(layout)
-	# 	layout = self._createCanvasLayout_Quater(layout)
-	# 	self.PlotAreaWidget.setLayout(layout)
-	# def switchToMainwithThreeSmallWindowsLayout(self):
-	# 	layout = self.PlotAreaWidget.layout()
-	# 	self.clearLayout(layout)
-	# 	layout = self._createCanvasLayout_MainwithThreeSmallWindows(layout)
-	# 	self.PlotAreaWidget.setLayout(layout)
-	# def switchToMainwithScrollAreaLayout(self):
-	# 	layout = self.PlotAreaWidget.layout()
-	# 	self.clearLayout(layout)
-	# 	layout = self._createCanvasLayout_MainwithScrollArea(layout)
-	# 	self.PlotAreaWidget.setLayout(layout)
-
-# Close Tree Widget
+# Close Tree Widget Area
 	def handleSplitterButton(self, left=True):
 		if not all(self.splitter.sizes()):
 			self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
@@ -250,16 +207,20 @@ class MyApp(QMainWindow):
 			self.splitter.setSizes([0, 1])
 		else:
 			self.splitter.setSizes([1, 0])
+		print(self.canvasPool[0].fig.get_size_inches())
 
 # Btn Func - Plot Data
 	def plotAPData(self):
-		path, dataSequence = load_AP_file()
+		path, dataSequence = AP_path, AP_DATA
+		# path, dataSequence = load_file('AP')
 		self.plotData('AP', path, dataSequence)
 	def plotLEAPData(self):
-		path, dataSequence = load_LEAP_file()
+		path, dataSequence = LEAP_path, LEAP_DATA
+		# path, dataSequence = load_file('LEAP')
 		self.plotData('LEAP', path, dataSequence)
 	def plotKlippelData(self):
-		path, dataSequence = load_Klippel_file()
+		path, dataSequence = KLIPPEL_path, KLIPPEL_DATA
+		# path, dataSequence = load_file('Klippel')
 		self.plotData('Klippel', path, dataSequence)
 	def plotData(self, category, path, dataSequence):
 		if (dataSequence): 
@@ -269,7 +230,7 @@ class MyApp(QMainWindow):
 					it = curveDatas[i]
 					# line = Line2D(it.xdata, it.ydata, label=it.legend, color=COLORS[i%8])
 					# it.line = line
-					it.set_line(it.xdata, it.ydata, it.legend, COLORS_CMP[(int(i/10))%2])
+					it.set_line(it.xdata, it.ydata, it.get_legend(), COLORS_CMP[(int(i/10))%2])
 			self.fileDict[path] = dataSequence
 			self.canvasReplot()
 			self.myTree.appendChildren(category, path, dataSequence)

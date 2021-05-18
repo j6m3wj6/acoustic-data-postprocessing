@@ -94,7 +94,7 @@ class TreeItem(QTreeWidget):
 					ax = self.myApp.getRightAx(curve.type)
 					if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
 				elif (item.child(index).checkState(0) == Qt.Checked): 
-					curve.line.set_label(fill(curve.label, LEGEND_WRAP))
+					curve.line.set_label(curve.get_legend())
 					ax = self.myApp.getRightAx(curve.type)
 					if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 		else:
@@ -106,7 +106,7 @@ class TreeItem(QTreeWidget):
 				ax = self.myApp.getRightAx(curve.type)
 				if (ax and curve.line in ax.lines): ax.lines.remove(curve.line)
 			else: 
-				curve.line.set_label(fill(curve.label, LEGEND_WRAP))
+				curve.line.set_label(curve.get_legend())
 				ax = self.myApp.getRightAx(curve.type)
 				if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 		

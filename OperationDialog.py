@@ -54,7 +54,7 @@ class OperationDialog(QDialog):
 		self.resize(800, 600)
 		
 		self.listWidget = self._createList()
-		self.listWidget.itemSelectionChanged.connect(self.handleSelect)
+		# self.listWidget.itemSelectionChanged.connect(self.handleSelect)
 
 		buttonBox = QDialogButtonBox()
 		buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -72,6 +72,14 @@ class OperationDialog(QDialog):
 		btn_align = QPushButton("Align")
 		btn_align.clicked.connect(self.curveAlign)
 
+		btn_color = QPushButton("Color")
+		btn_color.clicked.connect(self.colorDialog)
+
+		self.cbox_lineWidth = QComboBox()
+		self.cbox_lineWidth.addItems(['1', '2', '3', '4'])
+		btn_lineWidth = QPushButton("Align")
+		btn_lineWidth.clicked.connect(self.curveLineWidth)
+
 		vboxlayout_main = QVBoxLayout()
 		vboxlayout_main.addWidget(self.listWidget)
 		vboxlayout_main.addWidget(QLabel("Offset"))
@@ -81,8 +89,31 @@ class OperationDialog(QDialog):
 		vboxlayout_main.addWidget(self.le_alignDB)
 		vboxlayout_main.addWidget(self.le_alignFreq)
 		vboxlayout_main.addWidget(btn_align)
+		vboxlayout_main.addWidget(btn_color)
+		vboxlayout_main.addWidget(self.cbox_lineWidth)
+		vboxlayout_main.addWidget(btn_lineWidth)
+		
 		vboxlayout_main.addWidget(buttonBox)
 		self.setLayout(vboxlayout_main)
+
+	def curveLineWidth(self):
+		print(self.cbox_lineWidth.currentText())
+		for item in self.listWidget.selectedItems():
+			curveData = item.data(Qt.UserRole)
+			curveData.line.set_linewidth(float(self.cbox_lineWidth.currentText()))
+		self.myApp.canvasReplot()
+
+
+	def colorDialog(self):
+		col = QColorDialog.getColor()
+		print(col, col.name(QColor.HexRgb))
+		# if col.isValid():
+		# 	self.frm.setStyleSheet('QWidget { background-color: %s }'
+		# 						   % col.name())
+		for item in self.listWidget.selectedItems():
+			curveData = item.data(Qt.UserRole)
+			curveData.line.set_color(col.name(QColor.HexRgb))
+		self.myApp.canvasReplot()
 
 	def handleSelect(self):
 		# print("MyDialog handleSelect")
