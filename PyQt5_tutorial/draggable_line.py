@@ -47,8 +47,8 @@ class draggable_lines:
 		self.c.mpl_disconnect(self.releaser)
 		self.c.mpl_disconnect(self.follower)
 
-fig = plt.figure() 
-# fig = plt.figure(constrained_layout = True)
+# fig = plt.figure() 
+fig = plt.figure(constrained_layout = True)
 ax = fig.add_subplot(111)
 # Vline = draggable_lines(ax, "h", 0.5)
 # Tline = draggable_lines(ax, "v", 0.5)
@@ -91,9 +91,9 @@ def handle_click(event):
 
 x = np.arange(10)
 lines = []
-for i in range(1, 5):
+for i in range(1, 3):
 #     line, = ax.plot(x, i * x, label=r'$y={}x$'.format(i))
-	ax.plot(x, i * x, picker=True, label=r'$y={}s$'.format(i))
+	ax.plot(x, i * x, picker=True, label=r'$y={}ss$'.format(i))
 ax2.plot(x, (-1) * x, picker=True, label='y=-x')
 	# lines.append(line)
 
@@ -103,12 +103,14 @@ box = ax.get_position()
 print(box.x0, box.y0, box.width * 0.8, box.height)
 
 
-fig.subplots_adjust(right=0.8)
-fig.tight_layout()
-leg = ax.legend(bbox_to_anchor=(1.1, 0, 1.2, 1), loc='upper left', borderaxespad=0, mode='expand')
+# fig.subplots_adjust(right=0.8)
+# fig.tight_layout()
+leg = ax.legend(bbox_to_anchor=(1.1, 1 ), loc='upper left', borderaxespad=0)
+box = leg.get_bbox_to_anchor()
+print(box.size, type(box), box.get_points())
 
 leg.set_in_layout(True)
 
-# print(fig.get_size_inches(), fig.get_figheight())
+print(fig.get_size_inches(), fig.get_figheight())
 
 plt.show()

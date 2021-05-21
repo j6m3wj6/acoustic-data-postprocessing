@@ -1,3 +1,4 @@
+import datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -7,11 +8,90 @@ from matplotlib.lines import Line2D
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from matplotlib.backend_bases import MouseButton
 
+import datetime as dt
+
 # Self-defined module
 from Canvas import *
 from TreeList import *
 from LoadFile import *
 from OperationDialog import *
+from DockWidget_Data import *
+
+# widget_tmp = MyWidget_UI()
+# widget_tmp.setupUI_importFile()
+# MainLayout.addWidget(widget_tmp)
+import json
+with open('test.json', newline='') as jsonfile:
+    data = json.load(jsonfile)
+    # 或者這樣
+    # data = json.loads(jsonfile.read())
+    print(data["Project"], data["Files"])
+
+class MyWidget_UI(QWidget):
+	def __init__(self, parent = None):
+		super().__init__(parent)
+		today_time = dt.datetime.today()
+		self.mockData_files = [('LEAP', 'On-Axis.txt', today_time.strftime("%Y/%m/%d %H:%M:%S")),
+			('AP', 'Acoustic Response.txt', (today_time + dt.timedelta(hours=3)).strftime("%Y/%m/%d %H:%M:%S")),
+			('LEAP', 'On-Axis.txt', (today_time + dt.timedelta(hours=1)).strftime("%Y/%m/%d %H:%M:%S")),
+			('KLIPPEL', 'On-Axis.txt', (today_time + dt.timedelta(hours=2)).strftime("%Y/%m/%d %H:%M:%S"))
+		]
+
+	def setupUI_importFile(self):
+		# Layout
+		self.hBoxLayout_main = QHBoxLayout(self)
+		self.vBoxLayout_left = QVBoxLayout()
+		self.vBoxLayout_mid = QVBoxLayout()
+		self.vBoxLayout_right = QVBoxLayout()
+		self.hBoxLayout_main.addLayout(self.vBoxLayout_left)
+		self.hBoxLayout_main.addLayout(self.vBoxLayout_mid)
+		self.hBoxLayout_main.addLayout(self.vBoxLayout_right)
+		
+		# Button
+		self.btn_importAP = QPushButton('AP')
+		self.btn_importKLIPPEL = QPushButton('KLIPPEL')
+		self.btn_importLEAP = QPushButton('LEAP')
+		self.btn_importCOMSOL = QPushButton('COMSOL')
+		
+		self.btn_deleteFile = QPushButton('Delete')
+		self.btn_clearFile = QPushButton('Clear')
+		self.btn_exportFile = QPushButton('Export')
+
+		# List
+		self.table_files = QTableWidget()
+		self.table_files.setColumnCount(3)
+		self.table_files.setHorizontalHeaderLabels(['Source', 'FileName', 'DateTime'])
+		for m_data in self.mockData_files:
+			source, fileName, dateTime = m_data
+			row = self.table_files.rowCount()
+			self.table_files.setRowCount(row + 1)
+			self.table_files.setItem(row, 0, QTableWidgetItem(source))
+			self.table_files.setItem(row, 1, QTableWidgetItem(fileName))
+			self.table_files.setItem(row, 2, QTableWidgetItem(dateTime))
+
+			print(row, source, fileName, dateTime)
+		header = self.table_files.horizontalHeader()
+		header.setStretchLastSection(True)
+		self.table_files.resizeColumnsToContents()
+		self.table_files.setSelectionBehavior(QAbstractItemView.SelectRows)
+
+		# Add into Layout
+		self.vBoxLayout_left.addWidget(self.btn_importAP)
+		self.vBoxLayout_left.addWidget(self.btn_importKLIPPEL)
+		self.vBoxLayout_left.addWidget(self.btn_importLEAP)
+		self.vBoxLayout_left.addWidget(self.btn_importCOMSOL)
+
+		self.vBoxLayout_mid.addWidget(self.table_files)
+
+		self.vBoxLayout_right.addWidget(self.btn_deleteFile)
+		self.vBoxLayout_right.addWidget(self.btn_clearFile)
+		self.vBoxLayout_right.addWidget(self.btn_exportFile)
+
+
+
+
+
+
 
 PLOTAREA_GRID_ROW = 4
 PLOTAREA_GRID_COL = 10
@@ -22,7 +102,22 @@ class MyApp(QMainWindow):
 		"""Initializer."""
 		super().__init__(parent)
 		self.initUI()
+		
 		self.fileDict = {}
+	
+	def _create_dockWidget_data(self):
+		self.dockWidget_data = QDockWidget("Data", self)
+		self.dockWidgetContents_data = QWidget()
+		self.dockWidget_data.setWidget(self.dockWidgetContents_data)
+		vBoxLayout = QVBoxLayout(self.dockWidgetContents_data)
+		vBoxLayout.setContentsMargins(0, 0, 0, 0)
+
+
+		vBoxLayout.addWidget(self.myTree)
+
+
+		self.addDockWidget(Qt.DockWidgetArea(Qt.RightDockWidgetArea), self.dockWidget_data)
+	
 
 	def initUI(self):  
 		self.setWindowTitle("Python Menus & Toolbars")
@@ -59,36 +154,29 @@ class MyApp(QMainWindow):
 		hboxLayout_btn.addWidget(self.btn_operationDialog)
 		
 		#===========
-		self.splitter = QSplitter(self)		
-		self.splitter.addWidget(self.PlotAreaWidget)
-		self.splitter.addWidget(self.myTree)
-		self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
+		# self.splitter = QSplitter(self)		
+		# self.splitter.addWidget(self.PlotAreaWidget)
+		# self.splitter.addWidget(self.myTree)
+		# self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
 
-		MainLayout.addWidget(self.splitter)
-
-		layout = QVBoxLayout()
-		layout.setContentsMargins(0, 0, 0, 0)
-		handle = self.splitter.handle(1)
-		self.splitter.setHandleWidth(40)
-		# button = QToolButton(handle)
-		# button.setArrowType(QtCore.Qt.LeftArrow)
-		# button.clicked.connect(
-		# 	lambda: self.handleSplitterButton(True))
-		# layout.addWidget(button)
-
-		button = QToolButton(handle)
-		button.setArrowType(QtCore.Qt.RightArrow)
-		button.clicked.connect(
-			lambda: self.handleSplitterButton(False))
-		layout.addWidget(button)
-		# handle.setLayout(layout)
+		# MainLayout.addWidget(self.splitter)
 
 
-		# MainLayout.addWidget(self.PlotAreaWidget)
+
+		MainLayout.addWidget(self.PlotAreaWidget)
 		MainLayout.addLayout(hboxLayout_btn)
+
+
+		widget_tmp = MyWidget_UI()
+		widget_tmp.setupUI_importFile()
+		MainLayout.addWidget(widget_tmp)
+
 		MainWidget.setLayout(MainLayout)
 		self.setCentralWidget(MainWidget)
-
+		# self.setCentralWidget(self.PlotAreaWidget)
+		# self._create_dockWidget_data()
+		self.dockWidget_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
+		
 	def handleSplitterButton(self, left=True):
 		if not all(self.splitter.sizes()):
 			self.splitter.setSizes([(self.size().width())*2/3, (self.size().width())/3])
@@ -189,46 +277,59 @@ class MyApp(QMainWindow):
 		self.btn_Layout_MainwithThreeSmallWindows = QPushButton('Main + 3')
 		self.btn_Layout_UpAndDown = QPushButton('Up and Down')
 		self.btn_Layout_Quater = QPushButton('Quater')
-		self.btn_Layout_Main.clicked.connect(self.switchToMainLayout)
-		self.btn_Layout_UpAndDown.clicked.connect(self.switchToUpAndDownLayout)
-		self.btn_Layout_Quater.clicked.connect(self.switchToQuaterLayout)
-		self.btn_Layout_MainwithThreeSmallWindows.clicked.connect(self.switchToMainwithThreeSmallWindowsLayout)
-		self.btn_Layout_MainwithScrollArea.clicked.connect(self.switchToMainwithScrollAreaLayout)
+		# self.btn_Layout_Main.clicked.connect(self.switchToMainLayout)
+		# self.btn_Layout_UpAndDown.clicked.connect(self.switchToUpAndDownLayout)
+		# self.btn_Layout_Quater.clicked.connect(self.switchToQuaterLayout)
+		# self.btn_Layout_MainwithThreeSmallWindows.clicked.connect(self.switchToMainwithThreeSmallWindowsLayout)
+		# self.btn_Layout_MainwithScrollArea.clicked.connect(self.switchToMainwithScrollAreaLayout)
 
 		self.btn_operationDialog = QPushButton('Operation')
 # Switch Layout	
-	def clearLayout(self, layout):
-		for i in reversed(range(layout.count())):
-			widget = layout.itemAt(i).widget()
-			print(i, widget)
-			layout.removeWidget(widget)
-			widget.setParent(None)
+	# def clearLayout(self, layout):
+	# 	for i in reversed(range(layout.count())):
+	# 		widget = layout.itemAt(i).widget()
+	# 		print(i, widget)
+	# 		layout.removeWidget(widget)
+	# 		widget.setParent(None)
 
-	def switchToMainLayout(self):
-		layout = self.PlotAreaWidget.layout()
-		self.clearLayout(layout)
-		layout = self._createCanvasLayout_Main(layout)
-		self.PlotAreaWidget.setLayout(layout)	
-	def switchToUpAndDownLayout(self):
-		layout = self.PlotAreaWidget.layout()
-		self.clearLayout(layout)
-		layout = self._createCanvasLayout_UpAndDown(layout)
-		self.PlotAreaWidget.setLayout(layout)
-	def switchToQuaterLayout(self):
-		layout = self.PlotAreaWidget.layout()
-		self.clearLayout(layout)
-		layout = self._createCanvasLayout_Quater(layout)
-		self.PlotAreaWidget.setLayout(layout)
-	def switchToMainwithThreeSmallWindowsLayout(self):
-		layout = self.PlotAreaWidget.layout()
-		self.clearLayout(layout)
-		layout = self._createCanvasLayout_MainwithThreeSmallWindows(layout)
-		self.PlotAreaWidget.setLayout(layout)
-	def switchToMainwithScrollAreaLayout(self):
-		layout = self.PlotAreaWidget.layout()
-		self.clearLayout(layout)
-		layout = self._createCanvasLayout_MainwithScrollArea(layout)
-		self.PlotAreaWidget.setLayout(layout)
+	# def switchToMainLayout(self):
+	# 	layout = self.PlotAreaWidget.layout()
+	# 	self.clearLayout(layout)
+	# 	layout = self._createCanvasLayout_Main(layout)
+	# 	self.PlotAreaWidget.setLayout(layout)	
+	# def switchToUpAndDownLayout(self):
+	# 	layout = self.PlotAreaWidget.layout()
+	# 	self.clearLayout(layout)
+	# 	layout = self._createCanvasLayout_UpAndDown(layout)
+	# 	self.PlotAreaWidget.setLayout(layout)
+	# def switchToQuaterLayout(self):
+	# 	layout = self.PlotAreaWidget.layout()
+	# 	self.clearLayout(layout)
+	# 	layout = self._createCanvasLayout_Quater(layout)
+	# 	self.PlotAreaWidget.setLayout(layout)
+	# def switchToMainwithThreeSmallWindowsLayout(self):
+	# 	layout = self.PlotAreaWidget.layout()
+	# 	self.clearLayout(layout)
+	# 	layout = self._createCanvasLayout_MainwithThreeSmallWindows(layout)
+	# 	self.PlotAreaWidget.setLayout(layout)
+	# def switchToMainwithScrollAreaLayout(self):
+	# 	layout = self.PlotAreaWidget.layout()
+	# 	self.clearLayout(layout)
+	# 	layout = self._createCanvasLayout_MainwithScrollArea(layout)
+	# 	self.PlotAreaWidget.setLayout(layout)
+
+# Canves Pool Func
+	def canvasReplot(self):
+		for c in self.canvasPool:
+			if (c.active): c.replot()
+
+	def getRightAx(self, _type):
+		ax = None
+		if (_type != CurveType.NoType):
+			for c in self.canvasPool:
+				ax_match = c.getAxbyType(_type)
+				if (ax_match): ax = ax_match
+		return ax
 
 def main():
 	app = QApplication(sys.argv)

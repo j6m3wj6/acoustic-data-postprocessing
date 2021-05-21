@@ -4,6 +4,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Canvas import *
 
+
+
 class MyTree(QSplitter):
 	def __init__(self, myApp):
 		super(QSplitter, self).__init__()
@@ -19,16 +21,10 @@ class MyTree(QSplitter):
 		self.trees = [self.LEAPtree, self.APtree, self.Klippeltree]
 
 		self.setOrientation(Qt.Vertical)
-		self.addWidget(self._createTreeItem('LEAP File', self.LEAPtree, self.myApp.btn_importLEAPData))
-		self.addWidget(self._createTreeItem('AP File', self.APtree, self.myApp.btn_importAPData))
-		self.addWidget(self._createTreeItem('Kilppel File', self.Klippeltree, self.myApp.btn_importNFSData))
+		# self.addWidget(self._createTreeItem('LEAP File', self.LEAPtree, self.myApp.btn_importLEAPData))
+		# self.addWidget(self._createTreeItem('AP File', self.APtree, self.myApp.btn_importAPData))
+		# self.addWidget(self._createTreeItem('Kilppel File', self.Klippeltree, self.myApp.btn_importNFSData))
 
-		
-		for t in self.trees:
-			t.setColumnCount(2)
-			t.setHeaderLabels(['File & Label','Note'])
-			t.setColumnWidth(0, 300) 
-			t.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
 	def _createTreeItem(self, label, tree, btn):
 		widget = QWidget()
@@ -46,6 +42,8 @@ class MyTree(QSplitter):
 			self.LEAPtree.appendChildren(path, dataSequence)
 		elif (category == 'AP'):
 			self.APtree.appendChildren(path, dataSequence)
+		elif (category == 'Comsol'):
+			self.LEAPtree.appendChildren(path, dataSequence)
 		else:
 			self.Klippeltree.appendChildren(path, dataSequence)
 	
@@ -75,6 +73,9 @@ class TreeItem(QTreeWidget):
 		self.myApp = myApp
 		self.setColumnCount(2)
 		self.setHeaderLabels(['Label','Note'])
+		self.setColumnWidth(0, 300) 
+		self.setColumnWidth(1, 300) 
+
 		self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 		self.itemChanged.connect(self.handleCheck)
 		self.itemSelectionChanged.connect(self.handleSelect)
@@ -82,10 +83,9 @@ class TreeItem(QTreeWidget):
 	
 
 	def handleCheck(self, item):
-		# print("MyTree handleCheck")
 		if not item.parent(): # file root
 			return
-		elif(not item.data(0, QtCore.Qt.UserRole)): # test root
+		elif(type(item.data(1, QtCore.Qt.UserRole)) == CurveType): # test root
 			dataType = item.child(0).data(0, QtCore.Qt.UserRole).type
 			for index in range(item.childCount()):
 				curve = item.child(index).data(0, QtCore.Qt.UserRole)
@@ -97,7 +97,7 @@ class TreeItem(QTreeWidget):
 					curve.line.set_label(curve.get_legend())
 					ax = self.myApp.getRightAx(curve.type)
 					if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
-		else:
+		else: # measurement leaves
 			curve = item.data(0, QtCore.Qt.UserRole)
 			curve.label = item.text(0)
 			curve.note = item.text(1)
@@ -117,46 +117,68 @@ class TreeItem(QTreeWidget):
 
 	def handleSelect(self):
 		# print("MyTree handleSelect")
+
 		if not self.currentItem(): return
 		for c in self.myApp.canvasPool:
 			if (c.active):
 				c._resetLineWidth()
 		for it in self.selectedItems():
-			if not it.data(0, QtCore.Qt.UserRole): continue
+			if not it.data(0, QtCore.Qt.UserRole): continue # not measurement leaves
 			else:
 				curve = it.data(0, QtCore.Qt.UserRole)
-				print(curve)
 				curve.line.set_linewidth(LINEWIDTH_HIGHLIGHT)
 		self.myApp.canvasReplot()
 
-	def appendChildren(self, path, dataSequence):
-		filename = path[path.rfind('/')+1:path.rfind('.')]
+	def appendChildren(self, DATA):
 		fileroot = QTreeWidgetItem(self)
-		fileroot.setText(0, filename)
-		fileroot.setText(1, path)
-		# fileroot.setData(0, QtCore.Qt.UserRole, dataSequence)
+		fileroot.setText(0, DATA.name)
+		fileroot.setText(1, DATA.source)
 		fileroot.setExpanded(True)
-		for title, lines in dataSequence.items():
+		fileroot.setBackground(0, QColor(237, 237, 237))
+		fileroot.setBackground(1, QColor(237, 237, 237))
+
+		for test_name, curveDatas in DATA.sequence.items():
 			testroot = QTreeWidgetItem()
-			testroot.setText(0, title)
+			testroot.setText(0, test_name)
+			testroot.setText(1, curveDatas[0].type.value)
+			testroot.setData(1, QtCore.Qt.UserRole, curveDatas[0].type)
 			testroot.setFlags(testroot.flags() | Qt.ItemIsTristate | Qt.ItemIsUserCheckable)
-			for line in lines:
+			for line in curveDatas:
 				child = QTreeWidgetItem(testroot)
 				child.setText(0, line.label)
 				child.setText(1, line.note)
 				child.setData(0, QtCore.Qt.UserRole, line)
 				child.setCheckState(0, Qt.Unchecked)
-				# testroot.addChild(child)
 			fileroot.addChild(testroot)
 		self.addTopLevelItem(fileroot)
 		# self.expandAll()
 		# fileroot.child(0).setCheckState(0, Qt.Checked)
+	
+	def filterChildren(self, _type):
+		self.unHideChildren()
+		if (_type == "ALL"): return
+		for i_f in range(self.topLevelItemCount()):
+			fileroot = self.topLevelItem(i_f)
+			for i_t in range(fileroot.childCount()):
+				test = fileroot.child(i_t)
+				test_type = test.data(1, QtCore.Qt.UserRole)
+				if (test_type != _type):
+					test.setHidden(True)
+					
+			# root.addTopLevelItem(fileroot_copy)
 
-	
-	# copyItem.setData(0, QtCore.Qt.CheckStateRole, None)
-	
+	def unHideChildren(self):
+		for i_f in range(self.topLevelItemCount()):
+			fileroot = self.topLevelItem(i_f)
+			for i_t in range(fileroot.childCount()):
+				test = fileroot.child(i_t)
+				test.setHidden(False)
+
+
+
 	def editText(self, event):
 		# print("double click", event, event.column(), event.row(), event.data())
 		item = self.itemFromIndex(event)
 		item.setFlags(item.flags() | Qt.ItemIsEditable)
 		self.edit(event)
+ 

@@ -1,0 +1,55 @@
+{
+	"Project": {
+			"Name": "ProjectName",
+			"Create Time": "2021/05/19 08:55:12",
+			"Last Modified Time": "2021/05/20 08:55:12"
+			},
+	"Files": {
+		"On-Axis.txt": {
+			"Source": "KLIPPEL",
+			"Import Time": "2021/05/29 09:55:12",
+			"File Direction": "C:\\xxx.xxx.xxx",
+			"Sequence": [{
+				"CEA3024": [{
+					"Data Type": "FreqRes",
+					"xData": [1,2,3,4,5],
+					"yData": [1,2,3,4,5],
+					"Label": "10deg",
+					"Note": "",
+					"style": {
+							"color": "y"
+					}
+				},
+				{
+					"Data Type": "FreqRes",
+					"xData": [1,2,3,4,5],
+					"yData": [2,3,4,5, 6],
+					"Label": "30deg",
+					"Note": "",
+					"style": {
+
+					}
+				}
+				]
+			}]
+		},
+		"Acoustic Response.xlsx": {
+			"Source": "AP",
+			"Import Time": "2021/05/29 09:45:12",
+			"File Direction": "C:\\xxx.xxx.xxx",
+			"Sequence": [{
+				"RMS->Smooth": [{
+					"Data Type": "FreqRes",
+					"xData": [1,2,3,4,5],
+					"yData": [2,2,2,2,2],
+					"Label": "Ch1",
+					"Note": "Gen Level -30dBFS",
+					"style": {
+						"color": "r"
+					}
+				}]
+			}]
+		}
+
+	}
+}

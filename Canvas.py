@@ -51,6 +51,15 @@ class CurveData:
 		# if (len(self.label) < LEGEND_WRAP): return self.label.ljust(LEGEND_WRAP, ' ')
 		# else: 
 		return fill(self.label, LEGEND_WRAP)
+	def get_dict(self):
+		dictToJSON = {
+			'Data Type': self.type.value,
+            'xData': self.xdata.to_numpy().tolist(),
+            'yData': self.ydata.to_numpy().tolist(),
+            'Label': self.label,
+			'Note': self.note,
+        }
+		return dictToJSON
 
 class MplCanvas(FigureCanvasQTAgg):
 	def __init__(self, parent=None, types=[], status=False):

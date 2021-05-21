@@ -5,7 +5,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from matplotlib.lines import Line2D
 
-from MyOperationDialogUI import *
 from TreeList import *
 
 
