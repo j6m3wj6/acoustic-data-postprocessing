@@ -110,7 +110,7 @@ class TreeItem(QTreeWidget):
 				ax = self.myApp.getRightAx(curve.type)
 				if (ax and curve.line not in ax.lines): ax.add_line(curve.line)
 		
-		for c in self.myApp.canvasPool:
+		for c in self.myApp.wg_canvas.canvasPool:
 			if (c.active):
 				c.fig.axes[1].set_visible(bool(c.fig.axes[1].lines))
 		self.myApp.canvasReplot()
@@ -119,7 +119,7 @@ class TreeItem(QTreeWidget):
 		# print("MyTree handleSelect")
 
 		if not self.currentItem(): return
-		for c in self.myApp.canvasPool:
+		for c in self.myApp.wg_canvas.canvasPool:
 			if (c.active):
 				c._resetLineWidth()
 		for it in self.selectedItems():

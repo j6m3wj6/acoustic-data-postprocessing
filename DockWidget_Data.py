@@ -46,8 +46,6 @@ class Data_Tab(QTabWidget):
 		self.tab_ALL.setLayout(self.tree_layout)
 		self.tree_layout.addWidget(self.tree)
 
-		# self.tree.appendChildren(AP_DATA)
-		# self.tree.appendChildren(LEAP_DATA)
 		self.tab_SPL = QWidget()
 
 		self.addTab(self.tab_ALL, "ALL")

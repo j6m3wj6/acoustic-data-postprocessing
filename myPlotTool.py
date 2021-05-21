@@ -27,33 +27,27 @@ class MyApp(QMainWindow):
 	def initUI(self):  
 		self.setWindowTitle("Python Menus & Toolbars")
 		self.resize(1600, 800)
+		
 		MainWidget = QWidget()
 		MainLayout = QVBoxLayout()
 		#===========
-		self.PlotAreaWidget = QWidget()
-		self.canvasPool = []
-		self.canvasPool.append(MplCanvas(self, [CurveType.FreqRes, CurveType.THD]))
-		self.canvasPool.append(MplCanvas(self, [CurveType.IMP, CurveType.Phase]))
-		self.canvasPool.append(MplCanvas(self, [CurveType.EX, CurveType.NoType]))
-		self.canvasPool.append(MplCanvas(self, [CurveType.NoType, CurveType.NoType]))
-		
-		self.toolbar = MyToolBar(self.canvasPool[0], self)
-
 
 		self._createButton()
 		self.myTree = MyTree(self)
-		#----
-		vboxLayout = QVBoxLayout()
-		self.canvasLayout = QGridLayout()
-		vboxLayout.addWidget(self.toolbar)
-		vboxLayout.addLayout(self.canvasLayout)
-		self.PlotAreaWidget.setLayout(vboxLayout)
-		#===========
-		MainLayout.addWidget(self.PlotAreaWidget)
-		MainWidget.setLayout(MainLayout)
-		self.setCentralWidget(MainWidget)
+	
+		self.wg_canvas = Canvas_Widget(self)
 		self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
 		self.dwg_canvasLayout = DockWidget_CanvasLayout(self, Qt.LeftDockWidgetArea)
+		self.dwg_canvasLayout._setCanvasLayout_Main(self.wg_canvas)
+		
+
+		MainLayout.addWidget(self.wg_canvas)
+
+		MainWidget.setLayout(MainLayout)
+		self.setCentralWidget(MainWidget)
+		MainLayout.setContentsMargins(0,0,0,0)
+		self.setContentsMargins(0,0,0,0)
+
 	
 # Create Components
 	def _createButton(self):
@@ -82,13 +76,13 @@ class MyApp(QMainWindow):
 
 # Canves Pool Func
 	def canvasReplot(self):
-		for c in self.canvasPool:
+		for c in self.wg_canvas.canvasPool:
 			if (c.active): c.replot()
 
 	def getRightAx(self, _type):
 		ax = None
 		if (_type != CurveType.NoType):
-			for c in self.canvasPool:
+			for c in self.wg_canvas.canvasPool:
 				ax_match = c.getAxbyType(_type)
 				if (ax_match): ax = ax_match
 		return ax
