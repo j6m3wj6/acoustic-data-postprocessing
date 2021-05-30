@@ -1,8 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from wg_treelist import *
-from dlg_load_files import *
+from .wg_treelist import *
+from .dlg_load_files import *
 
 
 class ImportFile_Widget(QWidget):
@@ -60,6 +60,7 @@ class ImportDialog(QDialog):
         super().__init__(parent)
         self.myApp = myApp
         self.initUI()
+        self.relistData()
 
     def initUI(self):
         self.setWindowTitle("Operation Window")
@@ -88,8 +89,8 @@ class ImportDialog(QDialog):
         vbly_main.addWidget(dlg_btnBox)
         self.setLayout(vbly_main)
 
-    def relistData(self, source):
-        for DATA in self.myApp.DATA.values():
+    def relistData(self):
+        for DATA in self.myApp.files:
             row = self.wg_importFile.tb_files.rowCount()
             self.wg_importFile.tb_files.setItem(
                 row, 0, QTableWidgetItem(DATA.source))
@@ -110,10 +111,16 @@ class ImportDialog(QDialog):
             self.wg_importFile.tb_files.setItem(
                 row, 2, QTableWidgetItem(DATA.get_import_time()))
 
-            if (DATA.name in self.myApp.DATA.keys()):
-                print("File already exists")
-            else:
+            file_existed = False
+            for file in self.myApp.files:
+                if (DATA.name == file.name):
+                    print("File already exists")
+                    file_existed = True
+                    break
+            if not file_existed:
                 self.myApp.dwg_data.tab_data.appendData(DATA)
-                self.myApp.DATA[DATA.name] = DATA
+                self.myApp.files.append(DATA)
+                # self.myApp.dumps()
+                self.myApp.dumps(DATA.dumps())
         else:
             print("Not support this file!")

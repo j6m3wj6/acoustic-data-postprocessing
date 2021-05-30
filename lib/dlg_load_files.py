@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import pandas as pd
-from wg_canvas import *
+from .wg_canvas import *
 import datetime as dt
 import random
 import json
@@ -44,14 +44,15 @@ class FileData():
             for curveData in curveDatas:
                 dictToJSON['Sequence'][test_name].update(curveData.get_dict())
 
-        with open('project.json', 'w') as json_file:
-            json.dump(dictToJSON, json_file)
+        # with open('project.json', 'w') as json_file:
+        #     json.dump(dictToJSON, json_file)
 
         # with open('project.json') as json_file:
         #     tmp = json.load(json_file)
         #     print(tmp)
 
-        return json.dumps(dictToJSON)
+        return dictToJSON
+        # return json.dumps(dictToJSON)
 
 
 def load_file(source):
@@ -88,7 +89,7 @@ def load_AP_fileData(path):
 
         for key, value in data.items():
             test_name = data[key].columns[0].strip()
-            _type = determineTypeByTestName(test_name)
+            type_ = determineTypeByTestName(test_name)
             note = data[key].columns[1].strip()
             curveDatas = []
             isline = True
@@ -103,7 +104,7 @@ def load_AP_fileData(path):
                     continue
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type)
+                    label=label, note=note, xdata=curve_x, ydata=curve_y, type_=type_)
                 curveData_new.set_line(
                     curve_x, curve_y, curveData_new.get_legend(), COLORS[(curveIndex+rdm) % 8])
                 curveDatas.append(curveData_new)
@@ -150,17 +151,17 @@ def load_LEAP_fileData(path):
             curveDatas = []
             note = ""
 
-            _type = determineTypeByTestName(test_name)
+            type_ = determineTypeByTestName(test_name)
 
             rdm = random.randint(1, 100)
             curveData_val = CurveData(
-                label=label, note=note, xdata=freq, ydata=val, _type=_type)
+                label=label, note=note, xdata=freq, ydata=val, type_=type_)
             curveData_val.set_line(
                 freq, val, curveData_val.get_legend(), COLORS[(rdm) % 8])
             curveDatas.append(curveData_val)
 
             curveData_phase = CurveData(
-                label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.Phase)
+                label=label, note=note, xdata=freq, ydata=phase, type_=CurveType.Phase)
             curveData_phase.set_line(
                 freq, phase, curveData_phase.get_legend(), COLORS[(1+rdm) % 8])
             curveDatas.append(curveData_phase)
@@ -195,7 +196,7 @@ def load_KLIPPEL_fileData(path):
             # freq = [float(f.replace(',', '').strip()) for f in freq]
             # freq = pd.Series(freq, name='x', dtype=float)
 
-            _type = determineTypeByTestName(test_name)
+            type_ = determineTypeByTestName(test_name)
 
             for i in range(int(len(data.columns)/2)):
                 val = pd.Series(data.iloc[:, i*2+1], name='y', dtype=float)
@@ -205,7 +206,7 @@ def load_KLIPPEL_fileData(path):
 
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type)
+                    label=labels[i], note=note, xdata=freq, ydata=val, type_=type_)
                 curveData_new.set_line(
                     freq, val, curveData_new.get_legend(), COLORS[(i+rdm) % 8])
                 curveDatas.append(curveData_new)
@@ -252,7 +253,7 @@ def load_Comsol_fileData(path):
             note = ""
             rdm = random.randint(1, 100)
             curveData_new = CurveData(
-                label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.FreqRes)
+                label=test_name, note=note, xdata=freq, ydata=val, type_=CurveType.FreqRes)
             curveData_new.set_line(
                 freq, val, curveData_new.get_legend(), COLORS[(rdm) % 8])
             curveDatas.append(curveData_new)

@@ -3,17 +3,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from wg_treelist import *
+from .wg_treelist import *
 
 
 class OperationDialog(QDialog):
-    """Employee dialog."""
 
     def __init__(self, parent=None, myApp=None):
         super().__init__(parent)
         self.myApp = myApp
         self.initUI()
-        # self.ui = Ui_Dialog(Dialog = self, window=self.window,  treeDict=treeDict)
 
     def _createList(self):
         List = QListWidget()

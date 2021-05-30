@@ -1,13 +1,15 @@
-from dockwg_data_treelist import *
-from dlg_import_files import *
-from dlg_import_files import *
-from dlg_load_files import *
-from wg_treelist import *
-from wg_canvas import *
-from dockwg_canvas_layout import *
+from lib.dockwg_data_treelist import *
+from lib.dlg_operation import *
+from lib.dlg_import_files import *
+from lib.dlg_load_files import *
+from lib.wg_treelist import *
+from lib.wg_canvas import *
+from lib.dockwg_canvas_layout import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import matplotlib
+import datetime as dt
+import sys
 matplotlib.use('Qt5Agg')
 
 
@@ -18,7 +20,14 @@ class MyApp(QMainWindow):
         """Initializer."""
         super().__init__(parent)
         self.initUI()
-        self.DATA = {}
+        self.project_info = {
+            "Name": "myproject",
+            "File Path": sys.path[0],
+            'Import Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+            'Last Modified Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+            'Files': []
+        }
+        self.files = []
 
     def initUI(self):
         self.setWindowTitle("Python Menus & Toolbars")
@@ -40,11 +49,12 @@ class MyApp(QMainWindow):
 
         MainWidget.setLayout(MainLayout)
         self.setCentralWidget(MainWidget)
-        MainLayout.setContentsMargins(0, 0, 0, 0)
-        self.setContentsMargins(0, 0, 0, 0)
+        # MainLayout.setContentsMargins(0, 0, 0, 0)
+        # self.setContentsMargins(0, 0, 0, 0)
 
 
 # Create Components
+
 
     def _createButton(self):
         self.btn_clearData = QPushButton('Clear data')
@@ -71,7 +81,9 @@ class MyApp(QMainWindow):
         dlg = ImportDialog(myApp=self)
         dlg.exec()
 
+
 # Canves Pool Func
+
     def canvasReplot(self):
         for c in self.wg_canvas.canvasPool:
             if (c.active):
@@ -85,6 +97,11 @@ class MyApp(QMainWindow):
                 if (ax_match):
                     ax = ax_match
         return ax
+
+    def dumps(self, file_josn):
+        self.project_info["Files"].append(file_josn)
+        with open('project.json', 'w') as json_file:
+            json.dump(self.project_info, json_file)
 
 
 def main():

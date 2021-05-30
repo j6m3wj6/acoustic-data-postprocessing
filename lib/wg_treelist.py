@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from wg_canvas import *
+from .wg_canvas import *
 
 
 class MyTree(QTreeWidget):

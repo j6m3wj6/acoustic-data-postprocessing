@@ -3,8 +3,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-from dlg_load_files import *
-from wg_treelist import *
+from .dlg_load_files import *
+from .wg_treelist import *
 
 
 class DockWidget_Data(QDockWidget):

@@ -4,8 +4,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-from dlg_load_files import *
-from wg_treelist import *
+from .dlg_load_files import *
+from .wg_treelist import *
 
 
 class Draggable_Label(QLabel):
@@ -60,26 +60,30 @@ class DockWidget_CanvasLayout(QDockWidget):
         self.btn_UpAndDown = QPushButton('Up and Down')
         self.lb_canvas = []
         for c in myApp.wg_canvas.canvasPool:
-            self.lb_canvas.append(Draggable_Label(c.get_name(), c.idx))
-        # self.btn_Quater = QPushButton('Quater')
-        # self.btn_MainwithScrollArea = QPushButton('Main + Scroll')
-        # self.btn_MainwithThreeSmallWindows = QPushButton('Main + 3')
+            self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
+        self.btn_Quater = QPushButton('Quater')
+        self.btn_MainwithThreeSmallWindows = QPushButton('Main + 3')
+        self.btn_MainwithScrollArea = QPushButton('Main + Scroll')
 
         self.btn_Main.clicked.connect(
             lambda: self._setCanvasLayout_Main(myApp.wg_canvas))
         self.btn_UpAndDown.clicked.connect(
             lambda: self._setCanvasLayout_UpAndDown(myApp.wg_canvas))
-        # self.btn_Quater.clicked.connect(lambda: self._setCanvasLayout_Quater(myApp.wg_canvas))
-        # self.btn_MainwithThreeSmallWindows.clicked.connect(lambda: self._setCanvasLayout_MainwithThreeSmall(myApp.wg_canvas))
-        # self.btn_MainwithScrollArea.clicked.connect(lambda: self._setCanvasLayout_MainwithScrollArea(myApp.wg_canvas))
+        self.btn_Quater.clicked.connect(
+            lambda: self._setCanvasLayout_Quater(myApp.wg_canvas))
+        self.btn_MainwithThreeSmallWindows.clicked.connect(
+            lambda: self._setCanvasLayout_MainwithThreeSmall(myApp.wg_canvas))
+        # self.btn_MainwithScrollArea.clicked.connect(
+        #     lambda: self._setCanvasLayout_MainwithScrollArea(myApp.wg_canvas))
 
-        # btnGroup = [self.btn_Main, self.btn_MainwithScrollArea, self.btn_MainwithThreeSmallWindows, self.btn_Quater, self.btn_UpAndDown]
-        for lb in self.lb_canvas:
-            vbly.addWidget(lb)
-
-        btnGroup = [self.btn_Main, self.btn_UpAndDown]
+        btnGroup = [self.btn_Main, self.btn_UpAndDown,  self.btn_Quater,
+                    self.btn_MainwithThreeSmallWindows, self.btn_MainwithScrollArea]
+        # btnGroup = [self.btn_Main, self.btn_UpAndDown]
         for btn in btnGroup:
             vbly.addWidget(btn)
+
+        for lb in self.lb_canvas:
+            vbly.addWidget(lb)
 
     def clearLayout(self, layout):
         for i in reversed(range(layout.count())):
@@ -132,21 +136,28 @@ class DockWidget_CanvasLayout(QDockWidget):
 
     def _setCanvasLayout_Quater(self, wg_canvas):
         self.clearLayout(wg_canvas.gdly_canvasPool)
-
         for c in wg_canvas.canvasPool:
             c.set_active(True)
+
+        active_canvas0 = wg_canvas.status["Quater"][0]
+        active_canvas1 = wg_canvas.status["Quater"][1]
+        active_canvas2 = wg_canvas.status["Quater"][2]
+        active_canvas3 = wg_canvas.status["Quater"][3]
+
         layout = wg_canvas.gdly_canvasPool
-        layout.addWidget(wg_canvas.canvasPool[0], 0, 0, 1, 1)
-        layout.addWidget(wg_canvas.canvasPool[1], 1, 0, 1, 1)
-        layout.addWidget(wg_canvas.canvasPool[2], 0, 1, 1, 1)
-        layout.addWidget(wg_canvas.canvasPool[3], 1, 1, 1, 1)
+        layout.addWidget(active_canvas0, 0, 0, 1, 1)
+        layout.addWidget(active_canvas1, 1, 0, 1, 1)
+        layout.addWidget(active_canvas2, 0, 1, 1, 1)
+        layout.addWidget(active_canvas3, 1, 1, 1, 1)
         layout.setColumnStretch(0, 3)
         layout.setColumnStretch(1, 3)
         layout.setColumnStretch(2, 0)
         layout.setRowStretch(0, 2)
         layout.setRowStretch(1, 2)
         layout.setContentsMargins(10, 10, 10, 10)
-        wg_canvas.set_status("Quater")
+
+        wg_canvas.set_mode("Quater")
+        wg_canvas.toolbar.update_canvas()
 
     def _setCanvasLayout_MainwithScrollArea(self, wg_canvas):
         self.clearLayout(wg_canvas.gdly_canvasPool)
@@ -176,21 +187,30 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(0, 3)
         layout.setRowStretch(1, 1)
         layout.setContentsMargins(10, 10, 10, 10)
-        wg_canvas.set_status("MainwithScrollArea")
+
+        wg_canvas.set_mode("MainwithScrollArea")
+        wg_canvas.toolbar.update_canvas()
 
     def _setCanvasLayout_MainwithThreeSmall(self, wg_canvas):
         self.clearLayout(wg_canvas.gdly_canvasPool)
         for c in wg_canvas.canvasPool:
             c.set_active(True)
+
+        active_canvas0 = wg_canvas.status["MainwithThreeSmall"][0]
+        active_canvas1 = wg_canvas.status["MainwithThreeSmall"][1]
+        active_canvas2 = wg_canvas.status["MainwithThreeSmall"][2]
+        active_canvas3 = wg_canvas.status["MainwithThreeSmall"][3]
         layout = wg_canvas.gdly_canvasPool
-        layout.addWidget(wg_canvas.canvasPool[0], 0, 0, 1, 3)
-        layout.addWidget(wg_canvas.canvasPool[1], 1, 0, 1, 1)
-        layout.addWidget(wg_canvas.canvasPool[2], 1, 1, 1, 1)
-        layout.addWidget(wg_canvas.canvasPool[3], 1, 2, 1, 1)
+        layout.addWidget(active_canvas0, 0, 0, 1, 3)
+        layout.addWidget(active_canvas1, 1, 0, 1, 1)
+        layout.addWidget(active_canvas2, 1, 1, 1, 1)
+        layout.addWidget(active_canvas3, 1, 2, 1, 1)
         layout.setColumnStretch(0, 2)
         layout.setColumnStretch(1, 2)
         layout.setColumnStretch(2, 2)
         layout.setRowStretch(0, 5)
         layout.setRowStretch(1, 1)
         layout.setContentsMargins(10, 10, 10, 10)
-        wg_canvas.set_status("MainwithThreeSmall")
+
+        wg_canvas.set_mode("MainwithThreeSmall")
+        wg_canvas.toolbar.update_canvas()

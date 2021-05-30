@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from textwrap import fill
 from matplotlib.lines import Line2D
-from wg_toolbar import *
+from .wg_toolbar import *
 
 
 LINEWIDTH_DEFAULT = 1.5
@@ -68,13 +68,13 @@ class CurveData:
 
 
 class MyCanvasItem(FigureCanvasQTAgg):
-    def __init__(self, parent_=None, idx_=None, types_=[], status_=False):
+    def __init__(self, parent=None, id=None, types_=[], status=False):
         # Canvas init
         self.fig, _ = plt.subplots(constrained_layout=True)
         super(MyCanvasItem, self).__init__(self.fig)
         self.name = f"%s | %s" % (types_[0].value, types_[1].value)
-        self.idx = idx_
-        self.wg_canvas = parent_
+        self.id = id
+        self.wg_canvas = parent
 
         self.ax_main = self.fig.axes[0]
         self.ax_main.set_title(types_[0].value)
@@ -84,13 +84,13 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.setAxesStyle()
 
         self.ax_types = types_
-        self.active = status_
+        self.active = status
 
         self.fig.canvas.mpl_connect('pick_event', self.handle_pick)
         self.fig.canvas.mpl_connect('button_press_event', self.handle_click)
 
-        self.ax_main.text(1.07, 0.98, "Label"+" "*40,
-                          transform=self.ax_main.transAxes)
+        # self.ax_main.text(1.07, 0.98, "Label"+" "*40,
+        #                   transform=self.ax_main.transAxes)
 
         self.setAcceptDrops(True)
 
@@ -146,7 +146,6 @@ class MyCanvasItem(FigureCanvasQTAgg):
         print(event)
 
     def handle_click(self, event):
-        # print(event.canvas.name)
         self.wg_canvas.handle_canvas_clicked(event.canvas)
 
     def dragEnterEvent(self, event):
@@ -156,10 +155,9 @@ class MyCanvasItem(FigureCanvasQTAgg):
             event.ignore()
 
     def dropEvent(self, event):
-        print('drop event')
-        idx = int(event.mimeData().text())
-        if event.mimeData().text() != self.idx:
-            self.wg_canvas.switch_canvas(self.idx, idx)
+        id = int(event.mimeData().text())
+        if id != self.id:
+            self.wg_canvas.switch_canvas(self.id, id)
 
 
 class MyCanvas(QWidget):
@@ -167,17 +165,20 @@ class MyCanvas(QWidget):
         super().__init__()
         self.myApp = parent
         self.canvasPool = []
-        self.canvasPool.append(MyCanvasItem(parent_=self, idx_=0, types_=[
+        self.canvasPool.append(MyCanvasItem(parent=self, id=0, types_=[
                                CurveType.FreqRes, CurveType.THD]))
-        self.canvasPool.append(MyCanvasItem(parent_=self, idx_=1, types_=[
+        self.canvasPool.append(MyCanvasItem(parent=self, id=1, types_=[
                                CurveType.IMP, CurveType.Phase]))
-        self.canvasPool.append(MyCanvasItem(parent_=self, idx_=2, types_=[
+        self.canvasPool.append(MyCanvasItem(parent=self, id=2, types_=[
                                CurveType.EX, CurveType.NoType]))
-        self.canvasPool.append(MyCanvasItem(parent_=self, idx_=3, types_=[
+        self.canvasPool.append(MyCanvasItem(parent=self, id=3, types_=[
                                CurveType.NoType, CurveType.NoType]))
         # Status = Main, UpAndDown, Quater, MainwithThreeSmall, MainwithScrollArea
         self.status = {"Main": [self.canvasPool[0]],
-                       "UpAndDown": [self.canvasPool[0],  self.canvasPool[1]]}
+                       "UpAndDown": [self.canvasPool[0],  self.canvasPool[1]],
+                       "Quater": [self.canvasPool[0],  self.canvasPool[1], self.canvasPool[2],  self.canvasPool[3]],
+                       "MainwithThreeSmall": [self.canvasPool[0],  self.canvasPool[1], self.canvasPool[2],  self.canvasPool[3]]
+                       }
         self.mode = "Main"
 
         self.gdly_canvasPool = QGridLayout()
@@ -193,10 +194,10 @@ class MyCanvas(QWidget):
         self.setLayout(self.vbly)
 
     def _add_canvas(self, types_):
-        idx = self.canvasPool.count()
-        new_canvas = MyCanvasItem(parent=self, idx=idx, types=types_)
+        id = self.canvasPool.count()
+        new_canvas = MyCanvasItem(parent=self, id=id, types=types_)
         self.canvasPool.append(new_canvas)
-        return idx
+        return id
 
     def set_status(self, status):
         for c in self.canvasPool:
@@ -231,8 +232,21 @@ class MyCanvas(QWidget):
                 c.fig.set_facecolor("white")
         self.replot()
 
-    def switch_canvas(self, old_idx, new_idx):
-        print("switch")
-        self.vbly.replaceWidget(
-            self.canvasPool[old_idx], self.canvasPool[new_idx])
-        self.canvasPool[old_idx].setParent(None)
+    def switch_canvas(self, old_id, new_id):
+        old_canvas = self.canvasPool[old_id]
+        new_canvas = self.canvasPool[new_id]
+
+        if new_canvas in self.status[self.mode]:
+            tmp_wg = QWidget()
+            self.gdly_canvasPool.replaceWidget(new_canvas, tmp_wg)
+            new_canvas.setParent(None)
+
+            self.gdly_canvasPool.replaceWidget(old_canvas, new_canvas)
+            old_canvas.setParent(None)
+
+            self.gdly_canvasPool.replaceWidget(tmp_wg, old_canvas)
+            tmp_wg.setParent(None)
+
+        else:
+            self.gdly_canvasPool.replaceWidget(old_canvas, new_canvas)
+            old_canvas.setParent(None)

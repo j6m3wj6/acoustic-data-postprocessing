@@ -49,7 +49,7 @@ class MyToolBar(NavigationToolbar2QT):
         self.cbox_canvas.addItems(self.wg_canvas.get_active_canvas())
 
     def _create_btn_action(self, name, icon_name, hover_text, parent, callback):
-        icon_dir = f"../image/%s.png" % (icon_name)
+        icon_dir = f"./lib/image/%s.png" % (icon_name)
         button_action = QAction(QIcon(icon_dir), hover_text, parent)
 
         button_action.triggered.connect(getattr(self, callback))
