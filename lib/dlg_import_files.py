@@ -60,7 +60,7 @@ class ImportDialog(QDialog):
         super().__init__(parent)
         self.myApp = myApp
         self.initUI()
-        self.relistData()
+        self._load_file()
 
     def initUI(self):
         self.setWindowTitle("Operation Window")
@@ -77,11 +77,12 @@ class ImportDialog(QDialog):
         self.wg_importFile = ImportFile_Widget()
         self.wg_importFile.initUI()
         self.wg_importFile.btn_importAP.clicked.connect(
-            lambda: self.importData("AP"))
+            lambda: self.import_file("AP"))
         self.wg_importFile.btn_importLEAP.clicked.connect(
-            lambda: self.importData("LEAP"))
+            lambda: self.import_file("LEAP"))
         self.wg_importFile.btn_importKLIPPEL.clicked.connect(
-            lambda: self.importData("KLIPPEL"))
+            lambda: self.import_file("KLIPPEL"))
+        self.wg_importFile.btn_clearFile.clicked.connect(self.myApp.clearData)
 
         vbly_main = QVBoxLayout()
         vbly_main.addWidget(self.wg_importFile)
@@ -89,38 +90,35 @@ class ImportDialog(QDialog):
         vbly_main.addWidget(dlg_btnBox)
         self.setLayout(vbly_main)
 
-    def relistData(self):
-        for DATA in self.myApp.files:
-            row = self.wg_importFile.tb_files.rowCount()
-            self.wg_importFile.tb_files.setItem(
-                row, 0, QTableWidgetItem(DATA.source))
-            self.wg_importFile.tb_files.setItem(
-                row, 1, QTableWidgetItem(DATA.name))
-            self.wg_importFile.tb_files.setItem(
-                row, 2, QTableWidgetItem(DATA.get_import_time()))
-
-    def importData(self, source):
-        DATA = load_file(source)
-        if (DATA and DATA.sequence):
+    def _load_file(self):
+        for _f in self.myApp.project.files:
             row = self.wg_importFile.tb_files.rowCount()
             self.wg_importFile.tb_files.setRowCount(row + 1)
             self.wg_importFile.tb_files.setItem(
-                row, 0, QTableWidgetItem(source))
+                row, 0, QTableWidgetItem(_f.info["Source"]))
             self.wg_importFile.tb_files.setItem(
-                row, 1, QTableWidgetItem(DATA.name))
+                row, 1, QTableWidgetItem(_f.info["Name"]))
             self.wg_importFile.tb_files.setItem(
-                row, 2, QTableWidgetItem(DATA.get_import_time()))
+                row, 2, QTableWidgetItem(_f.get_import_time()))
 
+    def import_file(self, source):
+        file = load_file(source)
+        if (file and file.sequence):
             file_existed = False
-            for file in self.myApp.files:
-                if (DATA.name == file.name):
+            for _f in self.myApp.project.files:
+                if (_f.info["Name"] == file.info["Name"]):
                     print("File already exists")
                     file_existed = True
                     break
             if not file_existed:
-                self.myApp.dwg_data.tab_data.appendData(DATA)
-                self.myApp.files.append(DATA)
-                # self.myApp.dumps()
-                self.myApp.dumps(DATA.dumps())
+                row = self.wg_importFile.tb_files.rowCount()
+                self.wg_importFile.tb_files.setRowCount(row + 1)
+                self.wg_importFile.tb_files.setItem(
+                    row, 0, QTableWidgetItem(source))
+                self.wg_importFile.tb_files.setItem(
+                    row, 1, QTableWidgetItem(file.info["Name"]))
+                self.wg_importFile.tb_files.setItem(
+                    row, 2, QTableWidgetItem(file.get_import_time()))
+                self.myApp.update_file(file)
         else:
             print("Not support this file!")

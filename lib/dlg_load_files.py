@@ -8,53 +8,6 @@ import random
 import json
 
 
-class FileData():
-    def __init__(self, name=None, source=None, file_path=None, import_time=None):
-        self.name = name
-        self.source = source
-        self.file_path = file_path
-        self.import_time = import_time
-        self.sequence = {}
-
-    def setData(self, dataSequence):
-        for test, curveData in dataSequence:
-            self.sequence['test'] = curveData
-
-    def get_import_time(self):
-        return self.import_time.strftime("%Y/%m/%d %H:%M:%S")
-
-    def print(self):
-        print("\n\n-------------------------")
-        print("\tName: %s \n\tSource: %s \n\tfile_path: %s" %
-              (self.name, self.source, self.file_path))
-        print("\tImport time: ", self.get_import_time())
-        print("\tSequence:", self.sequence.keys())
-        print("-----------------------------\n\n")
-
-    def dumps(self):
-        dictToJSON = {
-            'Name': self.name,
-            'Source': self.source,
-            'Import Time': self.import_time.strftime("%Y/%m/%d %H:%M:%S"),
-            'File Path': self.file_path,
-            'Sequence': {}
-        }
-        for test_name, curveDatas in self.sequence.items():
-            dictToJSON['Sequence'][test_name] = {}
-            for curveData in curveDatas:
-                dictToJSON['Sequence'][test_name].update(curveData.get_dict())
-
-        # with open('project.json', 'w') as json_file:
-        #     json.dump(dictToJSON, json_file)
-
-        # with open('project.json') as json_file:
-        #     tmp = json.load(json_file)
-        #     print(tmp)
-
-        return dictToJSON
-        # return json.dumps(dictToJSON)
-
-
 def load_file(source):
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.AnyFile)
@@ -89,7 +42,7 @@ def load_AP_fileData(path):
 
         for key, value in data.items():
             test_name = data[key].columns[0].strip()
-            type_ = determineTypeByTestName(test_name)
+            _type = determineTypeByTestName(test_name)
             note = data[key].columns[1].strip()
             curveDatas = []
             isline = True
@@ -104,9 +57,7 @@ def load_AP_fileData(path):
                     continue
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, type_=type_)
-                curveData_new.set_line(
-                    curve_x, curve_y, curveData_new.get_legend(), COLORS[(curveIndex+rdm) % 8])
+                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[(curveIndex+rdm) % 8])
                 curveDatas.append(curveData_new)
 
             if (not isline):
@@ -131,11 +82,6 @@ def load_LEAP_fileData(path):
             DATA = FileData(filename, source="LEAP",
                             file_path=path, import_time=dt.datetime.today())
 
-            if test_name in DATA.sequence:
-                pass
-            else:
-                DATA.sequence[test_name] = []
-
             # Impedance_PR: T201100003660
             label = headers[4][headers[4].find('=')+1:].strip()
 
@@ -151,22 +97,17 @@ def load_LEAP_fileData(path):
             curveDatas = []
             note = ""
 
-            type_ = determineTypeByTestName(test_name)
+            _type = determineTypeByTestName(test_name)
 
             rdm = random.randint(1, 100)
             curveData_val = CurveData(
-                label=label, note=note, xdata=freq, ydata=val, type_=type_)
-            curveData_val.set_line(
-                freq, val, curveData_val.get_legend(), COLORS[(rdm) % 8])
-            curveDatas.append(curveData_val)
+                label=label, note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[0])
 
             curveData_phase = CurveData(
-                label=label, note=note, xdata=freq, ydata=phase, type_=CurveType.Phase)
-            curveData_phase.set_line(
-                freq, phase, curveData_phase.get_legend(), COLORS[(1+rdm) % 8])
-            curveDatas.append(curveData_phase)
+                label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.Phase, color=COLORS[1])
 
-            DATA.sequence[test_name].extend(curveDatas)
+            DATA.sequence[test_name] = [curveData_val]
+            DATA.sequence["Phase"] = [curveData_phase]
             file.close()
     else:
         pass
@@ -196,7 +137,7 @@ def load_KLIPPEL_fileData(path):
             # freq = [float(f.replace(',', '').strip()) for f in freq]
             # freq = pd.Series(freq, name='x', dtype=float)
 
-            type_ = determineTypeByTestName(test_name)
+            _type = determineTypeByTestName(test_name)
 
             for i in range(int(len(data.columns)/2)):
                 val = pd.Series(data.iloc[:, i*2+1], name='y', dtype=float)
@@ -206,9 +147,8 @@ def load_KLIPPEL_fileData(path):
 
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, type_=type_)
-                curveData_new.set_line(
-                    freq, val, curveData_new.get_legend(), COLORS[(i+rdm) % 8])
+                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[(i+rdm) % 8])
+
                 curveDatas.append(curveData_new)
 
             if test_name in DATA.sequence:
@@ -253,9 +193,8 @@ def load_Comsol_fileData(path):
             note = ""
             rdm = random.randint(1, 100)
             curveData_new = CurveData(
-                label=test_name, note=note, xdata=freq, ydata=val, type_=CurveType.FreqRes)
-            curveData_new.set_line(
-                freq, val, curveData_new.get_legend(), COLORS[(rdm) % 8])
+                label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.FreqRes, color=COLORS[0])
+
             curveDatas.append(curveData_new)
 
             DATA[test_name].extend(curveDatas)
