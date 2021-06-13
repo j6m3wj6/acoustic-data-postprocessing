@@ -8,23 +8,25 @@ from PyQt5.QtWidgets import *
 class Curve_Style_Page(QWidget):
     def __init__(self, tree=None):
         super().__init__()
+        self.lt_curves = tree.get_focusing_curves_lists()
+
         self.initUI()
 
-    def _createList(self):
-        listWidget = QListWidget()
-        listWidget.setSelectionMode(
-            QtWidgets.QAbstractItemView.ExtendedSelection)
-        self._getActiveCurves(self.myApp.dwg_data.tree, listWidget)
-        return listWidget
+    def initUI(self):
+        vbly_curves = QVBoxLayout()
+        vbly_curves.addWidget(QLabel("Curves"))
+        vbly_curves.addWidget(self.lt_curves)
 
-    # def initUI(self):
+        hbly = QHBoxLayout()
+        hbly.addLayout(vbly_curves)
+        self.setLayout(hbly)
 
 
 class Parameter_Dialog(QDialog):
     def __init__(self, myApp=None):
         super().__init__()
-        self.myApp = myApp
-        self.wg_canvas = self.myApp.wg_canvas
+        self.wg_treelist = myApp.dwg_data.tree
+        self.wg_canvas = myApp.wg_canvas
 
         self.parameter = {
             "General": {
@@ -76,7 +78,7 @@ class Parameter_Dialog(QDialog):
             self.parameter, self.wg_canvas.focusing_canvas.parameter)
         self.parameter["General"]["Legend"]["visible"].setCheckState(
             Qt.Checked)
-
+        self.page_curves = Curve_Style_Page(tree=self.wg_treelist)
         self.initUI()
 
     def _toggle_auto_scale(self, axis_name):
@@ -175,6 +177,8 @@ class Parameter_Dialog(QDialog):
         for page_name, form_dict in self.parameter.items():
             page = self._create_page(form_dict)
             self.tab.addTab(page, page_name)
+
+        self.tab.addTab(self.page_curves, "Curves")
 
         buttonBox = QDialogButtonBox()
         buttonBox.setOrientation(Qt.Horizontal)

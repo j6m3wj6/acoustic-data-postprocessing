@@ -24,6 +24,7 @@ class MyToolBar(NavigationToolbar2QT):
             ('Save', 'filesave', 'Save figure', 'save_figure'),
             ('Setting', 'setting', 'Canvas setting', 'edit_parameter'),
             ('Lines', 'cross-line', 'Draggable vertical line', 'show_draggable_lines'),
+            ('Y-scale', 'y-scale', 'Autoscale y axis', 'autoscale_yaxis'),
         ]
         self.actions = {}
         NavigationToolbar2QT.__init__(self, canvas, parent)
@@ -50,34 +51,19 @@ class MyToolBar(NavigationToolbar2QT):
         # self.setFixedHeight(36)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
-        self.lb_coords = QLabel()
-        self.addWidget(self.lb_coords)
-
     def edit_parameter(self):
         print("edit_parameter")
         dlg = Parameter_Dialog(myApp=self.myApp)
         dlg.exec()
 
+    def autoscale_yaxis(self):
+        self.focusing_canvas.ax_main.set_ylim(auto=True)
+        self.focusing_canvas.ax_sub.set_ylim(auto=True)
+        self.focusing_canvas.replot()
+
     def show_draggable_lines(self, toggle):
         self.focusing_canvas.draggable_lines.set_visible(toggle)
         coords = self.focusing_canvas.draggable_lines.get_coords()
-        self.update_draggable_coords(coords[0], coords[1])
-        if toggle:
-            self.lb_coords.setStyleSheet("""
-                border: 1px solid blue;
-                border-radius: 4px;
-                padding: 4px;
-
-                color: black;
-            """)
-        else:
-            self.lb_coords.setStyleSheet("""
-                border: None;
-                color: transparent;
-            """)
-
-    def update_draggable_coords(self, x, y):
-        self.lb_coords.setText('x = {:6.2f}, y = {:6.2f}'.format(x, y))
 
     def update_focus_canvas(self, canvas):
         self.lb_canvas.setText(canvas.get_name())

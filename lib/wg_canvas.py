@@ -32,7 +32,6 @@ class Draggable_lines:
     def followmouse(self, event):
         self.vline.set_xdata([event.xdata, event.xdata])
         self.hline.set_ydata([event.ydata, event.ydata])
-        self.canvas.toolbar.update_draggable_coords(event.xdata, event.ydata)
         self.text.set_text('x = {:6.2f}, y = {:6.2f}'.format(
             event.xdata, event.ydata))
         # self.text.set_position((event.xdata*1.1, event.ydata*1.002))
