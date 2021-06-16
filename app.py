@@ -1,67 +1,142 @@
-import pickle
 from lib.dockwg_data_treelist import *
 from lib.dlg_operation import *
 from lib.dlg_canvas_setting import *
-from lib.dlg_import_files import *
 from lib.dlg_load_files import *
 from lib.wg_treelist import *
 from lib.wg_canvas import *
-from lib.extended_enum import *
+from lib.data_objects import *
 from lib.dockwg_canvas_layout import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import matplotlib
-import datetime as dt
 import sys
-import pickle
-import dill
+import json
 matplotlib.use('Qt5Agg')
 
 
-class MyApp(QMainWindow):
-    """App's Main Window."""
-
+class MyMenuBar(QMenuBar):
     def __init__(self, parent=None):
-        """Initializer."""
         super().__init__(parent)
-        # self.project = Project()
-        self.project = Project._load_project("myproject")
+        self._createActions()
+        fileMenu = QMenu("&File", self)
+        self.addMenu(fileMenu)
+        self.addMenu('&Help')
+        fileMenu.addAction(self.newAction)
+        fileMenu.addAction(self.openAction)
+        fileMenu.addAction(self.saveAction)
+        fileMenu.addAction(self.exitAction)
+
+    def _createActions(self):
+      # Creating Components
+        self.newAction = QAction("&Act", self)
+        self.openAction = QAction("&Open", self)
+        self.saveAction = QAction("&Save", self)
+        self.exitAction = QAction("&Exit", self)
+        self.copyAction = QAction("&Copy", self)
+        self.pasteAction = QAction("&Paste", self)
+        self.cutAction = QAction("&Cut", self)
+        self.helpContentAction = QAction("&Help Content", self)
+        self.aboutAction = QAction("&About", self)
+      # Connect Functions
+        # Connect File actions
+        self.newAction.triggered.connect(self.newFile)
+        self.openAction.triggered.connect(self.openFile)
+        self.saveAction.triggered.connect(self.saveFile)
+        # self.exitAction.triggered.connect(self.close)
+        # # Connect Edit actions
+        # self.copyAction.triggered.connect(self.copyContent)
+        # self.pasteAction.triggered.connect(self.pasteContent)
+        # self.cutAction.triggered.connect(self.cutContent)
+        # # Connect Help actions
+        # self.helpContentAction.triggered.connect(self.helpContent)
+        # self.aboutAction.triggered.connect(self.about)
+
+    def newFile(self):
+        print("newFile")
+
+    def openFile(self):
+        # Logic for opening an existing file goes here...
+        dialog = QFileDialog()
+        dialog.setFileMode(QFileDialog.ExistingFile)
+        # dialog.setOption(QFileDialog.DontUseNativeDialog)
+        dialog.setNameFilter("PKL files (*.pkl)")
+
+        if dialog.exec_():
+            path = dialog.selectedFiles()[0]
+            filename = path[path.rfind('/')+1:path.rfind('.')]
+            self.parent().app.open_project(filename)
+        else:
+            pass
+
+    def saveFile(self):
+        print("saveFile")
+
+
+class MyApp(QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.windows = []
+        self.open_project()
+
+    def open_project(self, filename=None):
+        new_windows = MainWindow(app=self, project=filename)
+        self.windows.append(new_windows)
+        new_windows.show()
+
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent=None, app=None, project=None):
+        super().__init__(parent)
+        self.app = app
+        self.project = Project.load_project(project)
         self.ui_conf = self._load_ui_conf()
+        self.MainLayout = QVBoxLayout()
         self.initUI()
 
+    def clearLayout(self, layout):
+        for i in reversed(range(layout.count())):
+            print(type(layout.itemAt(i)))
+            # print(i, layout.itemAt(i))
+            if (type(layout.itemAt(i)) == QWidgetItem):
+                widget = layout.itemAt(i).widget()
+                layout.removeWidget(widget)
+                widget.setParent(None)
+            elif (type(layout.itemAt(i)) == QLayout):
+                self.clearLayout(layout.itemAt(i))
+
     def initUI(self):
-        # Create Component
-        self._createButton()
+      # Create Component
+        self.menutopbar = MyMenuBar(self)
+        self.setMenuBar(self.menutopbar)
+
+        self.btn_clearData = QPushButton('Clear data')
+        self.btn_processingDlg = QPushButton('Operation')
         self.wg_canvas = MyCanvas(self, ui_conf=self.ui_conf["MyCanvas"])
         self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
         self.dwg_canvasLayout = DockWidget_CanvasLayout(
             self, Qt.LeftDockWidgetArea)
         self.dwg_canvasLayout._setCanvasLayout_Main(self.wg_canvas)
 
-        # Layout
+      # Layout
         MainWidget = QWidget()
-        MainLayout = QVBoxLayout()
-        MainLayout.addWidget(self.wg_canvas)
-        MainWidget.setLayout(MainLayout)
+        self.MainLayout.addWidget(self.wg_canvas)
+        MainWidget.setLayout(self.MainLayout)
         self.setCentralWidget(MainWidget)
 
-        # Layout Style
+      # Style and Setting
         self.setWindowTitle("Python Menus & Toolbars")
         self.resize(1600, 800)
         self.setContentsMargins(0, 0, 0, 0)
-        MainLayout.setContentsMargins(0, 0, 0, 0)
+        self.MainLayout.setContentsMargins(0, 0, 0, 0)
 
-# Create Components
+      # Connect Functions
+        self.btn_clearData.clicked.connect(self.btn_clearData_handleClicked)
+        self.btn_processingDlg.clicked.connect(
+            self.btn_processingDlg_handleClicked)
 
-    def _createButton(self):
-        self.btn_clearData = QPushButton('Clear data')
-        self.btn_clearData.clicked.connect(self.clearData)
+   # Btn Func - Clear data
 
-        self.btn_operationDialog = QPushButton('Operation')
-        self.btn_operationDialog.clicked.connect(self.operationDialog)
-
-# Btn Func - Clear data
-    def clearData(self):
+    def btn_clearData_handleClicked(self):
         for _c in self.wg_canvas.canvasPool:
             for ax in _c.fig.axes:
                 ax.lines = []
@@ -69,18 +144,12 @@ class MyApp(QMainWindow):
         self.dwg_data.tab_data.tree.clear()
         self.project.files = []
 
-# Btn Func - Shift Data
-    def operationDialog(self):
-        dlg = OperationDialog(myApp=self)
+    def btn_processingDlg_handleClicked(self):
+        dlg = OperationDialog(mainwindow=self)
         dlg.exec()
 
-    def importDialog(self):
-        dlg = ImportDialog(myApp=self)
-        dlg.exec()
-
-    def axisSettingDialog(self):
-        dlg = CanvasSetting_Dialog(myApp=self)
-        result = dlg.exec_()
+    def btn_axis_setting_handleClicked(self):
+        dlg = CanvasSetting_Dialog(mainwindow=self)
         if dlg.exec_():
             print("axisSettingDialog.exec")  # %%%%%%
             for _lb in self.dwg_canvasLayout.lb_canvas:
@@ -133,9 +202,7 @@ def main():
             font-family: Arial;
         }
     """)
-    main = MyApp()
-
-    main.show()
+    MyApp()
     sys.exit(app.exec_())
 
 

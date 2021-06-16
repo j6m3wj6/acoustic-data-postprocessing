@@ -6,9 +6,9 @@ from .wg_canvas import *
 
 
 class MyTree(QTreeWidget):
-    def __init__(self, myApp=None):
+    def __init__(self, mainwindow=None):
         super(QTreeWidget, self).__init__()
-        self.wg_canvas = myApp.wg_canvas
+        self.wg_canvas = mainwindow.wg_canvas
         self.setColumnCount(2)
         self.setHeaderLabels(['Label', 'Note'])
         self.setColumnWidth(0, 200)

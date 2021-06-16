@@ -38,20 +38,20 @@ class Draggable_Label(QLabel):
 
 
 class DockWidget_CanvasLayout(QDockWidget):
-    def __init__(self, myApp, Position):
-        super().__init__("Canvas Properties", myApp)
+    def __init__(self, mainwindow, Position):
+        super().__init__("Canvas Properties", mainwindow)
         self.setMinimumWidth(100)
-        self.myApp = myApp
-        self.initUI(myApp, Position)
+        self.mainwindow = mainwindow
+        self.initUI(mainwindow, Position)
 
-        myApp.addDockWidget(Qt.DockWidgetArea(Position), self)
-        self._set_canvas_mode(myApp.wg_canvas.mode)
+        mainwindow.addDockWidget(Qt.DockWidgetArea(Position), self)
+        self._set_canvas_mode(mainwindow.wg_canvas.mode)
 
-    def initUI(self, myApp, Position):
+    def initUI(self, mainwindow, Position):
         btn_Main = QPushButton('Main')
         btn_UpAndDown = QPushButton('Up and Down')
         self.lb_canvas = []
-        for c in myApp.wg_canvas.canvasPool:
+        for c in mainwindow.wg_canvas.canvasPool:
             self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
 
         btn_Quater = QPushButton('Quater')
@@ -67,7 +67,7 @@ class DockWidget_CanvasLayout(QDockWidget):
         btn_MainwithThreeSmallWindows.clicked.connect(
             lambda: self._set_canvas_mode("MainwithThreeSmallWindows"))
         # btn_MainwithScrollArea.clicked.connect(
-        #     lambda: self._setCanvasLayout_MainwithScrollArea(myApp.wg_canvas))
+        #     lambda: self._setCanvasLayout_MainwithScrollArea(mainwindow.wg_canvas))
 
         self.setStyleSheet("""
             QVBoxLayout {
@@ -96,19 +96,21 @@ class DockWidget_CanvasLayout(QDockWidget):
         vbly.addWidget(QLabel("Function"))
 
         btn_axis_setting = QPushButton("Axis Setting")
-        btn_axis_setting.clicked.connect(self.myApp.axisSettingDialog)
+        btn_axis_setting.clicked.connect(
+            self.mainwindow.btn_axis_setting_handleClicked)
         vbly.addWidget(btn_axis_setting)
 
-        btn_axis_setting = QPushButton("Operation")
-        btn_axis_setting.clicked.connect(self.myApp.operationDialog)
-        vbly.addWidget(btn_axis_setting)
+        btn_processing = QPushButton("Post-Processing")
+        btn_processing.clicked.connect(
+            self.mainwindow.btn_processingDlg_handleClicked)
+        vbly.addWidget(btn_processing)
 
         vbly.addWidget(QLabel("Canvas"))
         for lb in self.lb_canvas:
             vbly.addWidget(lb)
 
         btn_save = QPushButton("Save")
-        btn_save.clicked.connect(self.myApp.dump)
+        btn_save.clicked.connect(self.mainwindow.dump)
         vbly.addWidget(btn_save)
 
     def clearLayout(self, layout):
@@ -128,7 +130,7 @@ class DockWidget_CanvasLayout(QDockWidget):
             "Quater": self._setCanvasLayout_Quater,
             "MainwithThreeSmall": self._setCanvasLayout_MainwithThreeSmall
         }
-        func[mode](self.myApp.wg_canvas)
+        func[mode](self.mainwindow.wg_canvas)
 
     def _setCanvasLayout_Main(self, wg_canvas):
         self.clearLayout(wg_canvas.gdly_canvasPool)

@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
-from lib.extended_enum import COLORS
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from lib.data_objects import COLORS
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtGui import QPixmap, QColor, QIcon
 from PyQt5.QtWidgets import *
 
 LINEWIDTHS = [1, 1.5, 2.5, 4]
@@ -97,7 +96,7 @@ class Curve_Style_Page(QWidget):
             fileroot = self.tree.topLevelItem(f)
             for t in range(fileroot.childCount()):
                 testroot = fileroot.child(t)
-                testType = testroot.data(1, QtCore.Qt.UserRole)
+                testType = testroot.data(1, Qt.UserRole)
                 if (testroot.checkState(0) == Qt.Unchecked or testType not in self.canvas.ax_types):
                     continue
                 row = tb_curves.rowCount()
@@ -116,9 +115,9 @@ class Curve_Style_Page(QWidget):
                         row = tb_curves.rowCount()
                         tb_curves.setRowCount(row + 1)
 
-                        curveData = curve.data(0, QtCore.Qt.UserRole)
+                        curveData = curve.data(0, Qt.UserRole)
                         new_item = QTableWidgetItem(curveData.label)
-                        new_item.setData(QtCore.Qt.UserRole, curveData)
+                        new_item.setData(Qt.UserRole, curveData)
                         tb_curves.setItem(row, 0, new_item)
                         tb_curves.item(row, 0).setFlags(
                             tb_curves.item(row, 0).flags() ^ Qt.ItemIsEditable)
@@ -147,7 +146,7 @@ class Curve_Style_Page(QWidget):
             self.cbox_color.setCurrentIndex(-1)
 
         elif len(seleced_items) == 1:
-            curve = seleced_items[0].data(QtCore.Qt.UserRole)
+            curve = seleced_items[0].data(Qt.UserRole)
             color_index = COLORS.index(curve.line.get_color())
             self.cbox_color.setCurrentIndex(color_index)
             linewidth_index = LINEWIDTHS.index(curve.line.get_linewidth())
@@ -156,7 +155,7 @@ class Curve_Style_Page(QWidget):
 
     def le_legend_handleEdited(self, event):
         for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(QtCore.Qt.UserRole)
+            curveData = item.data(Qt.UserRole)
             curveData.line.set_label(event)
             row, col = item.row(), item.column()
             self.tb_curves.item(row, col).setText(event)
@@ -167,7 +166,7 @@ class Curve_Style_Page(QWidget):
         if event == -1:
             return
         for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(QtCore.Qt.UserRole)
+            curveData = item.data(Qt.UserRole)
             curveData.line.set_linewidth(LINEWIDTHS[event])
             row, col = item.row(), item.column()
 
@@ -179,7 +178,7 @@ class Curve_Style_Page(QWidget):
         if event == -1:
             return
         for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(QtCore.Qt.UserRole)
+            curveData = item.data(Qt.UserRole)
             curveData.line.set_color(COLORS[event])
             row, col = item.row(), item.column()
             pixmap = QPixmap(65, 20)
@@ -189,10 +188,10 @@ class Curve_Style_Page(QWidget):
 
 
 class Parameter_Dialog(QDialog):
-    def __init__(self, myApp=None):
+    def __init__(self, mainwindow=None):
         super().__init__()
-        self.wg_treelist = myApp.dwg_data.tree
-        self.wg_canvas = myApp.wg_canvas
+        self.wg_treelist = mainwindow.dwg_data.tree
+        self.wg_canvas = mainwindow.wg_canvas
 
         self.parameter = {
             "General": {

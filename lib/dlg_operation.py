@@ -2,23 +2,23 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from .extended_enum import *
+from .data_objects import *
 from .wg_treelist import *
 
 
 class OperationDialog(QDialog):
 
-    def __init__(self, parent=None, myApp=None):
+    def __init__(self, parent=None, mainwindow=None):
         super().__init__(parent)
-        self.myApp = myApp
-        self.canvas = myApp.wg_canvas.focusing_canvas
+        self.mainwindow = mainwindow
+        self.canvas = mainwindow.wg_canvas.focusing_canvas
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle("Operation Window")
         self.resize(600, 300)
 
-        self.listWidget = self.myApp.dwg_data.tree.get_focusing_curves_lists()
+        self.listWidget = self.mainwindow.dwg_data.tree.get_focusing_curves_lists()
         # self.listWidget.itemSelectionChanged.connect(self.handleSelect)
         vbly_list = QVBoxLayout()
         vbly_list.addWidget(QLabel("Curves"))

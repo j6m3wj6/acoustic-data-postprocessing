@@ -26,6 +26,21 @@ class CurveType(Extended_Enum):
     EX = 'Excursion'
 
 
+LINEWIDTH_DEFAULT = 1.5
+LINEWIDTH_HIGHLIGHT = 4
+LEGEND_WRAP = 25
+
+COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c',
+          '#d62728', '#9467bd', '#8c564b', '#e377c2',
+          '#7f7f7f', '#bcbd22', '#17becf']
+
+AXIS_SCALE = {
+    "all": ["linear", "log"],
+    "SPL": "log",
+    "Imp": "log",
+}
+
+
 class Project():
     def __init__(self):
         self.info = {
@@ -40,11 +55,9 @@ class Project():
         print(self.info)
         for _f in self.files:
             _f.print()
-            # print(self.files)
 
     def dump(self):
         self.print()
-
         try:
             with open(f"%s.pkl" % (self.info['Name']), 'wb') as fh:
                 pickle.dump(self, fh)
@@ -54,13 +67,14 @@ class Project():
             print(dill.detect.badobjects(self, depth=2))
 
     @classmethod
-    def _load_project(self, project_name):
+    def load_project(cls, project_name):
         print("unpickle:", project_name)
         try:
             fh = open(f"%s.pkl" % (project_name), 'rb')
             # with open(f"%s.pkl" % (project_name), 'rb') as fh:
             unpickled_data = pickle.load(fh)
-            print("unpickle:", unpickled_data)
+            print(unpickled_data.print())
+            print("----------------------------------")
             fh.close()
             return unpickled_data
         except Exception as e:
@@ -79,13 +93,6 @@ class FileData():
         }
         self.sequence = {}
 
-    def setData(self, dataSequence):
-        for test, curveData in dataSequence:
-            self.sequence['test'] = curveData
-
-    def get_import_time(self):
-        return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
-
     def print(self):
         print("\n\n-------------------------")
         print("\tName: %s \n\tSource: %s \n\tfile_path: %s" %
@@ -94,19 +101,12 @@ class FileData():
         print("\tSequence:", self.sequence)
         print("-----------------------------\n\n")
 
+    def setData(self, dataSequence):
+        for test, curveData in dataSequence:
+            self.sequence['test'] = curveData
 
-LINEWIDTH_DEFAULT = 1.5
-LINEWIDTH_HIGHLIGHT = 4
-COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c',
-          '#d62728', '#9467bd', '#8c564b', '#e377c2',
-          '#7f7f7f', '#bcbd22', '#17becf']
-COLORS_CMP = ['r', 'b', 'g']
-LEGEND_WRAP = 25
-AXIS_SCALE = {
-    "all": ["linear", "log"],
-    "SPL": "log",
-    "Imp": "log",
-}
+    def get_import_time(self):
+        return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
 
 
 class CurveData:

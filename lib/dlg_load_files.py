@@ -5,7 +5,6 @@ import pandas as pd
 from .wg_canvas import *
 import datetime as dt
 import random
-import json
 
 
 def load_file(source):

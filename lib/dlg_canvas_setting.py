@@ -5,10 +5,10 @@ from .wg_canvas import *
 
 
 class CanvasSetting_Dialog(QDialog):
-    def __init__(self, parent=None, myApp=None):
+    def __init__(self, parent=None, mainwindow=None):
         super().__init__(parent)
-        self.myApp = myApp
-        self.wg_canvas = myApp.wg_canvas
+        self.mainwindow = mainwindow
+        self.wg_canvas = mainwindow.wg_canvas
         self.form_parameter = {}
         self.initUI()
         # self.form_parameter = self._load_form_parameter()
@@ -85,8 +85,8 @@ class CanvasSetting_Dialog(QDialog):
         ax_id = int(bool(axis.objectName() == "ax1"))
         _type = CurveType(event)
         type_transfer = canvas.set_ax_type(ax_id, _type)
-        self.myApp.dwg_data.tree.set_children_checkstate(_type, Qt.Unchecked)
-        self.myApp.dwg_data.tree.set_children_checkstate(
+        self.mainwindow.dwg_data.tree.set_children_checkstate(_type, Qt.Unchecked)
+        self.mainwindow.dwg_data.tree.set_children_checkstate(
             type_transfer, Qt.Unchecked)
         self.wg_canvas.replot()
         # change canvas name/title

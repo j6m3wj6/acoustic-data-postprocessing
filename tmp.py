@@ -27,11 +27,11 @@ class MyApp():
 # print(CurveType.NoType == _list[0])
 # print(CurveType.index(CurveType.NoType))
 
-myApp = MyApp()
-myApp.files.append(AP_DATA)
-myApp.files.append(KLIPPEL_DATA)
+mainwindow = MyApp()
+mainwindow.files.append(AP_DATA)
+mainwindow.files.append(KLIPPEL_DATA)
 
-pickled_DATA = pickle.dumps(myApp)
+pickled_DATA = pickle.dumps(mainwindow)
 unpickled_object = pickle.loads(pickled_DATA)
 print(unpickled_object.project_info)
 print(unpickled_object.files[0].sequence)

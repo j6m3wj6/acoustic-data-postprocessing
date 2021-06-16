@@ -11,7 +11,7 @@ class MyToolBar(NavigationToolbar2QT):
     def __init__(self, canvas, parent=None):
         # toolitem = (name, icon_name, hover_text, callback)
         # self.toolitems = [('Subplots', 'putamus parum claram', 'subplots', 'configure_subplots')]
-        self.myApp = parent
+        self.mainwindow = parent
         self.focusing_canvas = canvas
 
         self.toolitems = []
@@ -52,11 +52,11 @@ class MyToolBar(NavigationToolbar2QT):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def edit_parameter(self):
-        dlg = Parameter_Dialog(myApp=self.myApp)
+        dlg = Parameter_Dialog(mainwindow=self.mainwindow)
         if dlg.exec():
             print("edit_parameter")
 
-            self.myApp.dwg_data.tree.sync_with_canvas()
+            self.mainwindow.dwg_data.tree.sync_with_canvas()
         else:
             pass
 
@@ -76,7 +76,7 @@ class MyToolBar(NavigationToolbar2QT):
         self.focusing_canvas = canvas
         if (self.focusing_canvas.draggable_lines.vline.get_visible()):
             self.show_draggable_lines(True)
-        NavigationToolbar2QT.__init__(self, canvas, self.myApp.wg_canvas)
+        NavigationToolbar2QT.__init__(self, canvas, self.mainwindow.wg_canvas)
 
     def _create_btn_action(self, name, icon_name, hover_text, parent, callback):
         icon_dir = f"./lib/icons/%s.png" % (icon_name)

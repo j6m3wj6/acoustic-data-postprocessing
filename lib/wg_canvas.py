@@ -6,8 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from .wg_toolbar import *
-from .extended_enum import *
-import json
+from .data_objects import *
 
 
 class Draggable_lines:
@@ -234,7 +233,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
 class MyCanvas(QWidget):
     def __init__(self, parent=None, ui_conf=None):
         super().__init__()
-        self.myApp = parent
+        self.mainwindow = parent
         self.ui_conf = ui_conf
         self.canvasPool = []
         self.status = {}
@@ -255,7 +254,8 @@ class MyCanvas(QWidget):
 
     def initUI(self):
         # Create Component
-        self.toolbar = MyToolBar(canvas=self.canvasPool[0], parent=self.myApp)
+        self.toolbar = MyToolBar(
+            canvas=self.canvasPool[0], parent=self.mainwindow)
         self.gdly_canvasPool = QGridLayout()
 
         # Layout
