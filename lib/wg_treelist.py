@@ -17,7 +17,7 @@ class MyTree(QTreeWidget):
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.itemChanged.connect(self.handleCheck)
         self.itemSelectionChanged.connect(self.handleSelect)
-        self.doubleClicked.connect(self.editText)
+        # self.doubleClicked.connect(self.editText)
 
     def handleCheck(self, item):
         if not item.parent() or isinstance(item.data(1, QtCore.Qt.UserRole), CurveType):  # test root
@@ -25,15 +25,18 @@ class MyTree(QTreeWidget):
         else:  # measurement leaves
             curveData = item.data(0, QtCore.Qt.UserRole)
             curveData.label = item.text(0)
+
             curveData.note = item.text(1)
             canvas, _, ax = self.wg_canvas.get_canvas(curveData.type)
-            if (item.checkState(0) == Qt.Unchecked):
+            if curveData.line and item.checkState(0) == Qt.Unchecked:
                 curveData.line.set_label('_nolegend_')
+                curveData.line_props["visible"] = False
                 if (ax and curveData.line in ax.lines):
                     ax.lines.remove(curveData.line)
-            else:
+            elif item.checkState(0) == Qt.Checked:
                 curveData.create_line2D(ax)
-                item.setData(0, QtCore.Qt.UserRole, curveData)
+                curveData.line_props["visible"] = True
+            item.setData(0, QtCore.Qt.UserRole, curveData)
             canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
         canvas.replot()
 
@@ -69,13 +72,18 @@ class MyTree(QTreeWidget):
             testroot.setData(1, QtCore.Qt.UserRole, curveDatas[0].type)
             testroot.setFlags(testroot.flags() |
                               Qt.ItemIsTristate | Qt.ItemIsUserCheckable)
+            fileroot.addChild(testroot)
+
             for _cd in curveDatas:
-                child = QTreeWidgetItem(testroot)
+                child = QTreeWidgetItem()
                 child.setText(0, _cd.label)
                 child.setText(1, _cd.note)
                 child.setData(0, QtCore.Qt.UserRole, _cd)
-                child.setCheckState(0, Qt.Unchecked)
-            fileroot.addChild(testroot)
+                testroot.addChild(child)
+                if _cd.line_props["visible"]:
+                    child.setCheckState(0, Qt.Checked)
+                else:
+                    child.setCheckState(0, Qt.Unchecked)
         self.addTopLevelItem(fileroot)
         # self.expandAll()
         # fileroot.child(0).setCheckState(0, Qt.Checked)
@@ -115,7 +123,7 @@ class MyTree(QTreeWidget):
                 test.setHidden(False)
 
     def editText(self, event):
-        # print("double click", event, event.column(), event.row(), event.data())
+        print("double click", event, event.column(), event.row(), event.data())
         item = self.itemFromIndex(event)
         item.setFlags(item.flags() | Qt.ItemIsEditable)
         self.edit(event)
@@ -139,11 +147,26 @@ class MyTree(QTreeWidget):
 
                 listWidget.addItem(test_item)
                 for c in range(testroot.childCount()):
-                    curve = testroot.child(c)
-                    if (curve.checkState(0) == Qt.Checked):
-                        curveData = curve.data(0, QtCore.Qt.UserRole)
+                    curve_item = testroot.child(c)
+                    if (curve_item.checkState(0) == Qt.Checked):
+                        curveData = curve_item.data(0, QtCore.Qt.UserRole)
                         new_item = QListWidgetItem()
                         new_item.setData(QtCore.Qt.UserRole, curveData)
                         new_item.setText(curveData.label)
                         listWidget.addItem(new_item)
         return listWidget
+
+    def sync_with_canvas(self):
+        focusing_canvas = self.wg_canvas.focusing_canvas
+        for f in range(self.topLevelItemCount()):
+            fileroot = self.topLevelItem(f)
+            for t in range(fileroot.childCount()):
+                testroot = fileroot.child(t)
+                testType = testroot.data(1, QtCore.Qt.UserRole)
+                if (testroot.checkState(0) == Qt.Unchecked or testType not in focusing_canvas.ax_types):
+                    continue
+                for c in range(testroot.childCount()):
+                    curve_item = testroot.child(c)
+                    curveData = curve_item.data(0, QtCore.Qt.UserRole)
+                    curveData.sync_with_line()
+                    curve_item.setText(0, curveData.label)

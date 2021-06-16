@@ -39,26 +39,31 @@ def load_AP_fileData(path):
         data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
         DATA = FileData(filename, source="AP", file_path=path,
                         import_time=dt.datetime.today())
-
-        for key, value in data.items():
+        curve_idx = 0
+        for key in data.keys():
             test_name = data[key].columns[0].strip()
             _type = determineTypeByTestName(test_name)
             note = data[key].columns[1].strip()
             curveDatas = []
             isline = True
-            for curveIndex in range(int(len(data[key].columns)/2)):
-                label = data[key].iloc[0, curveIndex*2].strip()
+            if test_name not in DATA.sequence:
+                curve_idx = 0
+
+            for _idx in range(int(len(data[key].columns)/2)):
+                label = data[key].iloc[0, _idx*2].strip()
                 curve_x = pd.Series(
-                    data[key].iloc[3:, curveIndex*2], name='x', dtype=float)
+                    data[key].iloc[3:, _idx*2], name='x', dtype=float)
                 curve_y = pd.Series(
-                    data[key].iloc[3:, curveIndex*2+1], name='y', dtype=float)
+                    data[key].iloc[3:, _idx*2+1], name='y', dtype=float)
                 if (curve_x.dtype != float or curve_y.dtype != float):
                     isline = False
                     continue
                 rdm = random.randint(1, 100)
+
                 curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[(curveIndex+rdm) % 8])
+                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 11])
                 curveDatas.append(curveData_new)
+                curve_idx += 1
 
             if (not isline):
                 continue
@@ -94,7 +99,6 @@ def load_LEAP_fileData(path):
             val = pd.Series(data.iloc[:, 1], name='y', dtype=float)
             phase = pd.Series(data.iloc[:, 2], name='y', dtype=float)
 
-            curveDatas = []
             note = ""
 
             _type = determineTypeByTestName(test_name)
@@ -147,7 +151,7 @@ def load_KLIPPEL_fileData(path):
 
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[(i+rdm) % 8])
+                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 11])
 
                 curveDatas.append(curveData_new)
 

@@ -80,7 +80,9 @@ class MyApp(QMainWindow):
 
     def axisSettingDialog(self):
         dlg = CanvasSetting_Dialog(myApp=self)
+        result = dlg.exec_()
         if dlg.exec_():
+            print("axisSettingDialog.exec")  # %%%%%%
             for _lb in self.dwg_canvasLayout.lb_canvas:
                 _lb.set_text(self.wg_canvas.canvasPool[_lb.idx].get_name())
             for _c in self.wg_canvas.canvasPool:
@@ -107,7 +109,6 @@ class MyApp(QMainWindow):
     def _load_ui_conf(self):
         with open("ui_conf.json", "r") as fj:
             ui_conf = json.load(fj)
-        # print(ui_conf)
         return ui_conf
 
     def update_ui_conf(self):
@@ -122,6 +123,7 @@ class MyApp(QMainWindow):
                 _c.id)]["parameter"] = _c.parameter
         with open("ui_conf.json", "w") as fj:
             json.dump(self.ui_conf, fj)
+        print("update_ui_conf", self.ui_conf)
 
 
 def main():

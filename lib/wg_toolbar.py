@@ -52,9 +52,13 @@ class MyToolBar(NavigationToolbar2QT):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def edit_parameter(self):
-        print("edit_parameter")
         dlg = Parameter_Dialog(myApp=self.myApp)
-        dlg.exec()
+        if dlg.exec():
+            print("edit_parameter")
+
+            self.myApp.dwg_data.tree.sync_with_canvas()
+        else:
+            pass
 
     def autoscale_yaxis(self):
         self.focusing_canvas.ax_main.set_ylim(auto=True)
