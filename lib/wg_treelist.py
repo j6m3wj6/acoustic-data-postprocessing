@@ -20,6 +20,7 @@ class MyTree(QTreeWidget):
         # self.doubleClicked.connect(self.editText)
 
     def handleCheck(self, item):
+        # print("MyTree handleSelect")
         if not item.parent() or isinstance(item.data(1, QtCore.Qt.UserRole), CurveType):  # test root
             return
         else:  # measurement leaves
@@ -34,8 +35,9 @@ class MyTree(QTreeWidget):
                 if (ax and curveData.line in ax.lines):
                     ax.lines.remove(curveData.line)
             elif item.checkState(0) == Qt.Checked:
-                curveData.create_line2D(ax)
-                curveData.line_props["visible"] = True
+                if curveData.line not in ax.lines:
+                    curveData.create_line2D(ax)
+                    curveData.line_props["visible"] = True
             item.setData(0, QtCore.Qt.UserRole, curveData)
             canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
         canvas.replot()
@@ -167,6 +169,9 @@ class MyTree(QTreeWidget):
                     continue
                 for c in range(testroot.childCount()):
                     curve_item = testroot.child(c)
+                    if (curve_item.checkState(0) == Qt.Unchecked):
+                        continue
                     curveData = curve_item.data(0, QtCore.Qt.UserRole)
                     curveData.sync_with_line()
                     curve_item.setText(0, curveData.label)
+                    curve_item.setData(0, QtCore.Qt.UserRole, curveData)

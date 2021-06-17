@@ -51,7 +51,7 @@ class DockWidget_CanvasLayout(QDockWidget):
         btn_Main = QPushButton('Main')
         btn_UpAndDown = QPushButton('Up and Down')
         self.lb_canvas = []
-        for c in mainwindow.wg_canvas.canvasPool:
+        for c in mainwindow.wg_canvas.canvasPool[:-1]:
             self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
 
         btn_Quater = QPushButton('Quater')
@@ -74,13 +74,8 @@ class DockWidget_CanvasLayout(QDockWidget):
                 border: 1px solid gray;
                 padding: 10;
                 margin: 0;
-            }
-            
-
+            }      
         """)
-        # QLabel {
-        #         qproperty-alignment: AlignCenter;
-        #     }
 
         self.dockWidgetContents_data = QWidget()
         self.setWidget(self.dockWidgetContents_data)
@@ -110,7 +105,7 @@ class DockWidget_CanvasLayout(QDockWidget):
             vbly.addWidget(lb)
 
         btn_save = QPushButton("Save")
-        btn_save.clicked.connect(self.mainwindow.dump)
+        btn_save.clicked.connect(self.mainwindow.save_file)
         vbly.addWidget(btn_save)
 
     def clearLayout(self, layout):

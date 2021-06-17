@@ -54,8 +54,7 @@ class MyToolBar(NavigationToolbar2QT):
     def edit_parameter(self):
         dlg = Parameter_Dialog(mainwindow=self.mainwindow)
         if dlg.exec():
-            print("edit_parameter")
-
+            # print("edit_parameter")
             self.mainwindow.dwg_data.tree.sync_with_canvas()
         else:
             pass

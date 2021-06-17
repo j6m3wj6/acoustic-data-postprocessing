@@ -20,41 +20,32 @@ class MyMenuBar(QMenuBar):
         self._createActions()
         fileMenu = QMenu("&File", self)
         self.addMenu(fileMenu)
-        self.addMenu('&Help')
-        fileMenu.addAction(self.newAction)
-        fileMenu.addAction(self.openAction)
-        fileMenu.addAction(self.saveAction)
-        fileMenu.addAction(self.exitAction)
+        fileMenu.addAction(self.act_new)
+        fileMenu.addAction(self.act_open)
+        fileMenu.addAction(self.act_save)
+        fileMenu.addAction(self.act_exit)
 
     def _createActions(self):
       # Creating Components
-        self.newAction = QAction("&Act", self)
-        self.openAction = QAction("&Open", self)
-        self.saveAction = QAction("&Save", self)
-        self.exitAction = QAction("&Exit", self)
-        self.copyAction = QAction("&Copy", self)
-        self.pasteAction = QAction("&Paste", self)
-        self.cutAction = QAction("&Cut", self)
-        self.helpContentAction = QAction("&Help Content", self)
-        self.aboutAction = QAction("&About", self)
+        self.act_new = QAction("&New", self)
+        self.act_open = QAction("&Open", self)
+        self.act_save = QAction("&Save", self)
+        self.act_exit = QAction("&Exit", self)
+        self.act_copy = QAction("&Copy", self)
+        self.act_paste = QAction("&Paste", self)
+        self.act_cut = QAction("&Cut", self)
+        self.act_helpContent = QAction("&Help Content", self)
+        self.act_about = QAction("&About", self)
       # Connect Functions
         # Connect File actions
-        self.newAction.triggered.connect(self.newFile)
-        self.openAction.triggered.connect(self.openFile)
-        self.saveAction.triggered.connect(self.saveFile)
-        # self.exitAction.triggered.connect(self.close)
-        # # Connect Edit actions
-        # self.copyAction.triggered.connect(self.copyContent)
-        # self.pasteAction.triggered.connect(self.pasteContent)
-        # self.cutAction.triggered.connect(self.cutContent)
-        # # Connect Help actions
-        # self.helpContentAction.triggered.connect(self.helpContent)
-        # self.aboutAction.triggered.connect(self.about)
+        self.act_new.triggered.connect(self.new_file)
+        self.act_open.triggered.connect(self.open_file)
+        self.act_save.triggered.connect(self.save_file)
 
-    def newFile(self):
-        print("newFile")
+    def new_file(self):
+        self.parent().app.open_project()
 
-    def openFile(self):
+    def open_file(self):
         # Logic for opening an existing file goes here...
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.ExistingFile)
@@ -63,25 +54,12 @@ class MyMenuBar(QMenuBar):
 
         if dialog.exec_():
             path = dialog.selectedFiles()[0]
-            filename = path[path.rfind('/')+1:path.rfind('.')]
-            self.parent().app.open_project(filename)
+            self.parent().app.open_project(path)
         else:
             pass
 
-    def saveFile(self):
-        print("saveFile")
-
-
-class MyApp(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.windows = []
-        self.open_project()
-
-    def open_project(self, filename=None):
-        new_windows = MainWindow(app=self, project=filename)
-        self.windows.append(new_windows)
-        new_windows.show()
+    def save_file(self):
+        self.parent().save_file()
 
 
 class MainWindow(QMainWindow):
@@ -89,20 +67,8 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.app = app
         self.project = Project.load_project(project)
-        self.ui_conf = self._load_ui_conf()
         self.MainLayout = QVBoxLayout()
         self.initUI()
-
-    def clearLayout(self, layout):
-        for i in reversed(range(layout.count())):
-            print(type(layout.itemAt(i)))
-            # print(i, layout.itemAt(i))
-            if (type(layout.itemAt(i)) == QWidgetItem):
-                widget = layout.itemAt(i).widget()
-                layout.removeWidget(widget)
-                widget.setParent(None)
-            elif (type(layout.itemAt(i)) == QLayout):
-                self.clearLayout(layout.itemAt(i))
 
     def initUI(self):
       # Create Component
@@ -111,7 +77,8 @@ class MainWindow(QMainWindow):
 
         self.btn_clearData = QPushButton('Clear data')
         self.btn_processingDlg = QPushButton('Operation')
-        self.wg_canvas = MyCanvas(self, ui_conf=self.ui_conf["MyCanvas"])
+        self.wg_canvas = MyCanvas(
+            self, ui_conf=self.project.ui_conf["MyCanvas"])
         self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
         self.dwg_canvasLayout = DockWidget_CanvasLayout(
             self, Qt.LeftDockWidgetArea)
@@ -124,7 +91,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(MainWidget)
 
       # Style and Setting
-        self.setWindowTitle("Python Menus & Toolbars")
+        self.setWindowTitle(self.project.info["Name"])
         self.resize(1600, 800)
         self.setContentsMargins(0, 0, 0, 0)
         self.MainLayout.setContentsMargins(0, 0, 0, 0)
@@ -134,8 +101,7 @@ class MainWindow(QMainWindow):
         self.btn_processingDlg.clicked.connect(
             self.btn_processingDlg_handleClicked)
 
-   # Btn Func - Clear data
-
+  # Handle Functions
     def btn_clearData_handleClicked(self):
         for _c in self.wg_canvas.canvasPool:
             for ax in _c.fig.axes:
@@ -162,37 +128,34 @@ class MainWindow(QMainWindow):
         else:
             pass
 
-# Canves Pool Func
-
+  # Canves Pool Func
     def update_file(self, file):
         self.project.files.append(file)
         self.dwg_data.append_file(file)
-        # self.dump()
 
-    def dump(self):
-        self.project.dump()
-        self.update_ui_conf()
+    def save_file(self):
+        if (self.project.info["Name"] == "Untitled"):
+            print("Untitle")
+            file_path, file_type = QFileDialog.getSaveFileName(
+                self, 'Save File', 'Untitle', "Pickle Files (*.pkl)")
+            self.project.info['File Location'] = file_path[0:file_path.rfind(
+                '/')]
+            self.project.info['Name'] = file_path[file_path.rfind(
+                '/')+1:file_path.rfind('.')]
 
-        # self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
-        # self.project.files[0].sequence['CEA2034'][0].dump()
-    def _load_ui_conf(self):
-        with open("ui_conf.json", "r") as fj:
-            ui_conf = json.load(fj)
-        return ui_conf
+        self.project.dump(location=self.project.get_path())
 
-    def update_ui_conf(self):
-        self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
-        for mode, canvas_set in self.wg_canvas.status.items():
-            self.ui_conf["MyCanvas"]["status"][mode] = [
-                _c.id for _c in canvas_set]
-        for _c in self.wg_canvas.canvasPool:
-            self.ui_conf["MyCanvas"]["canvasPool"][str(_c.id)]["types"] = [
-                _t.value for _t in _c.ax_types]
-            self.ui_conf["MyCanvas"]["canvasPool"][str(
-                _c.id)]["parameter"] = _c.parameter
-        with open("ui_conf.json", "w") as fj:
-            json.dump(self.ui_conf, fj)
-        print("update_ui_conf", self.ui_conf)
+
+class MyApp(QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.windows = []
+        self.open_project()
+
+    def open_project(self, filename=None):
+        new_windows = MainWindow(app=self, project=filename)
+        self.windows.append(new_windows)
+        new_windows.show()
 
 
 def main():

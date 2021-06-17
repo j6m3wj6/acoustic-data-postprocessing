@@ -3,6 +3,7 @@ import pickle
 import sys
 import dill
 import datetime as dt
+import json
 from matplotlib.lines import Line2D
 from textwrap import fill
 
@@ -42,44 +43,77 @@ AXIS_SCALE = {
 
 
 class Project():
-    def __init__(self):
+    def __init__(self, name="Untitled"):
         self.info = {
-            "Name": "myproject",
-            "File Path": sys.path[0],
-            'Import Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
-            'Last Modified Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+            "Name": name,
+            "File Location": sys.path[0],
+            'Create Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+            'Last Saved Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
         }
         self.files = []
+        self.ui_conf = self.default_ui_conf()
+        # self.ui_conf = None
 
     def print(self):
         print(self.info)
+        print(self.get_path())
         for _f in self.files:
             _f.print()
 
-    def dump(self):
+    def get_path(self):
+        return self.info['File Location'] + '/' + self.info['Name'] + '.pkl'
+
+    def dump(self, location=None):
+        if not location:
+            location = self.get_path()
+
         self.print()
         try:
-            with open(f"%s.pkl" % (self.info['Name']), 'wb') as fh:
+            with open(location, 'wb') as fh:
                 pickle.dump(self, fh)
+                self.info["Last Saved Time"] = dt.datetime.today().strftime(
+                    "%Y/%m/%d %H:%M:%S")
         except:
             print(dill.detect.badobjects(self, depth=0))
             print(dill.detect.badobjects(self, depth=1))
             print(dill.detect.badobjects(self, depth=2))
 
     @classmethod
-    def load_project(cls, project_name):
-        print("unpickle:", project_name)
-        try:
-            fh = open(f"%s.pkl" % (project_name), 'rb')
-            # with open(f"%s.pkl" % (project_name), 'rb') as fh:
-            unpickled_data = pickle.load(fh)
-            print(unpickled_data.print())
-            print("----------------------------------")
-            fh.close()
-            return unpickled_data
-        except Exception as e:
-            print(e)
+    def load_project(cls, location=None):
+        print("unpickle:", location)
+        if location == "None":
             return Project()
+        else:
+            try:
+                fh = open(location, 'rb')
+                # with open(f"%s.pkl" % (location), 'rb') as fh:
+                unpickled_data = pickle.load(fh)
+                print(unpickled_data.print())
+                print("----------------------------------")
+                fh.close()
+                return unpickled_data
+            except Exception as e:
+                print(e)
+                return Project()
+
+    def default_ui_conf(self):
+        with open("./lib/ui_conf.json", "r") as fj:
+            ui_conf = json.load(fj)
+        return ui_conf
+
+    def update_ui_conf(self):
+        self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
+        for mode, canvas_set in self.wg_canvas.status.items():
+            self.ui_conf["MyCanvas"]["status"][mode] = [
+                _c.id for _c in canvas_set]
+        for _c in self.wg_canvas.canvasPool:
+            self.ui_conf["MyCanvas"]["canvasPool"][str(_c.id)]["types"] = [
+                _t.value for _t in _c.ax_types]
+            self.ui_conf["MyCanvas"]["canvasPool"][str(
+                _c.id)]["parameter"] = _c.parameter
+        # with open("ui_conf.json", "w") as fj:
+        #     json.dump(self.ui_conf, fj)
+        # print("update_ui_conf", self.ui_conf)
 
 
 class FileData():
@@ -98,7 +132,9 @@ class FileData():
         print("\tName: %s \n\tSource: %s \n\tfile_path: %s" %
               (self.info["Name"], self.info["Source"], self.info["File Path"]))
         print("\tImport time: ", self.get_import_time())
-        print("\tSequence:", self.sequence)
+        print("\tSequence:")
+        for curveData in self.sequence['CEA2034']:
+            curveData.print()
         print("-----------------------------\n\n")
 
     def setData(self, dataSequence):
@@ -182,13 +218,16 @@ class CurveData:
         (index, freq) = min(enumerate(xdata), key=lambda x: abs(x[1]-freq))
         offset = targetDB - ydata[index]
         self.shift(offset)
-  # Save and Sync
 
+  # Save and Sync
     def sync_with_line(self):
-        self.label = self.line.get_label()
-        self.line_props["legend"] = self.line.get_label()
-        self.line_props["color"] = self.line.get_color()
-        self.line_props["linewidth"] = self.line.get_linewidth()
+        if self.line:
+            self.label = self.line.get_label()
+            self.line_props["legend"] = self.line.get_label()
+            self.line_props["color"] = self.line.get_color()
+            self.line_props["linewidth"] = self.line.get_linewidth()
+        else:
+            pass
 
     def dump(self):
         self.print()
