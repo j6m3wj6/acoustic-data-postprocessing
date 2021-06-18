@@ -41,7 +41,7 @@ class MyMenuBar(QMenuBar):
             self.parent().dwg_data.btn_importDlg_handleClicked)
 
     def new_file(self):
-        self.parent().parent().open_project()
+        self.parent().app.open_project()
 
     def open_file(self):
         # Logic for opening an existing file goes here...
@@ -52,7 +52,7 @@ class MyMenuBar(QMenuBar):
 
         if dialog.exec_():
             path = dialog.selectedFiles()[0]
-            self.parent().parent().open_project(path)
+            self.parent().app.open_project(path)
         else:
             pass
 
@@ -61,8 +61,9 @@ class MyMenuBar(QMenuBar):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, parent=None, project=None):
+    def __init__(self, parent=None, app=None, project=None):
         super().__init__(parent)
+        self.app = app
         self.project = Project.load_project(project)
         self.initUI()
 
@@ -150,7 +151,7 @@ class MyApp(QMainWindow):
 
     def open_project(self, project_path=None):
         print("open")
-        new_windows = MainWindow(parent=self, project=project_path)
+        new_windows = MainWindow(app=self, project=project_path)
         self.windows.append(new_windows)
         new_windows.show()
 

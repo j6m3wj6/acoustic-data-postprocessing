@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from .dlg_axes_parameter import Parameter_Dialog
-from .icons import *
+import os
 
 
 class MyToolBar(NavigationToolbar2QT):
@@ -73,7 +73,7 @@ class MyToolBar(NavigationToolbar2QT):
         NavigationToolbar2QT.__init__(self, canvas, self.mainwindow.wg_canvas)
 
     def _create_btn_action(self, name, icon_name, hover_text, parent, callback):
-        icon_dir = f"./icons/%s.png" % (icon_name)
+        icon_dir = f"./src/lib/icons/%s.png" % (icon_name)
 
         button_action = QAction(QIcon(icon_dir), hover_text, parent)
 
