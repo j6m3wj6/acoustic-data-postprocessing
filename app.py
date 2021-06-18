@@ -23,27 +23,25 @@ class MyMenuBar(QMenuBar):
         fileMenu.addAction(self.act_new)
         fileMenu.addAction(self.act_open)
         fileMenu.addAction(self.act_save)
-        fileMenu.addAction(self.act_exit)
+        fileMenu.addAction(self.act_import)
 
     def _createActions(self):
       # Creating Components
-        self.act_new = QAction("&New", self)
-        self.act_open = QAction("&Open", self)
-        self.act_save = QAction("&Save", self)
-        self.act_exit = QAction("&Exit", self)
-        self.act_copy = QAction("&Copy", self)
-        self.act_paste = QAction("&Paste", self)
-        self.act_cut = QAction("&Cut", self)
-        self.act_helpContent = QAction("&Help Content", self)
-        self.act_about = QAction("&About", self)
+        self.act_new = QAction("&New Project", self)
+        self.act_open = QAction("&Open Project", self)
+        self.act_save = QAction("&Save Project", self)
+        self.act_import = QAction("&Import File", self)
+
       # Connect Functions
         # Connect File actions
         self.act_new.triggered.connect(self.new_file)
         self.act_open.triggered.connect(self.open_file)
         self.act_save.triggered.connect(self.save_file)
+        self.act_import.triggered.connect(
+            self.parent().dwg_data.btn_importDlg_handleClicked)
 
     def new_file(self):
-        self.parent().app.open_project()
+        self.parent().parent().open_project()
 
     def open_file(self):
         # Logic for opening an existing file goes here...
@@ -54,7 +52,7 @@ class MyMenuBar(QMenuBar):
 
         if dialog.exec_():
             path = dialog.selectedFiles()[0]
-            self.parent().app.open_project(path)
+            self.parent().parent().open_project(path)
         else:
             pass
 
@@ -63,18 +61,13 @@ class MyMenuBar(QMenuBar):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, parent=None, app=None, project=None):
+    def __init__(self, parent=None, project=None):
         super().__init__(parent)
-        self.app = app
         self.project = Project.load_project(project)
-        self.MainLayout = QVBoxLayout()
         self.initUI()
 
     def initUI(self):
       # Create Component
-        self.menutopbar = MyMenuBar(self)
-        self.setMenuBar(self.menutopbar)
-
         self.btn_clearData = QPushButton('Clear data')
         self.btn_processingDlg = QPushButton('Operation')
         self.wg_canvas = MyCanvas(
@@ -83,18 +76,21 @@ class MainWindow(QMainWindow):
         self.dwg_canvasLayout = DockWidget_CanvasLayout(
             self, Qt.LeftDockWidgetArea)
         self.dwg_canvasLayout._setCanvasLayout_Main(self.wg_canvas)
-
+        self.menutopbar = MyMenuBar(self)
       # Layout
-        MainWidget = QWidget()
-        self.MainLayout.addWidget(self.wg_canvas)
-        MainWidget.setLayout(self.MainLayout)
-        self.setCentralWidget(MainWidget)
+        vbly_main = QVBoxLayout()
+        wg_main = QWidget()
+        wg_main.setObjectName("wg_central")
+        vbly_main.addWidget(self.wg_canvas)
+        wg_main.setLayout(vbly_main)
+        self.setMenuBar(self.menutopbar)
+        self.setCentralWidget(wg_main)
 
       # Style and Setting
         self.setWindowTitle(self.project.info["Name"])
-        self.resize(1600, 800)
+        self.resize(1600, 900)
         self.setContentsMargins(0, 0, 0, 0)
-        self.MainLayout.setContentsMargins(0, 0, 0, 0)
+        vbly_main.setContentsMargins(0, 0, 0, 0)
 
       # Connect Functions
         self.btn_clearData.clicked.connect(self.btn_clearData_handleClicked)
@@ -135,7 +131,6 @@ class MainWindow(QMainWindow):
 
     def save_file(self):
         if (self.project.info["Name"] == "Untitled"):
-            print("Untitle")
             file_path, file_type = QFileDialog.getSaveFileName(
                 self, 'Save File', 'Untitle', "Pickle Files (*.pkl)")
             self.project.info['File Location'] = file_path[0:file_path.rfind(
@@ -147,26 +142,49 @@ class MainWindow(QMainWindow):
 
 
 class MyApp(QMainWindow):
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.windows = []
         self.open_project()
 
-    def open_project(self, filename=None):
-        new_windows = MainWindow(app=self, project=filename)
+    def open_project(self, project_path=None):
+        print("open")
+        new_windows = MainWindow(parent=self, project=project_path)
         self.windows.append(new_windows)
         new_windows.show()
 
 
 def main():
-    app = QApplication(sys.argv)
-    app.setStyleSheet("""
-        QWidget {
-            font-family: Arial;
-        }
-    """)
-    MyApp()
-    sys.exit(app.exec_())
+    print("APP")
+    try:
+        app = QApplication(sys.argv)
+        app.setStyleSheet("""
+            QWidget {
+                font-family: Arial;
+            }
+            QMainWindow {
+                background-color: white;
+                font-family: Arial;
+            }
+            QMainWindow QWidget#wg_central{
+                background-color: #efefef;
+                border: 2px solid #808080;
+            }
+            QDockWidget QWidget#wg_main {
+                border-left: 2px solid #808080;
+                border-bottom: 2px solid #808080;
+                border-right: 2px solid #808080;
+            }
+            QMenuBar QMenu {
+                padding: 2px 5px
+            }
+
+        """)
+        MyApp()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':

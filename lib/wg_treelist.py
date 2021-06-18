@@ -38,8 +38,10 @@ class MyTree(QTreeWidget):
                 if curveData.line not in ax.lines:
                     curveData.create_line2D(ax)
                     curveData.line_props["visible"] = True
+
             item.setData(0, QtCore.Qt.UserRole, curveData)
             canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
+
         canvas.replot()
 
     def handleSelect(self):

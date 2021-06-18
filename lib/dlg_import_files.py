@@ -26,7 +26,7 @@ class Wg_ImportFile(QWidget):
         self.tb_files = QTableWidget()
         self.tb_files.setColumnCount(3)
         self.tb_files.setHorizontalHeaderLabels(
-            ['Source', 'FileName', 'DateTime'])
+            ['    Source    ', '    FileName    ', '    DateTime    '])
       # Layout
         self.hbly_main = QHBoxLayout(self)
         self.vbly_left = QVBoxLayout()
@@ -47,9 +47,19 @@ class Wg_ImportFile(QWidget):
         self.vbly_right.addWidget(self.btn_clearFile)
         self.vbly_right.addWidget(self.btn_exportFile)
       # Style and Setting
-        self.tb_files.horizontalHeader().setStretchLastSection(True)
+        headerview = self.tb_files.horizontalHeader()
+        # headerview.setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        # headerview.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        headerview.setSectionResizeMode(1, QHeaderView.Stretch)
+        # self.tb_files.horizontalHeader().setStretchLastSection(True)
         self.tb_files.resizeColumnsToContents()
         self.tb_files.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tb_files.setStyleSheet("""
+            QTableView::item {
+                padding-left: 50px;
+                padding-right: 50px;
+            }
+        """)
 
     def tb_files_reload_status(self, files):
         for _f in files:
@@ -62,7 +72,6 @@ class Wg_ImportFile(QWidget):
             self.tb_files.setItem(
                 row, 2, QTableWidgetItem(_f.get_import_time()))
 
-
 class ImportDialog(QDialog):
     def __init__(self, parent=None, mainwindow=None):
         super().__init__(parent)
@@ -70,8 +79,6 @@ class ImportDialog(QDialog):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("Operation Window")
-        self.resize(800, 600)
       # Create Component
         self.wg_importFile = Wg_ImportFile(files=self.mainwindow.project.files)
 
@@ -89,7 +96,7 @@ class ImportDialog(QDialog):
         self.setLayout(vbly_main)
       # Style and Setting
         self.setWindowTitle("Operation Window")
-        self.resize(800, 600)
+        self.setFixedSize(800, 400)
       # Connect Functions
         self.wg_importFile.btn_importAP.clicked.connect(
             lambda: self.import_file("AP"))

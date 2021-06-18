@@ -14,7 +14,6 @@ class CanvasSetting_Dialog(QDialog):
         # self.form_parameter = self._load_form_parameter()
 
     def _load_form_parameter(self):
-
         for idx, _c in enumerate(self.wg_canvas.canvasPool):
             cbox_ax0 = self.form_parameter["Canvas"][idx]["ax0"]
             cbox_ax0.setCurrentIndex(CurveType.index(_c.ax_types[0]))
@@ -85,7 +84,8 @@ class CanvasSetting_Dialog(QDialog):
         ax_id = int(bool(axis.objectName() == "ax1"))
         _type = CurveType(event)
         type_transfer = canvas.set_ax_type(ax_id, _type)
-        self.mainwindow.dwg_data.tree.set_children_checkstate(_type, Qt.Unchecked)
+        self.mainwindow.dwg_data.tree.set_children_checkstate(
+            _type, Qt.Unchecked)
         self.mainwindow.dwg_data.tree.set_children_checkstate(
             type_transfer, Qt.Unchecked)
         self.wg_canvas.replot()

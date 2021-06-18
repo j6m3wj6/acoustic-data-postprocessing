@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from .wg_toolbar import *
 from .data_objects import *
+from .ui_conf import FIGURE_CONF
 
 
 class Draggable_lines:
@@ -53,11 +54,10 @@ class Draggable_lines:
 
 
 class MyCanvasItem(FigureCanvasQTAgg):
-    def __init__(self, parent=None, id=None, types_=[], params=DEFUALT_CANVAS_PARAMETER):
+    def __init__(self, parent=None, id=None, types_=[], params=FIGURE_CONF):
         # Canvas init
         self.fig, _ = plt.subplots(constrained_layout=True)
         super(MyCanvasItem, self).__init__(self.fig)
-
         self.name = f"%s | %s" % (types_[0].value, types_[1].value)
         self.id = id
         self.parameter = params
@@ -86,22 +86,33 @@ class MyCanvasItem(FigureCanvasQTAgg):
             ax.set_ymargin(0.1)
 
         self.set_style()
-
-    # def _create_draggable_lines(self):
+        self.fig.set_constrained_layout_pads(w_pad=10/72., h_pad=10/72.,
+                                             hspace=0.5, wspace=0.5)
 
     def set_focus(self, focus):
         if focus:
-            self.fig.set_edgecolor("red")
+            self.fig.set_edgecolor("#0D3B66")
             self.fig.patch.set_linewidth(3)
         else:
             self.fig.set_edgecolor("#efefef")
             self.fig.patch.set_linewidth(0.5)
 
     def set_style(self):
-        param_gen = self.parameter["General"]
-        param_axis = self.parameter["Axis"]
-        self.ax_main.set_title(param_gen["Title"])
 
+        param_gen = self.parameter["General"]
+        print(self.parameter)
+        self.ax_main.set_title(param_gen["Title"])
+        for idx, _type in enumerate(self.ax_types):
+            if _type == CurveType.THD:
+                self.fig.axes[idx].yaxis.set_major_formatter(
+                    matplotlib.ticker.PercentFormatter())
+
+        w_pad = param_gen["Margin"]["left-right"]
+        h_pad = param_gen["Margin"]["top-bottom"]
+        self.fig.set_constrained_layout_pads(w_pad=w_pad/72., h_pad=h_pad/72.,
+                                             hspace=0.5, wspace=0.5)
+
+        param_axis = self.parameter["Axis"]
         if (param_axis["Y-Axis"]['auto-scale']):
             self.ax_main.set_ylim(auto=True)
         else:
@@ -113,6 +124,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
         else:
             self.ax_sub.set_ylim(
                 [int(param_axis["Sub_Y-Axis"]['min']), int(param_axis["Sub_Y-Axis"]['max'])])
+
         for ax in self.fig.axes:
             ax.set_xscale(param_axis["X-Axis"]['scale'])
             if (param_axis["X-Axis"]['auto-scale']):
@@ -133,26 +145,28 @@ class MyCanvasItem(FigureCanvasQTAgg):
         #         self.ylim[0] = line_ymin
 
         legend_visible = self.parameter["General"]["Legend"]["visible"]
-        handles, labels = self.ax_main.get_legend_handles_labels()
-        self.ax_main.plot()
-        if legend_visible:
-            if labels:
-                self.ax_main.legend(bbox_to_anchor=(1.07, .5, .18, .5),
-                                    loc="upper left", borderaxespad=0)
-            else:
-                leg = self.ax_main.legend([])
-                leg.remove()
-
         handles, labels = self.ax_sub.get_legend_handles_labels()
+        pad_h = .03
         if self.ax_sub.get_visible():
             self.ax_sub.plot()
+            pad_h = .07
             if legend_visible:
                 if labels:
-                    self.ax_sub.legend(bbox_to_anchor=(1.07, 0, .18, .5),
+                    self.ax_sub.legend(bbox_to_anchor=(1+pad_h, 0, 1, .5),
                                        loc="lower left", borderaxespad=0)
                 else:
                     leg = self.ax_main.legend([])
                     leg.remove()
+
+        handles, labels = self.ax_main.get_legend_handles_labels()
+        self.ax_main.plot()
+        if legend_visible:
+            if labels:
+                self.ax_main.legend(bbox_to_anchor=(1+pad_h, .5, 1, .5),
+                                    loc="upper left", borderaxespad=0)
+            else:
+                leg = self.ax_main.legend([])
+                leg.remove()
         self.draw()
 
     def set_ax_type(self, ax, _type):
@@ -265,9 +279,7 @@ class MyCanvas(QWidget):
         self.setLayout(self.vbly)
 
         # Layout Styling
-        # self.setContentsMargins(0,0,0,0)
-        # self.vbly.setContentsMargins(0,0,0,0)
-        # self.gdly_canvasPool.setContentsMargins(0,0,0,0)
+        self.vbly.setSpacing(0)
 
     def _add_canvas(self, types_):
         id = self.canvasPool.count()

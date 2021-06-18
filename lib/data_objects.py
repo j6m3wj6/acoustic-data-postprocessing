@@ -6,6 +6,7 @@ import datetime as dt
 import json
 from matplotlib.lines import Line2D
 from textwrap import fill
+from .ui_conf import *
 
 
 class Extended_Enum(Enum):
@@ -27,21 +28,6 @@ class CurveType(Extended_Enum):
     EX = 'Excursion'
 
 
-LINEWIDTH_DEFAULT = 1.5
-LINEWIDTH_HIGHLIGHT = 4
-LEGEND_WRAP = 25
-
-COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c',
-          '#d62728', '#9467bd', '#8c564b', '#e377c2',
-          '#7f7f7f', '#bcbd22', '#17becf']
-
-AXIS_SCALE = {
-    "all": ["linear", "log"],
-    "SPL": "log",
-    "Imp": "log",
-}
-
-
 class Project():
     def __init__(self, name="Untitled"):
         self.info = {
@@ -51,8 +37,7 @@ class Project():
             'Last Saved Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
         }
         self.files = []
-        self.ui_conf = self.default_ui_conf()
-        # self.ui_conf = None
+        self.ui_conf = UI_CONF
 
     def print(self):
         print(self.info)
@@ -95,11 +80,6 @@ class Project():
             except Exception as e:
                 print(e)
                 return Project()
-
-    def default_ui_conf(self):
-        with open("./lib/ui_conf.json", "r") as fj:
-            ui_conf = json.load(fj)
-        return ui_conf
 
     def update_ui_conf(self):
         self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
@@ -199,6 +179,7 @@ class CurveData:
         return dictToJSON
 
     def create_line2D(self, ax):
+
         self.line, = ax.plot(self.xdata, self.ydata,
                              label=self.line_props["legend"], color=self.line_props["color"], picker=True)
 
@@ -236,46 +217,3 @@ class CurveData:
                 pickle.dump(self, fh)
         except:
             print(dill.detect.baditems(self))
-
-
-DEFUALT_CANVAS_PARAMETER = {
-    "General": {
-        "Title": "SPL | THD",
-        "Margin": {
-            "left": 10,
-            "right": 10,
-            "top": 10,
-            "bottom": 10
-        },
-        "Legend": {
-            "visible": True,
-            "wrap": 25
-        }
-    },
-    "Axis": {
-        "X-Axis": {
-            "auto-scale": False,
-            "min": 20,
-            "max": 20000,
-            "label": "Frequency",
-            "unit": "Hz",
-            "scale": "log"
-        },
-        "Y-Axis": {
-            "auto-scale": True,
-            "min": 0,
-            "max": 100,
-            "label": "",
-            "unit": "dBSPL",
-            "scale": "log"
-        },
-        "Sub_Y-Axis": {
-            "auto-scale": True,
-            "min": 0,
-            "max": 100,
-            "label": "",
-            "unit": "dBSPL",
-            "scale": "log"
-        }
-    }
-}

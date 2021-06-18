@@ -35,14 +35,15 @@ class DockWidget_Data(QDockWidget):
         self.tab_data.addTab(QWidget(), "EXC")
       # Layout
         page_ALL.setLayout(self.tree_layout)
-        self.dockWidgetContents_data = QWidget()
-        self.setWidget(self.dockWidgetContents_data)
-        vBoxLayout = QVBoxLayout(self.dockWidgetContents_data)
-        vBoxLayout.addWidget(btn_importDlg)
-        vBoxLayout.addWidget(self.tab_data)
+        wg = QWidget()
+        wg.setObjectName("wg_main")
+        self.setWidget(wg)
+        vbly = QVBoxLayout(wg)
+        vbly.addWidget(btn_importDlg)
+        vbly.addWidget(self.tab_data)
         mainwindow.addDockWidget(Qt.DockWidgetArea(Position), self)
       # Style and Setting
-        vBoxLayout.setContentsMargins(0, 0, 0, 0)
+        vbly.setContentsMargins(10, 0, 10, 0)
       # Connect Functions
         btn_importDlg.clicked.connect(self.btn_importDlg_handleClicked)
         self.tab_data.currentChanged.connect(self.handleChange)

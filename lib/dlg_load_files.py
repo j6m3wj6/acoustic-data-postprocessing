@@ -5,6 +5,7 @@ import pandas as pd
 from .wg_canvas import *
 import datetime as dt
 import random
+import json
 
 
 def load_file(source):
@@ -14,16 +15,20 @@ def load_file(source):
     DATA = None
 
     if dialog.exec_():
-        file_name = dialog.selectedFiles()
-        path = file_name[0]
-        if (source == 'LEAP'):
-            DATA = load_LEAP_fileData(path)
-        elif (source == 'AP'):
-            DATA = load_AP_fileData(path)
-        elif (source == 'KLIPPEL'):
-            DATA = load_KLIPPEL_fileData(path)
-        elif (source == 'Comsol'):
-            DATA = load_Comsol_fileData(path)
+        try:
+            file_name = dialog.selectedFiles()
+            path = file_name[0]
+            if (source == 'LEAP'):
+                DATA = load_LEAP_fileData(path)
+            elif (source == 'AP'):
+                DATA = load_AP_fileData(path)
+            elif (source == 'KLIPPEL'):
+                DATA = load_KLIPPEL_fileData(path)
+            elif (source == 'Comsol'):
+                DATA = load_Comsol_fileData(path)
+        except Exception as e:
+            print("ERROR: e")
+            DATA = None
     else:
         pass
     return DATA
@@ -127,6 +132,9 @@ def load_KLIPPEL_fileData(path):
                             file_path=path, import_time=dt.datetime.today())
 
             headers = file.readlines()[:3]
+            if headers[0][0] == '%':
+                raise Exception(
+                    "file header start with %, it is a comsole file")
             test_name = headers[0].strip().strip('"')
             labels = headers[1].split('\t\t')
             labels = [c.replace('"', '').strip() for c in labels]

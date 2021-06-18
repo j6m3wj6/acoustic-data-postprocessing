@@ -9,13 +9,14 @@ from .icons import *
 
 class MyToolBar(NavigationToolbar2QT):
     def __init__(self, canvas, parent=None):
-        # toolitem = (name, icon_name, hover_text, callback)
-        # self.toolitems = [('Subplots', 'putamus parum claram', 'subplots', 'configure_subplots')]
         self.mainwindow = parent
         self.focusing_canvas = canvas
 
-        self.toolitems = []
-        toolitems = [
+        self.lb_canvas = QLabel()
+        self.toolitems = []  # clear NavigationToolbar2QT object default setting
+        self.actions = {}
+
+        toolitems = [       # toolitem = (name, icon_name, hover_text, callback)
             ('Home', 'home', 'Default-view', 'home'),
             ('Back', 'back-arrow', 'Previous view', 'back'),
             ('Forward', 'forward-arrow', 'Next view', 'forward'),
@@ -26,30 +27,24 @@ class MyToolBar(NavigationToolbar2QT):
             ('Lines', 'cross-line', 'Draggable vertical line', 'show_draggable_lines'),
             ('Y-scale', 'y-scale', 'Autoscale y axis', 'autoscale_yaxis'),
         ]
-        self.actions = {}
         NavigationToolbar2QT.__init__(self, canvas, parent)
-        self.setIconSize(QtCore.QSize(24, 24))
-        self.setStyleSheet("""
-            spacing: 3px;
-        """)
 
-        # self.addWidget(self.cbox_canvas)
-        self.lb_canvas = QLabel()
-        self.lb_canvas.setStyleSheet("""
-            border: 1.5px solid red;
-            border-radius: 4px;
-            padding: 4px;
-        """)
+      # Add actions by order
         self.addWidget(self.lb_canvas)
-
         for t in toolitems:
             (name, icon_name, hover_text, callback) = t
             button_action = self._create_btn_action(
                 name, icon_name, hover_text, self, callback)
             self.actions[name] = button_action
             self.addAction(button_action)
-        # self.setFixedHeight(36)
+      # Style and Setting
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setIconSize(QtCore.QSize(24, 24))
+        self.lb_canvas.setStyleSheet("""
+            border: 1.5px solid #0D3B66;
+            border-radius: 4px;
+            padding: 4px;
+        """)
 
     def edit_parameter(self):
         dlg = Parameter_Dialog(mainwindow=self.mainwindow)
@@ -78,8 +73,8 @@ class MyToolBar(NavigationToolbar2QT):
         NavigationToolbar2QT.__init__(self, canvas, self.mainwindow.wg_canvas)
 
     def _create_btn_action(self, name, icon_name, hover_text, parent, callback):
-        icon_dir = f"./lib/icons/%s.png" % (icon_name)
-        # icon_dir = f":/icons/{icon_name}.png"
+        icon_dir = f"./icons/%s.png" % (icon_name)
+
         button_action = QAction(QIcon(icon_dir), hover_text, parent)
 
         button_action.triggered.connect(getattr(self, callback))

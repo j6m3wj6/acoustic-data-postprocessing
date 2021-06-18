@@ -197,10 +197,8 @@ class Parameter_Dialog(QDialog):
             "General": {
                 "Title": QLineEdit(),
                 "Margin": {
-                    "left": QLineEdit(),
-                    "right": QLineEdit(),
-                    "top": QLineEdit(),
-                    "bottom": QLineEdit(),
+                    "left-right": QLineEdit(),
+                    "top-bottom": QLineEdit(),
                 },
                 "Legend": {
                     "visible": QCheckBox(),
@@ -222,7 +220,7 @@ class Parameter_Dialog(QDialog):
                     "max": QLineEdit(),
                     "label": QLineEdit(),
                     "unit": QLineEdit(),
-                    "scale": self._create_cbox_scale()
+                    # "scale": self._create_cbox_scale()
                 },
                 "Sub_Y-Axis": {
                     "auto-scale": QCheckBox(),
@@ -230,7 +228,7 @@ class Parameter_Dialog(QDialog):
                     "max": QLineEdit(),
                     "label": QLineEdit(),
                     "unit": QLineEdit(),
-                    "scale": self._create_cbox_scale()
+                    # "scale": self._create_cbox_scale()
                 }
             },
         }
@@ -301,8 +299,11 @@ class Parameter_Dialog(QDialog):
         self.vbly.addWidget(buttonBox)
         self.setLayout(self.vbly)
       # Style and Setting
-        self.resize(400, 600)
+        self.resize(600, 600)
         self.setStyleSheet("""
+            QLabel {
+                max-width: 90px;
+            }
             QLineEdit {
                 max-width: 100px;
             }
@@ -364,6 +365,8 @@ class Parameter_Dialog(QDialog):
                     info[info_k] = param_v.text()
                 elif isinstance(param_v, QCheckBox):
                     info[info_k] = bool(param_v.checkState())
+                elif isinstance(param_v, QComboBox):
+                    info[info_k] = param_v.currentText()
                 else:
                     pass
 
