@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>mainwindow module &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lib package" href="lib.html" />
+    <link rel="prev" title="App module documentation!" href="app.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="app.html">App module documentation!</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mainwindow module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lib.html">lib package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>mainwindow module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/mainwindow.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-mainwindow">
+<span id="mainwindow-module"></span><h1>mainwindow module<a class="headerlink" href="#module-mainwindow" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="mainwindow.MainWindow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mainwindow.</span></span><span class="sig-name descname"><span class="pre">MainWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMainWindow</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app</strong> (<a class="reference internal" href="app.html#app.MyApp" title="app.MyApp"><em>MyApp</em></a>) – Object MyApp.</p></li>
+<li><p><strong>project</strong> (<a class="reference internal" href="lib.html#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – A Project object retrieved from existing project file(.pkl)
+or a empty Project object with default setting.</p></li>
+<li><p><strong>menutopbar</strong> (<a class="reference internal" href="lib.html#lib.wg_menubar.MyMenuBar" title="lib.wg_menubar.MyMenuBar"><em>MyMenuBar</em></a>) – mainwindow’s menubar.</p></li>
+<li><p><strong>wg_canvas</strong> (<a class="reference internal" href="lib.html#lib.wg_canvas.MyCanvas" title="lib.wg_canvas.MyCanvas"><em>MyCanvas</em></a>) – A self-defined QWidget component placed on the center of the mainwindow.</p></li>
+<li><p><strong>dwg_data</strong> (<a class="reference internal" href="lib.html#lib.dockwg_data_treelist.DockWidget_Data" title="lib.dockwg_data_treelist.DockWidget_Data"><em>DockWidget_Data</em></a>) – A self-defined QDockWidget placed on the left area by default 
+that contains imported data listing by a treelist 
+and several functions interacting with the canvases.</p></li>
+<li><p><strong>dwg_canvasLayout</strong> (<a class="reference internal" href="lib.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout" title="lib.dockwg_canvas_layout.DockWidget_CanvasLayout"><em>DockWidget_CanvasLayout</em></a>) – A self-defined QDockWidget placed on the left area by default that buttons
+in order to switch canvas layout mode and customize canvas setting.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial mainwindow’s user interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.btn_clearData_handleClicked">
+<span class="sig-name descname"><span class="pre">btn_clearData_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.btn_clearData_handleClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_clearData</span></code>
+When the button is clicked, all imported datas and curves on canvases would be cleared.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.btn_processingDlg_handleClicked">
+<span class="sig-name descname"><span class="pre">btn_processingDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.btn_processingDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_processingDlg</span></code>
+When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">OperationDialog</span></code> and pop up a dialog window.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.btn_axis_setting_handleClicked">
+<span class="sig-name descname"><span class="pre">btn_axis_setting_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.btn_axis_setting_handleClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_axis_setting</span></code>
+When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">CanvasSetting_Dialog</span></code> and pop up a dialog window.</p>
+<p>It is used for customizing which curve types <code class="docutils literal notranslate"><span class="pre">CurveType</span></code> would be drawn on a canvas.
+Each canvas has main axis and sub axis.
+After dialog window closed, update related component with new setting.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.append_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a new imported file to attributes <code class="docutils literal notranslate"><span class="pre">project</span></code>, 
+And also append to the treelist in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="lib.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mainwindow.MainWindow.save_file">
+<span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mainwindow.MainWindow.save_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save project to file.
+If this project is “Untitled”, which is the default name for a new project, 
+it would execute <code class="docutils literal notranslate"><span class="pre">QFileDialog</span></code> and pop up a dialog window letting user to determain a new name and where to save. 
+Otherwise, it would be updated to the origin project file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="lib.html" class="btn btn-neutral float-right" title="lib package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="app.html" class="btn btn-neutral float-left" title="App module documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

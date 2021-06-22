@@ -1,0 +1,33 @@
+
+# GUI Introduction
+
+## Mainwindow
+
+![01_mainwindow](./_image/01_mainwindow.png)
+
+### Menu Bar
+1. 選單File:
+    - New File
+    - Open File
+    - Save File
+    - Import File
+
+### Setting DockWidget
+預設在左邊的側邊視窗，可切換畫布區域(Canvas Layout)的模式。
+- Main Layout: 單一畫布
+- Up and Down Layout: 上下兩個畫布。
+
+
+
+<div class='columns'>
+<div class="column-item">
+
+![00_pending](./_image/00_pending.png)
+
+</div>
+<div class="column-item">
+
+![00_pending](./_image/00_pending.png)
+
+</div>
+</div>

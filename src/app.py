@@ -1,157 +1,27 @@
-from lib.dockwg_data_treelist import *
-from lib.dlg_operation import *
-from lib.dlg_canvas_setting import *
-from lib.dlg_load_files import *
-from lib.wg_treelist import *
-from lib.wg_canvas import *
-from lib.data_objects import *
-from lib.dockwg_canvas_layout import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-import matplotlib
+# -*- coding:utf-8 -*-
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from mainwindow import MainWindow
 import sys
-import json
-matplotlib.use('Qt5Agg')
-
-
-class MyMenuBar(QMenuBar):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._createActions()
-        fileMenu = QMenu("&File", self)
-        self.addMenu(fileMenu)
-        fileMenu.addAction(self.act_new)
-        fileMenu.addAction(self.act_open)
-        fileMenu.addAction(self.act_save)
-        fileMenu.addAction(self.act_import)
-
-    def _createActions(self):
-      # Creating Components
-        self.act_new = QAction("&New Project", self)
-        self.act_open = QAction("&Open Project", self)
-        self.act_save = QAction("&Save Project", self)
-        self.act_import = QAction("&Import File", self)
-
-      # Connect Functions
-        # Connect File actions
-        self.act_new.triggered.connect(self.new_file)
-        self.act_open.triggered.connect(self.open_file)
-        self.act_save.triggered.connect(self.save_file)
-        self.act_import.triggered.connect(
-            self.parent().dwg_data.btn_importDlg_handleClicked)
-
-    def new_file(self):
-        self.parent().app.open_project()
-
-    def open_file(self):
-        # Logic for opening an existing file goes here...
-        dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        # dialog.setOption(QFileDialog.DontUseNativeDialog)
-        dialog.setNameFilter("PKL files (*.pkl)")
-
-        if dialog.exec_():
-            path = dialog.selectedFiles()[0]
-            self.parent().app.open_project(path)
-        else:
-            pass
-
-    def save_file(self):
-        self.parent().save_file()
-
-
-class MainWindow(QMainWindow):
-    def __init__(self, parent=None, app=None, project=None):
-        super().__init__(parent)
-        self.app = app
-        self.project = Project.load_project(project)
-        self.initUI()
-
-    def initUI(self):
-      # Create Component
-        self.btn_clearData = QPushButton('Clear data')
-        self.btn_processingDlg = QPushButton('Operation')
-        self.wg_canvas = MyCanvas(
-            self, ui_conf=self.project.ui_conf["MyCanvas"])
-        self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
-        self.dwg_canvasLayout = DockWidget_CanvasLayout(
-            self, Qt.LeftDockWidgetArea)
-        self.dwg_canvasLayout._setCanvasLayout_Main(self.wg_canvas)
-        self.menutopbar = MyMenuBar(self)
-      # Layout
-        vbly_main = QVBoxLayout()
-        wg_main = QWidget()
-        wg_main.setObjectName("wg_central")
-        vbly_main.addWidget(self.wg_canvas)
-        wg_main.setLayout(vbly_main)
-        self.setMenuBar(self.menutopbar)
-        self.setCentralWidget(wg_main)
-
-      # Style and Setting
-        self.setWindowTitle(self.project.info["Name"])
-        self.resize(1600, 900)
-        self.setContentsMargins(0, 0, 0, 0)
-        vbly_main.setContentsMargins(0, 0, 0, 0)
-
-      # Connect Functions
-        self.btn_clearData.clicked.connect(self.btn_clearData_handleClicked)
-        self.btn_processingDlg.clicked.connect(
-            self.btn_processingDlg_handleClicked)
-
-  # Handle Functions
-    def btn_clearData_handleClicked(self):
-        for _c in self.wg_canvas.canvasPool:
-            for ax in _c.fig.axes:
-                ax.lines = []
-            _c.replot()
-        self.dwg_data.tab_data.tree.clear()
-        self.project.files = []
-
-    def btn_processingDlg_handleClicked(self):
-        dlg = OperationDialog(mainwindow=self)
-        dlg.exec()
-
-    def btn_axis_setting_handleClicked(self):
-        dlg = CanvasSetting_Dialog(mainwindow=self)
-        if dlg.exec_():
-            print("axisSettingDialog.exec")  # %%%%%%
-            for _lb in self.dwg_canvasLayout.lb_canvas:
-                _lb.set_text(self.wg_canvas.canvasPool[_lb.idx].get_name())
-            for _c in self.wg_canvas.canvasPool:
-                _c.ax_main.set_title(_c.get_title())
-            self.wg_canvas.toolbar.update_focus_canvas(
-                self.wg_canvas.focusing_canvas)
-            self.wg_canvas.replot()
-        else:
-            pass
-
-  # Canves Pool Func
-    def update_file(self, file):
-        self.project.files.append(file)
-        self.dwg_data.append_file(file)
-
-    def save_file(self):
-        if (self.project.info["Name"] == "Untitled"):
-            file_path, file_type = QFileDialog.getSaveFileName(
-                self, 'Save File', 'Untitle', "Pickle Files (*.pkl)")
-            self.project.info['File Location'] = file_path[0:file_path.rfind(
-                '/')]
-            self.project.info['Name'] = file_path[file_path.rfind(
-                '/')+1:file_path.rfind('.')]
-
-        self.project.dump(location=self.project.get_path())
+import traceback
 
 
 class MyApp(QMainWindow):
+    '''
+    :ivar list(MainWindow) windows: store existing windows.
+    '''
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.windows = []
-        self.open_project()
+        self.create_mainwindow()
 
-    def open_project(self, project_path=None):
-        print("open")
-        new_windows = MainWindow(app=self, project=project_path)
+    def create_mainwindow(self, path: str = None) -> None:
+        """
+        Create a new window for a project, and append it in the attrbute ``windows``.
+
+        :param path: The absolute path to retrieve project file (*.pkl)
+        """
+        new_windows = MainWindow(app=self, project_path=path)
         self.windows.append(new_windows)
         new_windows.show()
 
@@ -180,12 +50,26 @@ def main():
             QMenuBar QMenu {
                 padding: 2px 5px
             }
+            QTabBar::scroller QToolButton  {
+                background-color: white;
+            }
+
 
         """)
         MyApp()
         sys.exit(app.exec_())
+
     except Exception as e:
-        print(e)
+        error_class = e.__class__.__name__
+        detail = e.args[0]
+        cl, exc, tb = sys.exc_info()
+        lastCallStack = traceback.extract_tb(tb)[-1]
+        fileName = lastCallStack[0]
+        lineName = lastCallStack[1]
+        funcName = lastCallStack[2]
+        errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(
+            fileName, lineName, funcName, error_class, detail)
+        print(errMsg)
 
 
 if __name__ == '__main__':

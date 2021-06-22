@@ -1,8 +1,9 @@
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from .wg_treelist import *
-from .dlg_load_files import *
+from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QPushButton,\
+    QHBoxLayout, QVBoxLayout, \
+    QDialog, QDialogButtonBox,\
+    QAbstractItemView, QHeaderView
+from PyQt5.QtCore import Qt
+from .dlg_load_files import load_file
 
 
 class Wg_ImportFile(QWidget):
@@ -72,6 +73,7 @@ class Wg_ImportFile(QWidget):
             self.tb_files.setItem(
                 row, 2, QTableWidgetItem(_f.get_import_time()))
 
+
 class ImportDialog(QDialog):
     def __init__(self, parent=None, mainwindow=None):
         super().__init__(parent)
@@ -84,11 +86,8 @@ class ImportDialog(QDialog):
 
         dlg_btnBox = QDialogButtonBox()
         dlg_btnBox.setOrientation(Qt.Horizontal)
-        dlg_btnBox.setStandardButtons(
-            QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        dlg_btnBox.setStandardButtons(QDialogButtonBox.Ok)
         dlg_btnBox.accepted.connect(self.accept)
-        dlg_btnBox.rejected.connect(self.reject)
-        QMetaObject.connectSlotsByName(self)
       # Layout
         vbly_main = QVBoxLayout()
         vbly_main.addWidget(self.wg_importFile)
@@ -123,6 +122,6 @@ class ImportDialog(QDialog):
                     row, 1, QTableWidgetItem(file.info["Name"]))
                 self.wg_importFile.tb_files.setItem(
                     row, 2, QTableWidgetItem(file.get_import_time()))
-                self.mainwindow.update_file(file)
+                self.mainwindow.append_file(file)
         else:
             print("Not support this file!")

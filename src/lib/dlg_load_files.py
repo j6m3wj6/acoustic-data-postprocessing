@@ -1,17 +1,16 @@
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import QDir
 import pandas as pd
-from .wg_canvas import *
 import datetime as dt
 import random
-import json
+from .obj_data import FileData, CurveData, CurveType
+from .ui_conf import COLORS
 
 
 def load_file(source):
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.AnyFile)
-    dialog.setFilter(QtCore.QDir.Files)
+    dialog.setFilter(QDir.Files)
     DATA = None
 
     if dialog.exec_():
@@ -27,7 +26,7 @@ def load_file(source):
             elif (source == 'Comsol'):
                 DATA = load_Comsol_fileData(path)
         except Exception as e:
-            print("ERROR: e")
+            print("ERROR: ", e)
             DATA = None
     else:
         pass
@@ -204,7 +203,7 @@ def load_Comsol_fileData(path):
             note = ""
             rdm = random.randint(1, 100)
             curveData_new = CurveData(
-                label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.FreqRes, color=COLORS[0])
+                label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL, color=COLORS[0])
 
             curveDatas.append(curveData_new)
 
@@ -221,7 +220,7 @@ def determineTypeByTestName(test_name):
     elif ("Impedance" in test_name):
         return CurveType.IMP
     elif ("SPL" in test_name or "CEA" in test_name or 'RMS' in test_name):
-        return CurveType.FreqRes
+        return CurveType.SPL
     elif ("THD" in test_name):
         return CurveType.THD
     else:

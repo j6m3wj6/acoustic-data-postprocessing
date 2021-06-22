@@ -1,7 +1,10 @@
-import json
+ICON_DIR = "./src/icons/"
 
-LINEWIDTH_DEFAULT = 1.5
-LINEWIDTH_HIGHLIGHT = 4
+
+LINEWIDTHS = [1, 1.5, 2.5, 4]
+LINEWIDTH_DEFAULT = LINEWIDTHS[1]
+LINEWIDTH_HIGHLIGHT = LINEWIDTHS[3]
+
 LEGEND_WRAP = 25
 
 COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c',
@@ -10,7 +13,7 @@ COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c',
 
 FIGURE_CONF = {
     "General": {
-        "Title": "SPL | THD",
+        "Title": "",
         "Margin": {
             "left-right": 10,
             "top-bottom": 10,

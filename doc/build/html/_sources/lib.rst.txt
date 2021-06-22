@@ -1,0 +1,114 @@
+lib package
+===========
+
+lib.dlg\_axes\_parameter module
+-------------------------------
+
+.. automodule:: lib.dlg_axes_parameter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dlg\_canvas\_setting module
+-------------------------------
+
+.. automodule:: lib.dlg_canvas_setting
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dlg\_import\_files module
+-----------------------------
+
+.. automodule:: lib.dlg_import_files
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dlg\_load\_files module
+---------------------------
+
+.. automodule:: lib.dlg_load_files
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dlg\_operation module
+-------------------------
+
+.. automodule:: lib.dlg_operation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dockwg\_canvas\_layout module
+---------------------------------
+
+.. automodule:: lib.dockwg_canvas_layout
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.dockwg\_data\_treelist module
+---------------------------------
+
+.. automodule:: lib.dockwg_data_treelist
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.obj\_data module
+--------------------
+
+.. automodule:: lib.obj_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.ui\_conf module
+-------------------
+
+.. automodule:: lib.ui_conf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.wg\_canvas module
+---------------------
+
+.. automodule:: lib.wg_canvas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.wg\_menubar module
+----------------------
+
+.. automodule:: lib.wg_menubar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.wg\_toolbar module
+----------------------
+
+.. automodule:: lib.wg_toolbar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+lib.wg\_treelist module
+-----------------------
+
+.. automodule:: lib.wg_treelist
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: lib
+   :members:
+   :undoc-members:
+   :show-inheritance:

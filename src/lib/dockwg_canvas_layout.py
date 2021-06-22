@@ -1,11 +1,8 @@
-import sys
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-
-from .dlg_load_files import *
-from .wg_treelist import *
+from PyQt5.QtWidgets import QWidget, QWidgetItem, QLabel, QPushButton,\
+    QHBoxLayout, QVBoxLayout, QGridLayout, QScrollArea,\
+    QDockWidget, QSizePolicy
+from PyQt5.QtCore import Qt, QMimeData
+from PyQt5.QtGui import QDrag
 
 
 class Draggable_Label(QLabel):
@@ -59,7 +56,6 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         btn_axis_setting = QPushButton("Axis Setting")
         btn_processing = QPushButton("Post-Processing")
-        btn_save = QPushButton("Save")
 
         # btn_MainwithScrollArea = QPushButton('Main + Scroll')
 
@@ -76,8 +72,6 @@ class DockWidget_CanvasLayout(QDockWidget):
         vbly.addWidget(QLabel("Canvas ————————"))
         for lb in self.lb_canvas:
             vbly.addWidget(lb)
-
-        vbly.addWidget(btn_save)
 
         wg = QWidget()
         wg.setLayout(vbly)
@@ -99,7 +93,6 @@ class DockWidget_CanvasLayout(QDockWidget):
             self.mainwindow.btn_axis_setting_handleClicked)
         btn_processing.clicked.connect(
             self.mainwindow.btn_processingDlg_handleClicked)
-        btn_save.clicked.connect(self.mainwindow.save_file)
       # Style and Setting
         vbly.setAlignment(Qt.AlignTop)
         self.setMinimumWidth(120)

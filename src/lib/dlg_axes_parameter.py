@@ -1,10 +1,11 @@
-# -*- coding:utf-8 -*-
-from lib.data_objects import COLORS
+from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QTabWidget,\
+    QComboBox, QLineEdit, QCheckBox, QLabel, \
+    QDialog, QDialogButtonBox,\
+    QHBoxLayout, QVBoxLayout, QFormLayout, QAbstractItemView, QHeaderView
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QColor, QIcon
-from PyQt5.QtWidgets import *
-
-LINEWIDTHS = [1, 1.5, 2.5, 4]
+from .ui_conf import ICON_DIR, LINEWIDTHS
+from .obj_data import COLORS
 
 
 class Curve_Style_Page(QWidget):
@@ -28,7 +29,7 @@ class Curve_Style_Page(QWidget):
 
         self.cbox_linewidth = QComboBox()
         for _idx, _icon in enumerate(LINEWIDTHS):
-            icon_dir = f"./lib/icons/linewidth_%s.png" % (_idx)
+            icon_dir = ICON_DIR + f"linewidth_%s.png" % (_idx)
             self.cbox_linewidth.addItem(QIcon(icon_dir), "")
         self.cbox_linewidth.setPlaceholderText("-- Select --")
         self.cbox_linewidth.setIconSize(QSize(65, 20))
@@ -60,16 +61,16 @@ class Curve_Style_Page(QWidget):
         vbly_parameters.setAlignment(Qt.AlignTop)
 
         hbly = QHBoxLayout()
-        hbly.addLayout(vbly_curves, 3)
-        hbly.addLayout(vbly_parameters, 2)
+        hbly.addLayout(vbly_curves, 4)
+        hbly.addLayout(vbly_parameters, 3)
         self.setLayout(hbly)
       # Style and Setting
         self.setStyleSheet("""
             QLabel {
-                min-width: 80px;
+                min-width: 100px;
             }
             QComboBox {
-                min-width: 100px;
+                min-width: 120px;
             }
         """)
         # self.tb_curves.setStyleSheet("QTableWidget::item { padding: 10px }")
@@ -130,7 +131,7 @@ class Curve_Style_Page(QWidget):
 
                         linewidth_index = LINEWIDTHS.index(
                             curveData.line.get_linewidth())
-                        icon_dir = f"./lib/icons/linewidth_%s.png" % (
+                        icon_dir = ICON_DIR + f"linewidth_%s.png" % (
                             linewidth_index)
                         linewidth_item = QTableWidgetItem()
                         linewidth_item.setIcon(QIcon(icon_dir))
@@ -141,7 +142,7 @@ class Curve_Style_Page(QWidget):
     def tb_curves_handleSelect(self):
         seleced_items = self.tb_curves.selectedItems()[0::3]
         if len(seleced_items) > 1:
-            self.le_legend.setText("( Multiple selected )")
+            self.le_legend.setText("")
             self.cbox_linewidth.setCurrentIndex(-1)
             self.cbox_color.setCurrentIndex(-1)
 
@@ -170,7 +171,7 @@ class Curve_Style_Page(QWidget):
             curveData.line.set_linewidth(LINEWIDTHS[event])
             row, col = item.row(), item.column()
 
-            icon_dir = f"./lib/icons/linewidth_%s.png" % (event)
+            icon_dir = ICON_DIR + f"linewidth_%s.png" % (event)
             self.tb_curves.item(row, col+2).setIcon(QIcon(icon_dir))
         self.canvas.replot()
 
@@ -233,14 +234,17 @@ class Parameter_Dialog(QDialog):
             },
         }
 
-        self._load_parameters(
-            self.parameter, self.wg_canvas.focusing_canvas.parameter)
+        self.parameter["Axis"]["X-Axis"]["auto-scale"].stateChanged.connect(
+            lambda: self._toggle_autoscale("X-Axis"))
+        self.parameter["Axis"]["Y-Axis"]["auto-scale"].stateChanged.connect(
+            lambda: self._toggle_autoscale("Y-Axis"))
+        self.parameter["Axis"]["Sub_Y-Axis"]["auto-scale"].stateChanged.connect(
+            lambda: self._toggle_autoscale("Sub_Y-Axis"))
+
         self.parameter["General"]["Legend"]["visible"].setCheckState(
             Qt.Checked)
-        self.parameter["Axis"]["Y-Axis"]["auto-scale"].stateChanged.connect(
-            lambda: self._toggle_auto_scale("Y-Axis"))
-        self.parameter["Axis"]["Sub_Y-Axis"]["auto-scale"].stateChanged.connect(
-            lambda: self._toggle_auto_scale("Sub_Y-Axis"))
+        self._load_parameters(
+            self.parameter, self.wg_canvas.focusing_canvas.parameter)
 
         self.initUI()
 
@@ -253,7 +257,7 @@ class Parameter_Dialog(QDialog):
                 hbly.addLayout(fmly)
 
             else:
-                fmly.addRow(QLabel("    "*level + key), value)
+                fmly.addRow(QLabel("  "*level + key), value)
                 fmly.setHorizontalSpacing(25)
 
     def _create_page(self, form_dict):
@@ -288,7 +292,7 @@ class Parameter_Dialog(QDialog):
         buttonBox.setOrientation(Qt.Horizontal)
         buttonBox.setStandardButtons(
             QDialogButtonBox.Cancel | QDialogButtonBox.Ok | QDialogButtonBox.Apply)
-        buttonBox.accepted.connect(self.accept)
+        buttonBox.accepted.connect(self.btn_ok_handleClicked)
         buttonBox.rejected.connect(self.reject)
         buttonBox.button(QDialogButtonBox.Apply).clicked.connect(
             self._apply_parameters)
@@ -299,16 +303,19 @@ class Parameter_Dialog(QDialog):
         self.vbly.addWidget(buttonBox)
         self.setLayout(self.vbly)
       # Style and Setting
-        self.resize(600, 600)
+        self.resize(1000, 600)
         self.setStyleSheet("""
             QLabel {
-                max-width: 90px;
+                min-width: 100px;
+                max-width: 125px;
             }
             QLineEdit {
-                max-width: 100px;
+                min-width: 100px;
+                max-width: 125px;
             }
-            QComboBOx {
-                max-width: 100px;
+            QComboBox {
+                min-width: 100px;
+                max-width: 125px;
             }
         """)
       # Connect Functions
@@ -325,7 +332,7 @@ class Parameter_Dialog(QDialog):
             self.parameter, self.wg_canvas.focusing_canvas.parameter)
 
   # Setting Functions
-    def _toggle_auto_scale(self, axis_name):
+    def _toggle_autoscale(self, axis_name):
         scale = self.parameter["Axis"][axis_name]
         if (scale["auto-scale"].checkState() == Qt.PartiallyChecked):
             scale["auto-scale"].setCheckState(Qt.Checked)
@@ -351,6 +358,7 @@ class Parameter_Dialog(QDialog):
                 elif isinstance(param_v, QCheckBox):
                     if info_v:
                         param_v.setCheckState(Qt.Checked)
+
                     else:
                         param_v.setCheckState(Qt.Unchecked)
                 else:
@@ -375,4 +383,8 @@ class Parameter_Dialog(QDialog):
         self._update_parameters(
             self.parameter, self.wg_canvas.focusing_canvas.parameter)
         # print("After update", self.wg_canvas.focusing_canvas.parameter)
-        self.wg_canvas.focusing_canvas.set_style()
+        self.wg_canvas.focusing_canvas.apply_style()
+
+    def btn_ok_handleClicked(self):
+        self._apply_parameters()
+        self.accept()

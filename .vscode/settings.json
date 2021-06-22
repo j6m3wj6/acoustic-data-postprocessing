@@ -1,0 +1,6 @@
+{
+    "markdown.styles": [
+        "./doc/source/_static/dist/style.css"
+    ],
+    "compile-hero.disable-compile-files-on-did-save-code": false,
+}

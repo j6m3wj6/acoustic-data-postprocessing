@@ -1,10 +1,9 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QLabel, QAction, QSizePolicy
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from .dlg_axes_parameter import Parameter_Dialog
-import os
+from .ui_conf import ICON_DIR
 
 
 class MyToolBar(NavigationToolbar2QT):
@@ -39,7 +38,7 @@ class MyToolBar(NavigationToolbar2QT):
             self.addAction(button_action)
       # Style and Setting
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.setIconSize(QtCore.QSize(24, 24))
+        self.setIconSize(QSize(24, 24))
         self.lb_canvas.setStyleSheet("""
             border: 1.5px solid #0D3B66;
             border-radius: 4px;
@@ -73,7 +72,7 @@ class MyToolBar(NavigationToolbar2QT):
         NavigationToolbar2QT.__init__(self, canvas, self.mainwindow.wg_canvas)
 
     def _create_btn_action(self, name, icon_name, hover_text, parent, callback):
-        icon_dir = f"./src/lib/icons/%s.png" % (icon_name)
+        icon_dir = ICON_DIR + f"%s.png" % (icon_name)
 
         button_action = QAction(QIcon(icon_dir), hover_text, parent)
 

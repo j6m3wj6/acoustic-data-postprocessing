@@ -1,8 +1,8 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from .data_objects import *
+from PyQt5.QtWidgets import QLabel, QLineEdit, QRadioButton, QPushButton, QComboBox,\
+    QHBoxLayout, QVBoxLayout, QSpacerItem, QGroupBox, QSizePolicy,\
+    QDialog, QDialogButtonBox, QColorDialog
+from PyQt5.QtCore import Qt
+from .obj_data import *
 from .wg_treelist import *
 
 
@@ -16,7 +16,7 @@ class OperationDialog(QDialog):
 
     def initUI(self):
         self.setWindowTitle("Operation Window")
-        self.resize(600, 300)
+        self.resize(800, 600)
 
         self.listWidget = self.mainwindow.dwg_data.tree.get_focusing_curves_lists()
         # self.listWidget.itemSelectionChanged.connect(self.handleSelect)
@@ -25,10 +25,10 @@ class OperationDialog(QDialog):
         vbly_list.addWidget(self.listWidget)
 
         buttonBox = QDialogButtonBox()
-        buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        buttonBox.setOrientation(Qt.Horizontal)
         buttonBox.setStandardButtons(
             QDialogButtonBox.Cancel | QDialogButtonBox.Ok | QDialogButtonBox.Apply)
-        buttonBox.accepted.connect(self.accept)
+        buttonBox.accepted.connect(self.btn_ok_handleClicked)
         buttonBox.rejected.connect(self.reject)
         buttonBox.button(QDialogButtonBox.Apply).clicked.connect(
             self._apply_operation)
@@ -67,8 +67,8 @@ class OperationDialog(QDialog):
         gb_vbly.setAlignment(Qt.AlignTop)
         gb_vbly.addLayout(hbly_offset)
         gb_vbly.addLayout(hbly_align)
-        gb_vbly.addItem(QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum,
-                                    QtWidgets.QSizePolicy.Expanding))
+        gb_vbly.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum,
+                                    QSizePolicy.Expanding))
         self.warning_massage = QLabel("Error: ")
         self.warning_massage.setStyleSheet("""
             background-color: "#e80000";
@@ -90,13 +90,17 @@ class OperationDialog(QDialog):
         btn_lineWidth.clicked.connect(self.curveLineWidth)
 
         hbly = QHBoxLayout()
-        hbly.addLayout(vbly_list)
-        hbly.addWidget(self.gb_opperation)
+        hbly.addLayout(vbly_list, 2)
+        hbly.addWidget(self.gb_opperation, 3)
 
         vbly = QVBoxLayout()
         vbly.addLayout(hbly)
         vbly.addWidget(buttonBox)
         self.setLayout(vbly)
+
+    def btn_ok_handleClicked(self):
+        self._apply_operation()
+        self.accept()
 
     def _apply_operation(self):
         rbuttons = self.gb_opperation.findChildren(QRadioButton)
@@ -130,12 +134,12 @@ class OperationDialog(QDialog):
     def handleSelect(self):
         # print("MyDialog handleSelect")
         for c in self.wg_canvas.get_active_canvas():
-            c._resetLineWidth()
+            c.reset_linewidth()
         for item in self.listWidget.selectedItems():
-            if not item.data(QtCore.Qt.UserRole):
+            if not item.data(Qt.UserRole):
                 pass
             else:
-                curve = item.data(QtCore.Qt.UserRole)
+                curve = item.data(Qt.UserRole)
                 curve.line.set_linewidth(LINEWIDTH_HIGHLIGHT)
         self.wg_canvas.replot()
 

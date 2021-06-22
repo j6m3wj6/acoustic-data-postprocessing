@@ -3,10 +3,9 @@ import pickle
 import sys
 import dill
 import datetime as dt
-import json
 from matplotlib.lines import Line2D
 from textwrap import fill
-from .ui_conf import *
+from .ui_conf import UI_CONF, COLORS, LINEWIDTH_DEFAULT, LEGEND_WRAP
 
 
 class Extended_Enum(Enum):
@@ -21,11 +20,12 @@ class Extended_Enum(Enum):
 
 class CurveType(Extended_Enum):
     NoType = 'None'
-    FreqRes = 'SPL'
+    SPL = 'SPL'
     IMP = 'Impedance'
     Phase = 'Phase'
     THD = 'THD'
-    EX = 'Excursion'
+    EXC = 'Excursion'
+    ALL = 'All'
 
 
 class Project():
@@ -44,6 +44,9 @@ class Project():
         print(self.get_path())
         for _f in self.files:
             _f.print()
+
+    def append_file(self, file):
+        self.files.append(file)
 
     def get_path(self):
         return self.info['File Location'] + '/' + self.info['Name'] + '.pkl'
@@ -78,7 +81,6 @@ class Project():
                 fh.close()
                 return unpickled_data
             except Exception as e:
-                print(e)
                 return Project()
 
     def update_ui_conf(self):
@@ -113,8 +115,6 @@ class FileData():
               (self.info["Name"], self.info["Source"], self.info["File Path"]))
         print("\tImport time: ", self.get_import_time())
         print("\tSequence:")
-        for curveData in self.sequence['CEA2034']:
-            curveData.print()
         print("-----------------------------\n\n")
 
     def setData(self, dataSequence):

@@ -1,0 +1,9 @@
+div.columns {
+    display: flex;
+    flex-direction: row;
+
+}
+div.columns > div{
+    margin: 5px
+    
+}
