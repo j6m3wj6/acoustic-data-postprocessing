@@ -1,5 +1,5 @@
 .ipynb_checkpoints
 test.py
 
-doc/source
+/doc/source
 !doc/build
