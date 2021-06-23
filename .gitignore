@@ -1,4 +1,5 @@
-new.txt
 .ipynb_checkpoints
-item.text(0)test.py
+test.py
+
 doc/source
+!doc/build
