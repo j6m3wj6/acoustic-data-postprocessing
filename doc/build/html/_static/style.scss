@@ -1,31 +1,182 @@
-$font-color: #5B83AD;
-$body-font: '';
-$header-font: '';
-$monospace-font: '';
-$background-color: white;
+$bg-color: white;
+$font-family: "Roboto",
+sans-serif;
+$code-font-family: "Source Code Pro";
+$monospace: "Source Code Pro";
+$heading-text-color: #242a31;
+$text-color: #3b454e;
+$matcolor-blue: #1f77b4;
+$matcolor-orange: #ff7f0e;
+$matcolor-green: #2ca02c;
+$matcolor-red: #d62728;
+$matcolor-purple: #9467bd;
+$matcolor-brown: #8c564b;
+$matcolor-pink: #e377c2;
+$matcolor-gray: #7f7f7f;
+$matcolor-yellow: #bcbd22;
+$matcolor-lightblue: #17becf;
+
+:root {
+    $side-bar-bg-color: #f5f7f9;
+    $control-text-color: #3b454e;
+    $primary-color: #3884ff;
+    $primary-btn-border-color: #3884ff;
+    $active-file-bg-color: #e6ecf1;
+    $active-file-text-color: inherit;
+    $active-file-border-color: #3884ff;
+    $item-hover-text-color: #242a31;
+    $item-hover-bg-color: #f5f7f9;
+    $window-border: 1px solid #e6ecf1;
+    $select-text-font-color: white;
+    $select-text-bg-color: #1968e6;
+    $md-char-color: #9daab6;
+    $heading-char-color: #9daab6;
+    $meta-content-color: #3884ff;
+
+    $borders: #e6ecf1;
+    $table-border-color: #e6ecf1;
+    $boxes: #f5f7f9;
+    $boxes-darker: #d8e0e7;
+    $boxes-darker2: #bac2c9;
+    $boxes-darkest: #9daab6;
+    $drag-placeholder-color: #d8e0e7;
+
+    $light-text-color: #9daab6;
+    $light-text-color-darker: #74818d;
+    $codeboxes: #183055;
+    $codeboxes-lighter: #1c375f;
+    $rawblock-edit-panel-bd: transparent;
+
+    $primary-color-darkest: #001f50;
+    $primary-color-darker2: #00307c;
+    $primary-color-darker: #1968e6;
+    $focus-ring-color: #3884ff;
+
+    $danger-color: rgb(255, 70, 66);
+
+    $node-fill: #ececff;
+    $node-border: #ccccff;
+    $cluster-fill: #ffffde;
+    $cluster-border: #aaaa33;
+    $note-fill: #fff5ad;
+    $note-border: #aaaa33;
+}
 
 html {
     // default size:
     font-size: 16px;
-    background-color: $background-color;
+    background-color: $bg-color;
 }
 
 html,
 body {
-    font-family: $body-font;
+    font-family: $font-family;
+    color: $text-color
+}
+
+span[button] {
+    background-color: #efefef;
+    border-radius: 3px;
+    border: 1px solid #001f50;
+    padding: 1px 6px;
+    margin: 0 4px;
+
+    font-size: 12px;
+    font-family: "Roboto Slab";
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+span[canvas_label] {
+    background-color: #f5f5dc;
+    border-radius: 5px;
+    border: 1px solid #001f50;
+    padding: 1px 6px;
+    margin: 0 4px;
+
+    font-size: 12px;
+    font-family: "Roboto Slab";
 }
 
 
 div.columns {
     display: flex;
     flex-direction: row;
+    max-width: 100%;
+
+
+    div {
+        &[text_center] {
+            text-align: center;
+        }
+
+        &.item[width_percent="25"] {
+            min-width: 25%;
+        }
+
+        &.item[width_percent="40"] {
+            min-width: 40%;
+        }
+
+        &.item[width_percent="50"] {
+            min-width: 50%;
+        }
+
+        &.item[width_percent="60"] {
+            min-width: 60%;
+        }
+
+        &.item[width_percent="75"] {
+            min-width: 75%;
+        }
+
+    }
 }
 
-div.columns>div {
-    margin: 5px
+
+
+
+a[href^="#"] {
+    color: $matcolor-orange;
+    padding: 1px;
 }
+
+img {
+    width: 75%;
+    margin: 10px auto;
+    display: block;
+
+    &[width="100%"] {
+        width: 100%;
+    }
+
+    &[width="80%"] {
+        width: 80%;
+    }
+
+    &[width="60%"] {
+        width: 60%;
+    }
+
+    &[width="50%"] {
+        width: 50%;
+    }
+
+    &[width="40%"] {
+        width: 40%;
+    }
+
+    &[width="25%"] {
+        width: 25%;
+    }
+
+    &[inline-block] {
+        display: inline;
+    }
+}
+
 
 // on Windows/Linux, it is the part that is not titlebar or status bar.
+
 content {}
 
 #write {
@@ -48,7 +199,9 @@ h2,
 h3,
 h4,
 h5,
-h6 {}
+h6 {
+    color: $heading-text-color
+}
 
 // table
 table {}
@@ -76,7 +229,15 @@ li {}
 blockquote {}
 
 // hr
-hr {}
+hr {
+    background-color: $matcolor-gray;
+    border: 0 none;
+    box-sizing: content-box;
+    height: 1.5px;
+    margin: 16px 0;
+    overflow: hidden;
+    padding: 0;
+}
 
 p {}
 
@@ -114,7 +275,7 @@ strong {}
 
 em {}
 
-a {}
+
 
 img {}
 
@@ -171,9 +332,7 @@ sup {}
 // search panel
 #md-searchpanel {}
 
-#write div.md-toc-tooltip {
-    background-color: $background-color;
-}
+#write div.md-toc-tooltip {}
 
 /**
 * Control UI on Mac (optional)
