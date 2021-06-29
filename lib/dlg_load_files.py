@@ -5,43 +5,55 @@ import datetime as dt
 import random
 from .obj_data import FileData, CurveData, CurveType
 from .ui_conf import COLORS
+import sys
+import traceback
 
 
 def load_file(source):
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.AnyFile)
     dialog.setFilter(QDir.Files)
-    DATA = None
+    filedata = None
 
     if dialog.exec_():
         try:
             file_name = dialog.selectedFiles()
             path = file_name[0]
             if (source == 'LEAP'):
-                DATA = load_LEAP_fileData(path)
+                filedata = load_LEAP_fileData(path)
             elif (source == 'AP'):
-                DATA = load_AP_fileData(path)
+                filedata = load_AP_fileData(path)
             elif (source == 'KLIPPEL'):
-                DATA = load_KLIPPEL_fileData(path)
-            elif (source == 'Comsol'):
-                DATA = load_Comsol_fileData(path)
+                filedata = load_KLIPPEL_fileData(path)
+            elif (source == 'COMSOL'):
+                filedata = load_COMSOL_fileData(path)
         except Exception as e:
-            print("ERROR: ", e)
-            DATA = None
+            error_class = e.__class__.__name__
+            detail = e.args[0]
+            cls, exc, tb = sys.exc_info()
+            lastCallStack = traceback.extract_tb(tb)[-1]
+            fileName = lastCallStack[0]
+            lineName = lastCallStack[1]
+            funcName = lastCallStack[2]
+            errMsg = "File \"{}\", line {}, in {}:\n[{}] {}".format(
+                fileName, lineName, funcName, error_class, detail)
+            print(errMsg)
+
+            filedata = None
     else:
         pass
-    return DATA
+    return filedata
 
 
 def load_AP_fileData(path):
     filename = path[path.rfind('/')+1:path.rfind('.')]
 
-    DATA = None
+    filedata = None
 
     if path.endswith('.xlsx'):
         data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
-        DATA = FileData(filename, source="AP", file_path=path,
-                        import_time=dt.datetime.today())
+        filedata = FileData(filename, source="AP", file_path=path,
+                            import_time=dt.datetime.today())
         curve_idx = 0
         for key in data.keys():
             test_name = data[key].columns[0].strip()
@@ -49,7 +61,7 @@ def load_AP_fileData(path):
             note = data[key].columns[1].strip()
             curveDatas = []
             isline = True
-            if test_name not in DATA.sequence:
+            if test_name not in filedata.sequence:
                 curve_idx = 0
 
             for _idx in range(int(len(data[key].columns)/2)):
@@ -61,34 +73,33 @@ def load_AP_fileData(path):
                 if (curve_x.dtype != float or curve_y.dtype != float):
                     isline = False
                     continue
-                rdm = random.randint(1, 100)
 
                 curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 11])
+                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 10])
                 curveDatas.append(curveData_new)
                 curve_idx += 1
 
             if (not isline):
                 continue
-            if test_name in DATA.sequence:
-                DATA.sequence[test_name].extend(curveDatas)
+            if test_name in filedata.sequence:
+                filedata.sequence[test_name].extend(curveDatas)
             else:
-                DATA.sequence[test_name] = curveDatas
+                filedata.sequence[test_name] = curveDatas
     else:
         pass
-    return DATA
+    return filedata
 
 
 def load_LEAP_fileData(path):
-    DATA = None
+    filedata = None
     if path.endswith('.txt'):
         with open(path, 'r', encoding='UTF-8', errors='ignore') as file:
             headers = file.readlines()[:11]
             # LEAP_Impedance
             filename = path[path.rfind('/')+1:path.rfind('.')].strip()
             test_name = filename
-            DATA = FileData(filename, source="LEAP",
-                            file_path=path, import_time=dt.datetime.today())
+            filedata = FileData(filename, source="LEAP",
+                                file_path=path, import_time=dt.datetime.today())
 
             # Impedance_PR: T201100003660
             label = headers[4][headers[4].find('=')+1:].strip()
@@ -106,29 +117,28 @@ def load_LEAP_fileData(path):
 
             _type = determineTypeByTestName(test_name)
 
-            rdm = random.randint(1, 100)
             curveData_val = CurveData(
                 label=label, note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[0])
 
             curveData_phase = CurveData(
                 label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.PHS, color=COLORS[1])
 
-            DATA.sequence[test_name] = [curveData_val]
-            DATA.sequence["Phase"] = [curveData_phase]
+            filedata.sequence[test_name] = [curveData_val]
+            filedata.sequence["Phase"] = [curveData_phase]
             file.close()
     else:
         pass
-    return DATA
+    return filedata
 
 
 def load_KLIPPEL_fileData(path):
-    DATA = None
+    filedata = None
     if path.endswith('.txt'):
         with open(path, 'r', encoding='UTF-8') as file:
             file_dir = path
             filename = path[file_dir.rfind('/')+1:file_dir.rfind('.')]
-            DATA = FileData(filename, source="KLIPPEL",
-                            file_path=path, import_time=dt.datetime.today())
+            filedata = FileData(filename, source="KLIPPEL",
+                                file_path=path, import_time=dt.datetime.today())
 
             headers = file.readlines()[:3]
             if headers[0][0] == '%':
@@ -157,35 +167,29 @@ def load_KLIPPEL_fileData(path):
 
                 rdm = random.randint(1, 100)
                 curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 11])
+                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 10])
 
                 curveDatas.append(curveData_new)
 
-            if test_name in DATA.sequence:
+            if test_name in filedata.sequence:
                 pass
             else:
-                DATA.sequence[test_name] = []
-            DATA.sequence[test_name].extend(curveDatas)
+                filedata.sequence[test_name] = []
+            filedata.sequence[test_name].extend(curveDatas)
     else:
         pass
-    return DATA
+    return filedata
 
 
-def load_Comsol_fileData(path):
-    DATA = None
+def load_COMSOL_fileData(path):
+    filedata = None
     if path.endswith('.txt'):
         with open(path, 'r', encoding='UTF-8', errors='ignore') as file:
             headers = file.readlines()[:8]
-            # LEAP_Impedance
             filename = path[path.rfind('/')+1:path.rfind('.')]
             test_name = filename
-            DATA = FileData(filename, source="COMSOL",
-                            file_path=path, import_time=dt.datetime.today())
-
-            if test_name in DATA.sequence:
-                pass
-            else:
-                DATA.sequence[test_name] = []
+            filedata = FileData(filename, source="COMSOL",
+                                file_path=path, import_time=dt.datetime.today())
 
     #         label = headers[4][headers[4].find('=')+1:]   # Impedance_PR: T201100003660
 
@@ -199,19 +203,15 @@ def load_Comsol_fileData(path):
             val = pd.Series(data.iloc[:, 1], name='y', dtype=float)
             # print(freq, val)
 
-            curveDatas = []
             note = ""
-            rdm = random.randint(1, 100)
             curveData_new = CurveData(
                 label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL, color=COLORS[0])
 
-            curveDatas.append(curveData_new)
-
-            DATA[test_name].extend(curveDatas)
+            filedata.sequence[test_name] = [curveData_new]
             file.close()
     else:
         pass
-    return DATA
+    return filedata
 
 
 def determineTypeByTestName(test_name):

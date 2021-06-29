@@ -128,6 +128,26 @@ class MainWindow(QMainWindow):
         self.project.append_file(file)
         self.dwg_data.append_file(file)
 
+    def delete_files(self, filenames_to_del) -> None:
+        """
+        Delete files from attributes ``project``, 
+        And also delete curves data on the treelist in DockWidget component ``dwg_data``.
+
+        :param FileData file: A FileData object user intends to delete.
+        """
+        files_to_del = self.project.get_files(filenames_to_del)
+        self.project.delete_files(files_to_del)
+        self.dwg_data.delete_files(filenames_to_del)
+
+    def clear_files(self):
+        """
+        Delete all the files in attributes ``project``, 
+        And also clear curves data on the treelist in DockWidget component ``dwg_data``.
+        """
+        filenames_to_del = [_f.info["Name"] for _f in self.project.files]
+        self.project.clear_files()
+        self.dwg_data.delete_files(filenames_to_del)
+
     def save_file(self) -> None:
         """
         Save project to file.
@@ -136,11 +156,23 @@ class MainWindow(QMainWindow):
         Otherwise, it would be updated to the origin project file.
         """
         if (self.project.info["Name"] == "Untitled"):
-            file_path, file_type = QFileDialog.getSaveFileName(
-                self, 'Save File', 'Untitle', "Pickle Files (*.pkl)")
-            self.project.info['File Location'] = file_path[0:file_path.rfind(
-                '/')]
-            self.project.info['Name'] = file_path[file_path.rfind(
-                '/')+1:file_path.rfind('.')]
-
+            self.save_file_as()
         self.project.dump(location=self.project.get_path())
+
+    def save_file_as(self) -> None:
+        """
+        Save project to file.
+        If this project is "Untitled", which is the default name for a new project, 
+        it would execute ``QFileDialog`` and pop up a dialog window letting user to determain a new name and where to save. 
+        Otherwise, it would be updated to the origin project file.
+        """
+
+        file_path, file_type = QFileDialog.getSaveFileName(
+            self, 'Save File', self.project.info['Name'], "Pickle Files (*.pkl)")
+        self.project.info['File Location'] = file_path[0:file_path.rfind(
+            '/')]
+        self.project.info['Name'] = file_path[file_path.rfind(
+            '/')+1:file_path.rfind('.')]
+        self.setWindowTitle(self.project.info["Name"])
+
+        self.save_file()

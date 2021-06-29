@@ -1,7 +1,15 @@
 lib package
 ===========
 
-lib.dlg\_axes\_parameter module
+lib.mainwindow
+-------------------------------
+.. automodule:: lib.mainwindow
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :source:
+
+lib.dlg\_axes\_parameter
 -------------------------------
 
 .. automodule:: lib.dlg_axes_parameter
@@ -9,7 +17,7 @@ lib.dlg\_axes\_parameter module
    :undoc-members:
    :show-inheritance:
 
-lib.dlg\_canvas\_setting module
+lib.dlg\_canvas\_setting
 -------------------------------
 
 .. automodule:: lib.dlg_canvas_setting
@@ -17,7 +25,7 @@ lib.dlg\_canvas\_setting module
    :undoc-members:
    :show-inheritance:
 
-lib.dlg\_import\_files module
+lib.dlg\_import\_files
 -----------------------------
 
 .. automodule:: lib.dlg_import_files
@@ -25,7 +33,7 @@ lib.dlg\_import\_files module
    :undoc-members:
    :show-inheritance:
 
-lib.dlg\_load\_files module
+lib.dlg\_load\_files
 ---------------------------
 
 .. automodule:: lib.dlg_load_files
@@ -33,7 +41,7 @@ lib.dlg\_load\_files module
    :undoc-members:
    :show-inheritance:
 
-lib.dlg\_operation module
+lib.dlg\_operation
 -------------------------
 
 .. automodule:: lib.dlg_operation
@@ -41,7 +49,7 @@ lib.dlg\_operation module
    :undoc-members:
    :show-inheritance:
 
-lib.dockwg\_canvas\_layout module
+lib.dockwg\_canvas\_layout
 ---------------------------------
 
 .. automodule:: lib.dockwg_canvas_layout
@@ -49,7 +57,7 @@ lib.dockwg\_canvas\_layout module
    :undoc-members:
    :show-inheritance:
 
-lib.dockwg\_data\_treelist module
+lib.dockwg\_data\_treelist
 ---------------------------------
 
 .. automodule:: lib.dockwg_data_treelist
@@ -57,7 +65,7 @@ lib.dockwg\_data\_treelist module
    :undoc-members:
    :show-inheritance:
 
-lib.obj\_data module
+lib.obj\_data
 --------------------
 
 .. automodule:: lib.obj_data
@@ -65,7 +73,7 @@ lib.obj\_data module
    :undoc-members:
    :show-inheritance:
 
-lib.ui\_conf module
+lib.ui\_conf
 -------------------
 
 .. automodule:: lib.ui_conf
@@ -73,7 +81,7 @@ lib.ui\_conf module
    :undoc-members:
    :show-inheritance:
 
-lib.wg\_canvas module
+lib.wg\_canvas
 ---------------------
 
 .. automodule:: lib.wg_canvas
@@ -81,7 +89,7 @@ lib.wg\_canvas module
    :undoc-members:
    :show-inheritance:
 
-lib.wg\_menubar module
+lib.wg\_menubar
 ----------------------
 
 .. automodule:: lib.wg_menubar
@@ -89,7 +97,7 @@ lib.wg\_menubar module
    :undoc-members:
    :show-inheritance:
 
-lib.wg\_toolbar module
+lib.wg\_toolbar
 ----------------------
 
 .. automodule:: lib.wg_toolbar
@@ -97,7 +105,7 @@ lib.wg\_toolbar module
    :undoc-members:
    :show-inheritance:
 
-lib.wg\_treelist module
+lib.wg\_treelist
 -----------------------
 
 .. automodule:: lib.wg_treelist

@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 
 # -- Project information -----------------------------------------------------
@@ -31,7 +31,7 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc', 'myst_parser',
-              'sphinx_markdown_tables', 'nbsphinx']
+              'sphinx_markdown_tables', 'nbsphinx', 'sphinx.ext.viewcode']
 source_suffix = {
     '.rst': 'restructuredtext',
     '.txt': 'markdown',
@@ -60,6 +60,7 @@ html_static_path = ['_static']
 html_context = {
     'css_files': {'_static/dist/style.css'}
 }
+html_show_sourcelink = False
 
 source_suffix = ['.rst', '.md', '.ipynb']
 

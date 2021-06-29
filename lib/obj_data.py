@@ -40,13 +40,22 @@ class Project():
         self.ui_conf = UI_CONF
 
     def print(self):
-        print(self.info)
-        print(self.get_path())
+        print("\nProject: =================")
+        print("Name: %s \nFile location: %s" %
+              (self.info["Name"], self.get_path()))
         for _f in self.files:
             _f.print()
+        print("============================\n")
 
     def append_file(self, file):
         self.files.append(file)
+
+    def delete_files(self, files):
+        for _f in files:
+            self.files.remove(_f)
+
+    def clear_files(self):
+        self.files = []
 
     def get_path(self):
         return self.info['File Location'] + '/' + self.info['Name'] + '.pkl'
@@ -54,7 +63,6 @@ class Project():
     def dump(self, location=None):
         if not location:
             location = self.get_path()
-
         self.print()
         try:
             with open(location, 'wb') as fh:
@@ -68,18 +76,23 @@ class Project():
 
     @classmethod
     def load_project(cls, location=None):
-        print("unpickle:", location)
+        print("unpickled project:")
+        print("location: ", location)
         if location == "None":
             return Project()
         else:
             try:
                 fh = open(location, 'rb')
                 # with open(f"%s.pkl" % (location), 'rb') as fh:
-                unpickled_data = pickle.load(fh)
-                print(unpickled_data.print())
-                print("----------------------------------")
+                unpickled_project = pickle.load(fh)
+                if location is not unpickled_project.info["File Location"]:
+                    print(
+                        "WARNING: File location not the same --> change project info.")
+                    unpickled_project.info["File Location"] = location
+                unpickled_project.print()
+                print("____________finish obj_data.Project.load_project()")
                 fh.close()
-                return unpickled_data
+                return unpickled_project
             except Exception as e:
                 return Project()
 
@@ -97,6 +110,13 @@ class Project():
         #     json.dump(self.ui_conf, fj)
         # print("update_ui_conf", self.ui_conf)
 
+    def get_files(self, filenames):
+        files_to_return = []
+        for _f in self.files:
+            if _f.info["Name"] in filenames and _f not in files_to_return:
+                files_to_return.append(_f)
+        return files_to_return
+
 
 class FileData():
     def __init__(self, name=None, source=None, file_path=None, import_time=None):
@@ -110,12 +130,12 @@ class FileData():
         self.sequence = {}
 
     def print(self):
-        print("\n\n-------------------------")
+        print("------------")
         print("\tName: %s \n\tSource: %s \n\tfile_path: %s" %
               (self.info["Name"], self.info["Source"], self.info["File Path"]))
         print("\tImport time: ", self.get_import_time())
         print("\tSequence:")
-        print("-----------------------------\n\n")
+        print("-----------------------------")
 
     def setData(self, dataSequence):
         for test, curveData in dataSequence:
@@ -211,7 +231,9 @@ class CurveData:
             pass
 
     def dump(self):
+
         self.print()
+
         try:
             with open(f"%s.pkl" % ("curvedata"), 'wb') as fh:
                 pickle.dump(self, fh)

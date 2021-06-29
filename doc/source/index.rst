@@ -11,7 +11,6 @@ Welcome to SAE_PlotTool's documentation!
    :caption: Contents:
 
    app
-   mainwindow
    lib
    GUI introduction
 

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QLabel, QAction, QSizePolicy
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
-from .dlg_axes_parameter import Parameter_Dialog
+from .dlg_graph_properties import GraphProperties_Dialog
 from .ui_conf import ICON_DIR
 
 
@@ -46,7 +46,7 @@ class MyToolBar(NavigationToolbar2QT):
         """)
 
     def edit_parameter(self):
-        dlg = Parameter_Dialog(mainwindow=self.mainwindow)
+        dlg = GraphProperties_Dialog(mainwindow=self.mainwindow)
         if dlg.exec():
             # print("edit_parameter")
             self.mainwindow.dwg_data.tree.sync_with_canvas()

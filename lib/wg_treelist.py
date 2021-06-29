@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import QTreeWidget, QAbstractItemView, QTreeWidgetItem, QListWidget, QListWidgetItem
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
-
 from .ui_conf import LINEWIDTH_HIGHLIGHT
-from .obj_data import CurveType
+from .obj_data import CurveType, FileData
 
 
 class MyTree(QTreeWidget):
@@ -92,6 +91,20 @@ class MyTree(QTreeWidget):
         self.addTopLevelItem(fileroot)
         # self.expandAll()
         # fileroot.child(0).setCheckState(0, Qt.Checked)
+
+    def removeChildren(self, filenames_to_del) -> None:
+        level_to_delete = []
+        for i_f in range(self.topLevelItemCount()):
+            fileroot = self.topLevelItem(i_f)
+            print(fileroot.text(0))
+            if fileroot.text(0) in filenames_to_del:
+                for t in range(fileroot.childCount()):
+                    testroot = fileroot.child(t)
+                    testroot.setCheckState(0, Qt.Unchecked)
+                level_to_delete.append(i_f)
+
+        for _i, _l in enumerate(level_to_delete):
+            self.takeTopLevelItem(_l-_i)
 
     def filterChildren(self, _types):
         self.unHideChildren()

@@ -10,6 +10,7 @@ class MyMenuBar(QMenuBar):
         fileMenu.addAction(self.act_new)
         fileMenu.addAction(self.act_open)
         fileMenu.addAction(self.act_save)
+        fileMenu.addAction(self.act_save_as)
         fileMenu.addAction(self.act_import)
 
         helpMenu = QMenu("&Help", self)
@@ -21,6 +22,7 @@ class MyMenuBar(QMenuBar):
         self.act_new = QAction("&New Project", self)
         self.act_open = QAction("&Open Project", self)
         self.act_save = QAction("&Save Project", self)
+        self.act_save_as = QAction("&Save Project As...", self)
         self.act_import = QAction("&Import File", self)
 
         self.act_help = QAction("&Documnet", self)
@@ -30,6 +32,7 @@ class MyMenuBar(QMenuBar):
         self.act_new.triggered.connect(self.new_file)
         self.act_open.triggered.connect(self.open_file)
         self.act_save.triggered.connect(self.save_file)
+        self.act_save_as.triggered.connect(self.save_file_as)
         self.act_import.triggered.connect(
             self.parent().dwg_data.btn_importDlg_handleClicked)
 
@@ -51,3 +54,6 @@ class MyMenuBar(QMenuBar):
 
     def save_file(self):
         self.parent().save_file()
+
+    def save_file_as(self):
+        self.parent().save_file_as()

@@ -16,11 +16,11 @@ $matcolor-gray: #7f7f7f;
 $matcolor-yellow: #bcbd22;
 $matcolor-lightblue: #17becf;
 
+
 :root {
     $side-bar-bg-color: #f5f7f9;
     $control-text-color: #3b454e;
     $primary-color: #3884ff;
-    $primary-btn-border-color: #3884ff;
     $active-file-bg-color: #e6ecf1;
     $active-file-text-color: inherit;
     $active-file-border-color: #3884ff;
@@ -103,8 +103,9 @@ div.columns {
     flex-direction: row;
     max-width: 100%;
 
-
     div {
+        margin: 5px;
+
         &[text_center] {
             text-align: center;
         }
@@ -132,12 +133,9 @@ div.columns {
     }
 }
 
-
-
-
-a[href^="#"] {
-    color: $matcolor-orange;
-    padding: 1px;
+a[href^="#anchor_"] {
+    // color: $matcolor-orange;
+    // padding: 1px;
 }
 
 img {
@@ -145,27 +143,31 @@ img {
     margin: 10px auto;
     display: block;
 
-    &[width="100%"] {
+    &[width_percent="100"] {
         width: 100%;
     }
 
-    &[width="80%"] {
+    &[width_percent="90"] {
+        width: 90%;
+    }
+
+    &[width_percent="80"] {
         width: 80%;
     }
 
-    &[width="60%"] {
+    &[width_percent="60"] {
         width: 60%;
     }
 
-    &[width="50%"] {
+    &[width_percent="50"] {
         width: 50%;
     }
 
-    &[width="40%"] {
+    &[width_percent="40"] {
         width: 40%;
     }
 
-    &[width="25%"] {
+    &[width_percent="25"] {
         width: 25%;
     }
 
@@ -181,8 +183,6 @@ content {}
 
 #write {
     // size of writing area:
-    padding-left: 10ch;
-    padding-right: 10ch;
 }
 
 /**
@@ -194,13 +194,10 @@ content {}
 pre.md-meta-block {}
 
 // headings
-h1,
-h2,
+
 h3,
-h4,
-h5,
-h6 {
-    color: $heading-text-color
+h4 {
+    margin-block-end: 0.25em;
 }
 
 // table

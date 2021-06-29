@@ -82,6 +82,14 @@ class DockWidget_Data(QDockWidget):
         """
         self.tree.appendChildren(file)
 
+    def delete_files(self, files):
+        """
+        Removing each curve data of a specific file on the component ``tree``.
+
+        :param file: A FileData object user intends to delete.
+        """
+        self.tree.removeChildren(files)
+
     def _load_project(self, project: Project):
         """
         Listing each curve data existing in the project on the component ``tree``.

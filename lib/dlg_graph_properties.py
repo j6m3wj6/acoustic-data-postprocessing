@@ -188,7 +188,7 @@ class Curve_Style_Page(QWidget):
         self.canvas.replot()
 
 
-class Parameter_Dialog(QDialog):
+class GraphProperties_Dialog(QDialog):
     def __init__(self, mainwindow=None):
         super().__init__()
         self.wg_treelist = mainwindow.dwg_data.tree
@@ -304,6 +304,7 @@ class Parameter_Dialog(QDialog):
         self.setLayout(self.vbly)
       # Style and Setting
         self.resize(1000, 600)
+        self.setWindowTitle("Graph Properties")
         self.setStyleSheet("""
             QLabel {
                 min-width: 100px;

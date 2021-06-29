@@ -35,6 +35,9 @@ div.columns {
   flex-direction: row;
   max-width: 100%;
 }
+div.columns div {
+  margin: 5px;
+}
 div.columns div[text_center] {
   text-align: center;
 }
@@ -54,54 +57,43 @@ div.columns div.item[width_percent="75"] {
   min-width: 75%;
 }
 
-a[href^="#"] {
-  color: #ff7f0e;
-  padding: 1px;
-}
-
 img {
   width: 75%;
   margin: 10px auto;
   display: block;
 }
-img[width="100%"] {
+img[width_percent="100"] {
   width: 100%;
 }
-img[width="80%"] {
+img[width_percent="90"] {
+  width: 90%;
+}
+img[width_percent="80"] {
   width: 80%;
 }
-img[width="60%"] {
+img[width_percent="60"] {
   width: 60%;
 }
-img[width="50%"] {
+img[width_percent="50"] {
   width: 50%;
 }
-img[width="40%"] {
+img[width_percent="40"] {
   width: 40%;
 }
-img[width="25%"] {
+img[width_percent="25"] {
   width: 25%;
 }
 img[inline-block] {
   display: inline;
 }
 
-#write {
-  padding-left: 10ch;
-  padding-right: 10ch;
-}
-
 /**
 * ---------------------
 * Block Elements
 */
-h1,
-h2,
 h3,
-h4,
-h5,
-h6 {
-  color: #242a31;
+h4 {
+  margin-block-end: 0.25em;
 }
 
 hr {

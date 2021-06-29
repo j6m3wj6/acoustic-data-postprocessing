@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import QLabel, QMainWindow, QApplication, QVBoxLayout, QWidget
 from lib.mainwindow import MainWindow
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, QFileInfo
 import sys
 import os
 import traceback
@@ -23,9 +23,10 @@ class MyApp(QMainWindow):
     def create_document(self):
         self.document = QMainWindow()
         browser = QWebEngineView()
-        filepath = "file:///" + \
-            (os.path.dirname(__file__) + '/doc/build/html/index.html')
-        browser.load(QUrl(filepath))
+        relative_html = './doc/build/html/index.html'
+        fileurl = QUrl.fromLocalFile(
+            QFileInfo(relative_html).absoluteFilePath())
+        browser.load(fileurl)
         self.document.setCentralWidget(browser)
         self.document.setWindowTitle("Document")
         self.document.resize(1100, 600)
@@ -47,7 +48,7 @@ class MyApp(QMainWindow):
 
 
 def main():
-    print("APP")
+    print("APP", os.path.dirname(__file__))
     try:
         app = QApplication(sys.argv)
         app.setStyleSheet("""
@@ -83,6 +84,7 @@ def main():
         error_class = e.__class__.__name__
         detail = e.args[0]
         cl, exc, tb = sys.exc_info()
+        # print(cl, exc, tb)
         lastCallStack = traceback.extract_tb(tb)[-1]
         fileName = lastCallStack[0]
         lineName = lastCallStack[1]

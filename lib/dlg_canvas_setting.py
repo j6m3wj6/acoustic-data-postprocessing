@@ -46,8 +46,8 @@ class CanvasSetting_Dialog(QDialog):
         It will be triggered when any comboBox's option is changed. 
 
         Actually, it is not allowed to have same options on different comboBoxes 
-        except 'None' option. Every two options would switch each other's position 
-        automatically if one of those is changed.
+        except 'None' option. Every two options would automatically switch their positions 
+        if one of those is changed.
 
         :param str event: Current option text which is a CurveType name
         :param int canvas_id: The index of the canvas that need to modify its axis' CurveType 
@@ -83,12 +83,11 @@ class CanvasSetting_Dialog(QDialog):
 
         tree.set_children_checkstate(type_to_set, Qt.Unchecked)
         canvas.replot()
-        # change canvas name/title
 
         self._load_form_parameter()
 
     def _load_form_parameter(self):
-        for idx, _c in enumerate(self.wg_canvas.canvasPool):
+        for idx, _c in enumerate(self.wg_canvas.canvasPool[:-1]):
             cbox_ax0 = self.form_parameter["Canvas"][idx]["ax0"]
             cbox_ax0.setCurrentText(_c.ax_types[0].value)
 
@@ -110,7 +109,7 @@ class CanvasSetting_Dialog(QDialog):
         widget = QWidget()
         layout = QFormLayout()
 
-        for _c in self.wg_canvas.canvasPool:
+        for _c in self.wg_canvas.canvasPool[:-1]:
             canvas_id = _c.id
             type_list = CurveType.list()
             type_list.remove("All")

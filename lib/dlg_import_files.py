@@ -46,7 +46,7 @@ class Wg_ImportFile(QWidget):
 
         self.vbly_right.addWidget(self.btn_deleteFile)
         self.vbly_right.addWidget(self.btn_clearFile)
-        self.vbly_right.addWidget(self.btn_exportFile)
+        # self.vbly_right.addWidget(self.btn_exportFile)
       # Style and Setting
         headerview = self.tb_files.horizontalHeader()
         # headerview.setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -103,6 +103,24 @@ class ImportDialog(QDialog):
             lambda: self.import_file("LEAP"))
         self.wg_importFile.btn_importKLIPPEL.clicked.connect(
             lambda: self.import_file("KLIPPEL"))
+        self.wg_importFile.btn_importCOMSOL.clicked.connect(
+            lambda: self.import_file("COMSOL"))
+        self.wg_importFile.btn_deleteFile.clicked.connect(self.delete_files)
+        self.wg_importFile.btn_clearFile.clicked.connect(self.clear_files)
+
+    def delete_files(self):
+        filenames_to_del = [
+            _f.text() for _f in self.wg_importFile.tb_files.selectedItems()[1::3]]
+
+        for _f in self.wg_importFile.tb_files.selectedItems()[0::3]:
+            row = _f.row()
+            self.wg_importFile.tb_files.removeRow(row)
+        self.mainwindow.delete_files(filenames_to_del)
+
+    def clear_files(self):
+        self.mainwindow.clear_files()
+        for row in range(self.wg_importFile.tb_files.rowCount()):
+            self.wg_importFile.tb_files.removeRow(row)
 
     def import_file(self, source):
         file = load_file(source)
