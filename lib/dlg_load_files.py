@@ -70,12 +70,14 @@ def load_AP_fileData(path):
                     data[key].iloc[3:, _idx*2], name='x', dtype=float)
                 curve_y = pd.Series(
                     data[key].iloc[3:, _idx*2+1], name='y', dtype=float)
+                units = [data[key].iloc[2, _idx*2],
+                         data[key].iloc[2, _idx*2+1]]
                 if (curve_x.dtype != float or curve_y.dtype != float):
                     isline = False
                     continue
 
                 curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 10])
+                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 10], units=units)
                 curveDatas.append(curveData_new)
                 curve_idx += 1
 
@@ -118,10 +120,10 @@ def load_LEAP_fileData(path):
             _type = determineTypeByTestName(test_name)
 
             curveData_val = CurveData(
-                label=label, note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[0])
+                label=label, note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[0], units=[units[0], units[1]])
 
             curveData_phase = CurveData(
-                label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.PHS, color=COLORS[1])
+                label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.PHS, color=COLORS[1], units=[units[0], units[2]])
 
             filedata.sequence[test_name] = [curveData_val]
             filedata.sequence["Phase"] = [curveData_phase]
@@ -135,8 +137,7 @@ def load_KLIPPEL_fileData(path):
     filedata = None
     if path.endswith('.txt'):
         with open(path, 'r', encoding='UTF-8') as file:
-            file_dir = path
-            filename = path[file_dir.rfind('/')+1:file_dir.rfind('.')]
+            filename = path[path.rfind('/')+1:path.rfind('.')]
             filedata = FileData(filename, source="KLIPPEL",
                                 file_path=path, import_time=dt.datetime.today())
 
@@ -147,6 +148,9 @@ def load_KLIPPEL_fileData(path):
             test_name = headers[0].strip().strip('"')
             labels = headers[1].split('\t\t')
             labels = [c.replace('"', '').strip() for c in labels]
+
+            unit_arr = headers[2].split('\t')
+            unit_arr = [c.replace('"', '').strip() for c in unit_arr]
 
             data = pd.read_table(path,  skiprows=2)
             data = data.dropna()
@@ -164,10 +168,18 @@ def load_KLIPPEL_fileData(path):
                 freq = data.iloc[:, i*2]
                 freq = [float(f.replace(',', '').strip()) for f in freq]
                 freq = pd.Series(freq, name='x', dtype=float)
+                # 'Frequency [Hz]', 'Sound Pessure Level [dB]  / [2.83V 1m]'
+                unit_x = unit_arr[i*2]
+                unit_y = unit_arr[i*2+1]
+                unit_x = unit_x[unit_x.find('['):unit_x.rfind(']')+1]
+                unit_y = unit_y[unit_y.find('['):unit_y.rfind(']')+1]
 
-                rdm = random.randint(1, 100)
+                units = [unit_x, unit_y]  # ['[Hz]', '[dB]  / [2.83V 1m]']
+                filename = unit_arr[i*2][unit_arr[i *
+                                                  2].rfind('[')+1:path.rfind(']')]
+
                 curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 10])
+                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 10], units=units)
 
                 curveDatas.append(curveData_new)
 

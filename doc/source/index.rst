@@ -10,9 +10,10 @@ Welcome to SAE_PlotTool's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   GUI introduction
    app
    lib
-   GUI introduction
+   
 
 
 

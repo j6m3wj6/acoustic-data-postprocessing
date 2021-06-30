@@ -63,16 +63,16 @@ class Project():
     def dump(self, location=None):
         if not location:
             location = self.get_path()
+        # update curveData
+
         self.print()
         try:
             with open(location, 'wb') as fh:
-                pickle.dump(self, fh)
                 self.info["Last Saved Time"] = dt.datetime.today().strftime(
                     "%Y/%m/%d %H:%M:%S")
+                pickle.dump(self, fh)
         except:
-            print(dill.detect.badobjects(self, depth=0))
-            print(dill.detect.badobjects(self, depth=1))
-            print(dill.detect.badobjects(self, depth=2))
+            print(dill.detect.baditems(self))
 
     @classmethod
     def load_project(cls, location=None):
@@ -135,11 +135,16 @@ class FileData():
               (self.info["Name"], self.info["Source"], self.info["File Path"]))
         print("\tImport time: ", self.get_import_time())
         print("\tSequence:")
+        for _k, _v in self.sequence.items():
+            print("\t  Key: ", _k)
+            print("\t  Curves:")
+            for _c in _v:
+                print(f"\t\t%s, %s, %s" % (_c.type.value, _c.label, _c.note))
         print("-----------------------------")
 
-    def setData(self, dataSequence):
+    def update_sequence(self, dataSequence):
         for test, curveData in dataSequence:
-            self.sequence['test'] = curveData
+            self.sequence[test] = curveData
 
     def get_import_time(self):
         return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
@@ -159,7 +164,6 @@ class CurveData:
             "visible": False,
             "color": color,
             "linewidth": LINEWIDTH_DEFAULT,
-            "legend": fill(self.label, LEGEND_WRAP)
         }
 
   # Class Function
@@ -179,10 +183,9 @@ class CurveData:
         print(f"%s, %s, %s" % (self.type.value, self.label, self.note))
   # Get and Set Function
 
-    def get_legend(self):
-        # if (len(self.label) < LEGEND_WRAP): return self.label.ljust(LEGEND_WRAP, ' ')
-        # else:
-        return fill(self.label, LEGEND_WRAP)
+    def get_legend(self, legend_wrap):
+
+        return fill(self.label, legend_wrap)
 
     def get_ymax(self):
         print(self.ydata.max())
@@ -198,14 +201,10 @@ class CurveData:
         }
         return dictToJSON
 
-    def create_line2D(self, ax):
-
+    def create_line2D(self, ax, legend_wrap):
+        self.label = self.label.replace('\n', '')
         self.line, = ax.plot(self.xdata, self.ydata,
-                             label=self.line_props["legend"], color=self.line_props["color"], picker=True)
-
-    def set_line(self, xdata, ydata, label, color):
-        self.line = Line2D(
-            xdata, ydata, label=self.get_legend(), color=color, picker=True)
+                             label=self.get_legend(legend_wrap), color=self.line_props["color"], picker=True)
   # Curve Unary Function
 
     def shift(self, offset):
@@ -223,17 +222,14 @@ class CurveData:
   # Save and Sync
     def sync_with_line(self):
         if self.line:
-            self.label = self.line.get_label()
-            self.line_props["legend"] = self.line.get_label()
+            self.label = self.line.get_label().replace('\n', '')
             self.line_props["color"] = self.line.get_color()
             self.line_props["linewidth"] = self.line.get_linewidth()
         else:
             pass
 
     def dump(self):
-
         self.print()
-
         try:
             with open(f"%s.pkl" % ("curvedata"), 'wb') as fh:
                 pickle.dump(self, fh)

@@ -6,6 +6,7 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QColor, QIcon
 from .ui_conf import ICON_DIR, LINEWIDTHS
 from .obj_data import COLORS
+from textwrap import fill
 
 
 class Curve_Style_Page(QWidget):
@@ -157,7 +158,9 @@ class Curve_Style_Page(QWidget):
     def le_legend_handleEdited(self, event):
         for item in self.tb_curves.selectedItems()[0::3]:
             curveData = item.data(Qt.UserRole)
-            curveData.line.set_label(event)
+            curveData.line.set_label(
+                fill(event, int(
+                    self.canvas.parameter["General"]['Legend']['text-wrap'])))
             row, col = item.row(), item.column()
             self.tb_curves.item(row, col).setText(event)
 
@@ -203,7 +206,7 @@ class GraphProperties_Dialog(QDialog):
                 },
                 "Legend": {
                     "visible": QCheckBox(),
-                    "wrap": QLineEdit()
+                    "text-wrap": QLineEdit()
                 }
             },
             "Axis": {

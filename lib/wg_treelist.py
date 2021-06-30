@@ -36,7 +36,8 @@ class MyTree(QTreeWidget):
                     ax.lines.remove(curveData.line)
             elif item.checkState(0) == Qt.Checked:
                 if curveData.line not in ax.lines:
-                    curveData.create_line2D(ax)
+                    curveData.create_line2D(
+                        ax, int(canvas.parameter["General"]['Legend']['text-wrap']))
                     curveData.line_props["visible"] = True
 
             item.setData(0, Qt.UserRole, curveData)
@@ -175,18 +176,34 @@ class MyTree(QTreeWidget):
 
     def sync_with_canvas(self):
         focusing_canvas = self.wg_canvas.focusing_canvas
-        for f in range(self.topLevelItemCount()):
-            fileroot = self.topLevelItem(f)
-            for t in range(fileroot.childCount()):
-                testroot = fileroot.child(t)
+        for _f in range(self.topLevelItemCount()):
+            fileroot = self.topLevelItem(_f)
+            for _t in range(fileroot.childCount()):
+                testroot = fileroot.child(_t)
                 testType = testroot.data(1, Qt.UserRole)
                 if (testroot.checkState(0) == Qt.Unchecked or testType not in focusing_canvas.ax_types):
                     continue
-                for c in range(testroot.childCount()):
-                    curve_item = testroot.child(c)
+                for _c in range(testroot.childCount()):
+                    curve_item = testroot.child(_c)
                     if (curve_item.checkState(0) == Qt.Unchecked):
                         continue
                     curveData = curve_item.data(0, Qt.UserRole)
                     curveData.sync_with_line()
                     curve_item.setText(0, curveData.label)
                     curve_item.setData(0, Qt.UserRole, curveData)
+
+    def save_back_to_project(self):
+        project = self.wg_canvas.mainwindow.project
+        for _f in range(self.topLevelItemCount()):
+            fileroot = self.topLevelItem(_f)
+            filename = fileroot.text(0)
+            print(filename)
+            for _t in range(fileroot.childCount()):
+                testroot = fileroot.child(_t)
+                testname = testroot.text(0)
+                print(testname)
+                for _c in range(testroot.childCount()):
+                    curve_item = testroot.child(_c)
+                    curveData = curve_item.data(0, Qt.UserRole)
+                    project.files[_f].sequence[testname][_c] = curveData
+        self.wg_canvas.mainwindow.project = project

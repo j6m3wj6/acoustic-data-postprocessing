@@ -157,6 +157,7 @@ class MainWindow(QMainWindow):
         """
         if (self.project.info["Name"] == "Untitled"):
             self.save_file_as()
+        self.dwg_data.tree.save_back_to_project()
         self.project.dump(location=self.project.get_path())
 
     def save_file_as(self) -> None:

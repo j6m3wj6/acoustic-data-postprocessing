@@ -6,6 +6,7 @@ from .wg_toolbar import MyToolBar
 from .obj_data import CurveType
 from .ui_conf import FIGURE_CONF, LINEWIDTH_DEFAULT
 from typing import Tuple, Optional
+from textwrap import fill
 
 
 class MyCanvasItem(FigureCanvasQTAgg):
@@ -91,6 +92,18 @@ class MyCanvasItem(FigureCanvasQTAgg):
         h_pad = int(param_gen["Margin"]["top-bottom"])
         self.fig.set_constrained_layout_pads(w_pad=w_pad/72., h_pad=h_pad/72.,
                                              hspace=0.5, wspace=0.5)
+
+        handles, labels = self.ax_main.get_legend_handles_labels()
+        for _hd, _lb in zip(handles, labels):
+            _lb = _lb.replace('\n', '')
+            _hd.set_label(fill(_lb,
+                               int(param_gen['Legend']['text-wrap'])))
+
+        handles, labels = self.ax_sub.get_legend_handles_labels()
+        for _hd, _lb in zip(handles, labels):
+            _lb = _lb.replace('\n', '')
+            _hd.set_label(fill(_lb,
+                               int(param_gen['Legend']['text-wrap'])))
 
         param_axis = self.parameter["Axis"]
         self.ax_main.set_xlabel(param_axis["X-Axis"]['label'])

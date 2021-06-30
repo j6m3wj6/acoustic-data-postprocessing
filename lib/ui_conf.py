@@ -20,7 +20,7 @@ FIGURE_CONF = {
         },
         "Legend": {
             "visible": True,
-            "wrap": 25
+            "text-wrap": LEGEND_WRAP
         }
     },
     "Axis": {
