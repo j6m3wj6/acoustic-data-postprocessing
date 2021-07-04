@@ -21,28 +21,31 @@ class MyTree(QTreeWidget):
 
     def handleCheck(self, item):
         # print("MyTree handleSelect")
-        if not item.parent() or isinstance(item.data(1, Qt.UserRole), CurveType):  # test root
-            return
-        else:  # measurement leaves
-            curveData = item.data(0, Qt.UserRole)
-            curveData.label = item.text(0)
+        try:
+            if not item.parent() or isinstance(item.data(1, Qt.UserRole), CurveType):  # test root
+                return
+            else:  # measurement leaves
+                curveData = item.data(0, Qt.UserRole)
+                curveData.label = item.text(0)
 
-            curveData.note = item.text(1)
-            canvas, _, ax = self.wg_canvas.get_canvas(curveData.type)
-            if curveData.line and item.checkState(0) == Qt.Unchecked:
-                curveData.line.set_label('_nolegend_')
-                curveData.line_props["visible"] = False
-                if (ax and curveData.line in ax.lines):
-                    ax.lines.remove(curveData.line)
-            elif item.checkState(0) == Qt.Checked:
-                if curveData.line not in ax.lines:
-                    curveData.create_line2D(
-                        ax, int(canvas.parameter["General"]['Legend']['text-wrap']))
-                    curveData.line_props["visible"] = True
+                curveData.note = item.text(1)
+                canvas, _, ax = self.wg_canvas.get_canvas(curveData.type)
+                if curveData.line and item.checkState(0) == Qt.Unchecked:
+                    curveData.line.set_label('_nolegend_')
+                    curveData.line_props["visible"] = False
+                    if (ax and curveData.line in ax.lines):
+                        ax.lines.remove(curveData.line)
+                elif item.checkState(0) == Qt.Checked:
+                    if curveData.line not in ax.lines:
+                        curveData.create_line2D(
+                            ax, int(canvas.parameter["General"]['Legend']['text-wrap']))
+                        curveData.line_props["visible"] = True
 
-            item.setData(0, Qt.UserRole, curveData)
-            canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
-
+                item.setData(0, Qt.UserRole, curveData)
+                canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
+        except KeyError:
+            print("KeyError")
+            raise KeyError
         canvas.replot()
 
     def handleSelect(self):

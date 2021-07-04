@@ -239,11 +239,11 @@ def determineTypeByTestName(test_name):
         return CurveType.NoType
 
 
-AP_path = "C:/Users/tong.wang/OneDrive - 國立台灣大學/桌面/Matlab tools/python/data/AP_Acoustic Response_all_xlsx.xlsx"
-LEAP_path = "C:/Users/tong.wang/OneDrive - 國立台灣大學/桌面/Matlab tools/python/data/LEAP_Impedance.txt"
-KLIPPEL_path = "C:/Users/tong.wang/OneDrive - 國立台灣大學/桌面/Matlab tools/python/data/NFS_CEA2034.txt"
+AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
+LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
+KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
 
-# AP_DATA = load_AP_fileData(AP_path)
+AP_DATA = load_AP_fileData(AP_path)
 # LEAP_DATA = load_LEAP_fileData(LEAP_path)
 # KLIPPEL_DATA = load_KLIPPEL_fileData(KLIPPEL_path)
 

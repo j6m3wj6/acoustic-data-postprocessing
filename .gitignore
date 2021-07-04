@@ -1,5 +1,5 @@
 .ipynb_checkpoints
 mess
-doc
+doc/source/node_modules
 package_script.py
 tmp.py

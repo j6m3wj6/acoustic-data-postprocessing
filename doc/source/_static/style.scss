@@ -1,0 +1,370 @@
+$bg-color: white;
+$font-family: "Roboto",
+sans-serif;
+$code-font-family: "Source Code Pro";
+$monospace: "Source Code Pro";
+$heading-text-color: #242a31;
+$text-color: #3b454e;
+$matcolor-blue: #1f77b4;
+$matcolor-orange: #ff7f0e;
+$matcolor-green: #2ca02c;
+$matcolor-red: #d62728;
+$matcolor-purple: #9467bd;
+$matcolor-brown: #8c564b;
+$matcolor-pink: #e377c2;
+$matcolor-gray: #7f7f7f;
+$matcolor-yellow: #bcbd22;
+$matcolor-lightblue: #17becf;
+
+
+:root {
+    $side-bar-bg-color: #f5f7f9;
+    $control-text-color: #3b454e;
+    $primary-color: #3884ff;
+    $active-file-bg-color: #e6ecf1;
+    $active-file-text-color: inherit;
+    $active-file-border-color: #3884ff;
+    $item-hover-text-color: #242a31;
+    $item-hover-bg-color: #f5f7f9;
+    $window-border: 1px solid #e6ecf1;
+    $select-text-font-color: white;
+    $select-text-bg-color: #1968e6;
+    $md-char-color: #9daab6;
+    $heading-char-color: #9daab6;
+    $meta-content-color: #3884ff;
+
+    $borders: #e6ecf1;
+    $table-border-color: #e6ecf1;
+    $boxes: #f5f7f9;
+    $boxes-darker: #d8e0e7;
+    $boxes-darker2: #bac2c9;
+    $boxes-darkest: #9daab6;
+    $drag-placeholder-color: #d8e0e7;
+
+    $light-text-color: #9daab6;
+    $light-text-color-darker: #74818d;
+    $codeboxes: #183055;
+    $codeboxes-lighter: #1c375f;
+    $rawblock-edit-panel-bd: transparent;
+
+    $primary-color-darkest: #001f50;
+    $primary-color-darker2: #00307c;
+    $primary-color-darker: #1968e6;
+    $focus-ring-color: #3884ff;
+
+    $danger-color: rgb(255, 70, 66);
+
+    $node-fill: #ececff;
+    $node-border: #ccccff;
+    $cluster-fill: #ffffde;
+    $cluster-border: #aaaa33;
+    $note-fill: #fff5ad;
+    $note-border: #aaaa33;
+}
+
+html {
+    // default size:
+    font-size: 16px;
+    background-color: $bg-color;
+}
+
+html,
+body {
+    font-family: $font-family;
+    color: $text-color
+}
+
+span[button] {
+    background-color: #efefef;
+    border-radius: 3px;
+    border: 1px solid #001f50;
+    padding: 1px 6px;
+    margin: 0 4px;
+
+    font-size: 12px;
+    font-family: "Roboto Slab";
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+span[canvas_label] {
+    background-color: #f5f5dc;
+    border-radius: 5px;
+    border: 1px solid #001f50;
+    padding: 1px 6px;
+    margin: 0 4px;
+
+    font-size: 12px;
+    font-family: "Roboto Slab";
+}
+
+
+div.columns {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+
+    div {
+        margin: 5px;
+
+        &[text_center] {
+            text-align: center;
+        }
+
+        &.item[width_percent="25"] {
+            min-width: 25%;
+        }
+
+        &.item[width_percent="40"] {
+            min-width: 40%;
+        }
+
+        &.item[width_percent="50"] {
+            min-width: 50%;
+        }
+
+        &.item[width_percent="60"] {
+            min-width: 60%;
+        }
+
+        &.item[width_percent="75"] {
+            min-width: 75%;
+        }
+
+    }
+}
+
+a[href^="#anchor_"] {
+    // color: $matcolor-orange;
+    // padding: 1px;
+}
+
+img {
+    width: 75%;
+    margin: 10px auto;
+    display: block;
+
+    &[width_percent="100"] {
+        width: 100%;
+    }
+
+    &[width_percent="90"] {
+        width: 90%;
+    }
+
+    &[width_percent="80"] {
+        width: 80%;
+    }
+
+    &[width_percent="60"] {
+        width: 60%;
+    }
+
+    &[width_percent="50"] {
+        width: 50%;
+    }
+
+    &[width_percent="40"] {
+        width: 40%;
+    }
+
+    &[width_percent="25"] {
+        width: 25%;
+    }
+
+    &[inline-block] {
+        display: inline;
+    }
+}
+
+
+// on Windows/Linux, it is the part that is not titlebar or status bar.
+
+content {}
+
+#write {
+    // size of writing area:
+}
+
+/**
+* ---------------------
+* Block Elements
+*/
+
+// yaml
+pre.md-meta-block {}
+
+// headings
+
+h3,
+h4 {
+    margin-block-end: 0.25em;
+}
+
+// table
+table {}
+
+// table header
+thead {}
+
+// table row
+tr {}
+
+// table cell
+td,
+th {}
+
+// tooltip above tables
+.md-table-edit {}
+
+// lists
+ol,
+ul {}
+
+li {}
+
+// blockquote
+blockquote {}
+
+// hr
+hr {
+    background-color: $matcolor-gray;
+    border: 0 none;
+    box-sizing: content-box;
+    height: 1.5px;
+    margin: 16px 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+p {}
+
+// diagram panel
+.md-diagram-panel {}
+
+// diagram panel in preview
+#write .md-focus .md-diagram-panel {}
+
+// reference link definition
+.md-def-link {}
+
+// footnote definition
+.md-def-footnote {}
+
+/**
+* Code Fences
+* see http://support.typora.io/Code-Block-Styles
+*/
+
+/**
+* Mermaid Diagrams
+* see https://github.com/knsv/mermaid/blob/master/dist/mermaid.css
+*/
+
+/**
+* Inline Elements
+*/
+
+// basic styles
+
+code {}
+
+strong {}
+
+em {}
+
+
+
+img {}
+
+// extend styles
+
+mark {}
+
+del {}
+
+sub {}
+
+sup {}
+
+/**
+* Source Code Mode
+* see http://support.typora.io/Code-Block-Styles
+*/
+#typora-source {
+    .cm-header {}
+
+    .cm-strong {}
+
+    .cm-em {}
+
+    .cm-link {}
+
+    .cm-string {}
+
+    .cm-comment {}
+}
+
+/**
+* Control UI (optional)
+*/
+
+// button style
+.btn,
+.btn .btn-default {}
+
+// outline area when popover
+#outline-dropmenu {}
+
+// side bar
+.pin-outline #outline-dropmenu {}
+
+// when sidepanel is visible
+.pin-outline #write {}
+
+// dialogs
+.modal-content {}
+
+.modal-title {}
+
+// search panel
+#md-searchpanel {}
+
+#write div.md-toc-tooltip {}
+
+/**
+* Control UI on Mac (optional)
+*/
+
+// quick open panel
+#typora-quick-open {
+    //background-color: #525C65;
+}
+
+#md-searchpanel,
+.on-search-panel-open header,
+.modal-content,
+.popover,
+.context-menu {
+    //background-color: $dialog-background;
+}
+
+.popover.bottom>.arrow:after {
+    //border-bottom-color: $dialog-background;
+}
+
+/**
+* Control UI on Windows/Linux (optional)
+*/
+
+// context menu
+.context-menu {}
+
+// statue bar
+footer {}
+
+/**
+* Control UI on Windows Unibody Style (optional)
+*/
+
+// left side mega menu
+.megamenu-content {}

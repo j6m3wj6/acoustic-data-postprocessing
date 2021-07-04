@@ -39,6 +39,8 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.ax_main = self.fig.axes[0]
         self.ax_sub = self.fig.axes[0].twinx()
 
+        # self.ax_sub.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
+
         self.draggable_lines = Draggable_lines(self.ax_main, 1000, 0)
         self.draggable_lines.set_visible(False)
 
@@ -85,8 +87,10 @@ class MyCanvasItem(FigureCanvasQTAgg):
                 self.fig.axes[idx].yaxis.set_major_formatter(
                     matplotlib.ticker.PercentFormatter())
             else:
+                # self.fig.axes[idx].yaxis.set_major_formatter(
+                #     matplotlib.ticker.ScalarFormatter())
                 self.fig.axes[idx].yaxis.set_major_formatter(
-                    matplotlib.ticker.FormatStrFormatter('%.0f'))
+                    matplotlib.ticker.EngFormatter())
 
         w_pad = int(param_gen["Margin"]["left-right"])
         h_pad = int(param_gen["Margin"]["top-bottom"])

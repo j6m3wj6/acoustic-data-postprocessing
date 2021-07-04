@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QPushButton, QWidget,\
 from PyQt5.QtCore import Qt
 from lib.wg_menubar import MyMenuBar
 from lib.dockwg_data_treelist import DockWidget_Data
+from lib.dockwg_data import DockWidget_Data_new
 from lib.dlg_operation import OperationDialog
 from lib.dlg_canvas_setting import CanvasSetting_Dialog
 from lib.wg_canvas import MyCanvas
@@ -49,6 +50,8 @@ class MainWindow(QMainWindow):
         self.wg_canvas = MyCanvas(
             self, ui_conf=self.project.ui_conf["MyCanvas"])
         self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
+        # self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
+        self.dwg_data_new = DockWidget_Data_new(self, Qt.RightDockWidgetArea)
         self.dwg_canvasLayout = DockWidget_CanvasLayout(
             self, Qt.LeftDockWidgetArea)
         self.dwg_canvasLayout._setCanvasLayout_Main(self.wg_canvas)

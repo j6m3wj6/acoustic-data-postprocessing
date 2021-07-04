@@ -55,7 +55,7 @@ def main():
             QWidget {
                 font-family: Arial;
             }
-            QMainWindow {
+            QMainWindow { 
                 background-color: white;
                 font-family: Arial;
             }
@@ -89,9 +89,11 @@ def main():
         fileName = lastCallStack[0]
         lineName = lastCallStack[1]
         funcName = lastCallStack[2]
+        print("#########  Error Message   #########\n")
         errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(
             fileName, lineName, funcName, error_class, detail)
         print(errMsg)
+        print("\n####################################")
 
 
 if __name__ == '__main__':

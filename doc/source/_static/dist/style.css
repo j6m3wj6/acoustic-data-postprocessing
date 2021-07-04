@@ -1,0 +1,135 @@
+html {
+  font-size: 16px;
+  background-color: white;
+}
+
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  color: #3b454e;
+}
+
+span[button] {
+  background-color: #efefef;
+  border-radius: 3px;
+  border: 1px solid #001f50;
+  padding: 1px 6px;
+  margin: 0 4px;
+  font-size: 12px;
+  font-family: "Roboto Slab";
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+span[canvas_label] {
+  background-color: #f5f5dc;
+  border-radius: 5px;
+  border: 1px solid #001f50;
+  padding: 1px 6px;
+  margin: 0 4px;
+  font-size: 12px;
+  font-family: "Roboto Slab";
+}
+
+div.columns {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+div.columns div {
+  margin: 5px;
+}
+div.columns div[text_center] {
+  text-align: center;
+}
+div.columns div.item[width_percent="25"] {
+  min-width: 25%;
+}
+div.columns div.item[width_percent="40"] {
+  min-width: 40%;
+}
+div.columns div.item[width_percent="50"] {
+  min-width: 50%;
+}
+div.columns div.item[width_percent="60"] {
+  min-width: 60%;
+}
+div.columns div.item[width_percent="75"] {
+  min-width: 75%;
+}
+
+img {
+  width: 75%;
+  margin: 10px auto;
+  display: block;
+}
+img[width_percent="100"] {
+  width: 100%;
+}
+img[width_percent="90"] {
+  width: 90%;
+}
+img[width_percent="80"] {
+  width: 80%;
+}
+img[width_percent="60"] {
+  width: 60%;
+}
+img[width_percent="50"] {
+  width: 50%;
+}
+img[width_percent="40"] {
+  width: 40%;
+}
+img[width_percent="25"] {
+  width: 25%;
+}
+img[inline-block] {
+  display: inline;
+}
+
+/**
+* ---------------------
+* Block Elements
+*/
+h3,
+h4 {
+  margin-block-end: 0.25em;
+}
+
+hr {
+  background-color: #7f7f7f;
+  border: 0 none;
+  box-sizing: content-box;
+  height: 1.5px;
+  margin: 16px 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+/**
+* Code Fences
+* see http://support.typora.io/Code-Block-Styles
+*/
+/**
+* Mermaid Diagrams
+* see https://github.com/knsv/mermaid/blob/master/dist/mermaid.css
+*/
+/**
+* Inline Elements
+*/
+/**
+* Source Code Mode
+* see http://support.typora.io/Code-Block-Styles
+*/
+/**
+* Control UI (optional)
+*/
+/**
+* Control UI on Mac (optional)
+*/
+/**
+* Control UI on Windows/Linux (optional)
+*/
+/**
+* Control UI on Windows Unibody Style (optional)
+*/

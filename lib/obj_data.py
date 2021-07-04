@@ -28,6 +28,10 @@ class CurveType(Extended_Enum):
     ALL = 'All'
 
 
+def Diff(li1, li2):
+    return list(set(li1) - set(li2)) + list(set(li2) - set(li1))
+
+
 class Project():
     def __init__(self, name="Untitled"):
         self.info = {
@@ -38,14 +42,34 @@ class Project():
         }
         self.files = []
         self.ui_conf = UI_CONF
+        # # self.newattr = []
+        # self.newattr2 = []
+
+    @classmethod
+    def _check_attr(self, pj):
+        if pj.__dict__.keys() is not Project().__dict__.keys():
+            print("Not the same", )
+            print("\tpj.__dict__.keys(): ", pj.__dict__.keys())
+            print("\tProject.__dict__.keys(): ", Project().__dict__.keys())
+            print("Difference:", Diff(
+                pj.__dict__.keys(), Project().__dict__.keys()))
 
     def print(self):
+        # msg = ""
+        # msg += "\nProject: ================="
+        # msg += ("____keys: ", self.__dict__.keys())
+        # msg += ("Name: %s \nFile location: %s" %
+        #         (self.info["Name"], self.get_path()))
+        # msg += "============================\n"
+
         print("\nProject: =================")
+        print("____keys: ", self.__dict__.keys())
         print("Name: %s \nFile location: %s" %
               (self.info["Name"], self.get_path()))
         for _f in self.files:
             _f.print()
         print("============================\n")
+        # return msg
 
     def append_file(self, file):
         self.files.append(file)
@@ -85,11 +109,12 @@ class Project():
                 fh = open(location, 'rb')
                 # with open(f"%s.pkl" % (location), 'rb') as fh:
                 unpickled_project = pickle.load(fh)
-                if location is not unpickled_project.info["File Location"]:
+                if location is not unpickled_project.get_path():
                     print(
                         "WARNING: File location not the same --> change project info.")
                     unpickled_project.info["File Location"] = location
                 unpickled_project.print()
+                # Project._check_attr(unpickled_project)
                 print("____________finish obj_data.Project.load_project()")
                 fh.close()
                 return unpickled_project
@@ -130,17 +155,22 @@ class FileData():
         self.sequence = {}
 
     def print(self):
-        print("------------")
-        print("\tName: %s \n\tSource: %s \n\tfile_path: %s" %
-              (self.info["Name"], self.info["Source"], self.info["File Path"]))
-        print("\tImport time: ", self.get_import_time())
-        print("\tSequence:")
+        msg = ""
+
+        msg += "------------"
+        msg += ("\n\tName: %s \n\tSource: %s \n\tfile_path: %s" %
+                (self.info["Name"], self.info["Source"], self.info["File Path"]))
+        msg += ("\n\tImport time: %s" % str(self.get_import_time()))
+        msg += "\n\tSequence:"
         for _k, _v in self.sequence.items():
-            print("\t  Key: ", _k)
-            print("\t  Curves:")
+            msg += ("\n\t  Key: %s" % _k)
+            msg += ("\n\t  Curves: ")
             for _c in _v:
-                print(f"\t\t%s, %s, %s" % (_c.type.value, _c.label, _c.note))
-        print("-----------------------------")
+                msg += (f"\n\t\t%s, %s, %s" %
+                        (_c.type.value, _c.label, _c.note))
+        msg += ("\n-----------------------------")
+        print(msg)
+        return msg
 
     def update_sequence(self, dataSequence):
         for test, curveData in dataSequence:
