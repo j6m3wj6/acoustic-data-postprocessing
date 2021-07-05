@@ -10,11 +10,10 @@ from textwrap import fill
 
 
 class Curve_Style_Page(QWidget):
-    def __init__(self, tree=None):
+    def __init__(self, filepool=None):
         super().__init__()
-        self.tree = tree
-        self.canvas = tree.wg_canvas.focusing_canvas
-
+        self.filepool = filepool
+        self.canvas = filepool.mainwindow.wg_canvas.focusing_canvas
         self.initUI()
 
     def initUI(self):
@@ -35,7 +34,7 @@ class Curve_Style_Page(QWidget):
         self.cbox_linewidth.setPlaceholderText("-- Select --")
         self.cbox_linewidth.setIconSize(QSize(65, 20))
 
-        self.tb_curves = self._create_table()
+        self.tb_curves = self.filepool.tranfer_to_table()
         self.le_legend = QLineEdit("")
       # Layout
         vbly_curves = QVBoxLayout()
@@ -88,58 +87,8 @@ class Curve_Style_Page(QWidget):
         self.tb_curves.itemSelectionChanged.connect(
             self.tb_curves_handleSelect)
 
-    def _create_table(self):
-        tb_curves = QTableWidget()
-        tb_curves.setColumnCount(3)
-        tb_curves.setHorizontalHeaderLabels(
-            ['Label', 'Color', 'LineWidth'])
-
-        for f in range(self.tree.topLevelItemCount()):
-            fileroot = self.tree.topLevelItem(f)
-            for t in range(fileroot.childCount()):
-                testroot = fileroot.child(t)
-                testType = testroot.data(1, Qt.UserRole)
-                if (testroot.checkState(0) == Qt.Unchecked or testType not in self.canvas.ax_types):
-                    continue
-                row = tb_curves.rowCount()
-                tb_curves.setRowCount(row + 1)
-
-                test_item = QTableWidgetItem(
-                    fileroot.text(0)+' - '+testroot.text(0))
-                test_item.setBackground(Qt.lightGray)
-                test_item.setFlags(Qt.NoItemFlags)
-                tb_curves.setItem(row, 0, test_item)
-                tb_curves.setSpan(row, 0, 1, 3)
-
-                for c in range(testroot.childCount()):
-                    curve = testroot.child(c)
-                    if (curve.checkState(0) == Qt.Checked):
-                        row = tb_curves.rowCount()
-                        tb_curves.setRowCount(row + 1)
-
-                        curveData = curve.data(0, Qt.UserRole)
-                        new_item = QTableWidgetItem(curveData.label)
-                        new_item.setData(Qt.UserRole, curveData)
-                        tb_curves.setItem(row, 0, new_item)
-                        tb_curves.item(row, 0).setFlags(
-                            tb_curves.item(row, 0).flags() ^ Qt.ItemIsEditable)
-
-                        pixmap = QPixmap(65, 20)
-                        pixmap.fill(QColor(curveData.line.get_color()))
-                        color_item = QTableWidgetItem()
-                        color_item.setIcon(QIcon(pixmap))
-                        tb_curves.setItem(row, 1, color_item)
-
-                        linewidth_index = LINEWIDTHS.index(
-                            curveData.line.get_linewidth())
-                        icon_dir = ICON_DIR + f"linewidth_%s.png" % (
-                            linewidth_index)
-                        linewidth_item = QTableWidgetItem()
-                        linewidth_item.setIcon(QIcon(icon_dir))
-                        tb_curves.setItem(row, 2, linewidth_item)
-        return tb_curves
-
   # Handle Functions
+
     def tb_curves_handleSelect(self):
         seleced_items = self.tb_curves.selectedItems()[0::3]
         if len(seleced_items) > 1:
@@ -194,7 +143,7 @@ class Curve_Style_Page(QWidget):
 class GraphProperties_Dialog(QDialog):
     def __init__(self, mainwindow=None):
         super().__init__()
-        self.wg_treelist = mainwindow.dwg_data.tree
+        self.filepool = mainwindow.dwg_data.filepool
         self.wg_canvas = mainwindow.wg_canvas
 
         self.parameter = {
@@ -288,7 +237,7 @@ class GraphProperties_Dialog(QDialog):
         for page_name, form_dict in self.parameter.items():
             page = self._create_page(form_dict)
             self.tab.addTab(page, page_name)
-        self.page_curves = Curve_Style_Page(tree=self.wg_treelist)
+        self.page_curves = Curve_Style_Page(filepool=self.filepool)
         self.tab.addTab(self.page_curves, "Curves")
 
         buttonBox = QDialogButtonBox()

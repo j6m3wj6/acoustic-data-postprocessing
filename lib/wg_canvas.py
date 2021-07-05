@@ -137,6 +137,15 @@ class MyCanvasItem(FigureCanvasQTAgg):
 
         self.replot()
 
+    def sort_legend(self, ax):
+        handles, labels = ax.get_legend_handles_labels()
+        zipped_list = list(zip(handles, labels))
+        # print("Before:",  zipped_list)
+        zipped_list.sort(key=lambda x: x[0].get_zorder())
+        # print("After: ", zipped_list)
+        unzipped = [[i for i, j in zipped_list], [j for i, j in zipped_list]]
+        return unzipped[0], unzipped[1]
+
     def _toggle_legend(self, ax: matplotlib.axes.Axes,  pad_h: float):
         '''
         Update legends according to those curves on the canvas.
@@ -145,7 +154,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
         if user choose to hide legend in the axes parameter dialog. 
         Those customized setting are stored in ``parameter``.
         '''
-        handles, labels = ax.get_legend_handles_labels()
+        handles, labels = self.sort_legend(ax)
         if ax == self.ax_main:
             loc = "upper left"
             leg_bottom = 0.5
@@ -154,7 +163,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
             leg_bottom = 0
 
         if labels:
-            ax.legend(bbox_to_anchor=(1+pad_h, leg_bottom, 1, .5),
+            ax.legend(handles, labels, bbox_to_anchor=(1+pad_h, leg_bottom, 1, .5),
                       loc=loc, borderaxespad=0)
             legend_visible = self.parameter["General"]["Legend"]["visible"]
             ax.get_legend().set_visible(legend_visible)
@@ -185,9 +194,9 @@ class MyCanvasItem(FigureCanvasQTAgg):
 
         :param CurveType curveType:
         '''
-        if self.ax_types[0] == curveType:
+        if self.ax_types[0].name == curveType.name:
             return 0, self.ax_main
-        elif self.ax_types[1] == curveType:
+        elif self.ax_types[1].name == curveType.name:
             return 1, self.ax_sub
         else:
             return -1, None
@@ -336,11 +345,12 @@ class MyCanvas(QWidget):
                 ax_id, ax_match = _c.get_ax(_type)
                 if ax_match:
                     return _c, ax_id, ax_match
-        elif id is not None:
-            for _c in self.canvasPool:
-                if id == _c.id:
-                    return _c
-        return None
+
+        # elif id is not None:
+        #     for _c in self., :
+        #         if id == _c.id:
+        #             return _c
+        return None, None, None
 
     def get_active_canvas_names(self):
         active_canvas_names = []

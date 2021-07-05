@@ -2,8 +2,7 @@ from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QDir
 import pandas as pd
 import datetime as dt
-import random
-from .obj_data import FileData, CurveData, CurveType
+from .obj_data import FileData, CurveData, CurveType, Measurement, Channel
 from .ui_conf import COLORS
 import sys
 import traceback
@@ -46,49 +45,66 @@ def load_file(source):
 
 
 def load_AP_fileData(path):
+    print("load_AP_fileData --->")
     filename = path[path.rfind('/')+1:path.rfind('.')]
-
     filedata = None
-
     if path.endswith('.xlsx'):
-        data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
+        excel_data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
         filedata = FileData(filename, source="AP", file_path=path,
                             import_time=dt.datetime.today())
+        test_in_sequnce = []
+
         curve_idx = 0
-        for key in data.keys():
-            test_name = data[key].columns[0].strip()
-            _type = determineTypeByTestName(test_name)
-            note = data[key].columns[1].strip()
-            curveDatas = []
-            isline = True
-            if test_name not in filedata.sequence:
-                curve_idx = 0
 
-            for _idx in range(int(len(data[key].columns)/2)):
-                label = data[key].iloc[0, _idx*2].strip()
-                curve_x = pd.Series(
-                    data[key].iloc[3:, _idx*2], name='x', dtype=float)
-                curve_y = pd.Series(
-                    data[key].iloc[3:, _idx*2+1], name='y', dtype=float)
-                units = [data[key].iloc[2, _idx*2],
-                         data[key].iloc[2, _idx*2+1]]
-                if (curve_x.dtype != float or curve_y.dtype != float):
-                    isline = False
-                    continue
+        pages_in_excel = len(excel_data.keys())
+        measurements_count = pages_in_excel-1
 
-                curveData_new = CurveData(
-                    label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 10], units=units)
-                curveDatas.append(curveData_new)
-                curve_idx += 1
+        first_page = list(excel_data.keys())[0]
+        test_in_sequnce.append(list(excel_data.keys())[0])
+        channel_count = int(len(excel_data[first_page].columns)/2)
 
-            if (not isline):
+        for count, page in enumerate(excel_data.keys()):
+            test_name = excel_data[page].columns[0].strip()
+            if test_name not in test_in_sequnce:
+                measurements_count = count-1
+                test_in_sequnce = []
+                break
+
+        test_in_sequnce = list(excel_data.keys())[0:-1:measurements_count+1]
+        filedata.test_in_sequence = test_in_sequnce
+        # print(test_in_sequnce, measurements_count, channel_count)
+        for m_idx in range(measurements_count):
+            measurementData = Measurement(channel=channel_count, id=m_idx)
+            for page in list(excel_data.keys())[m_idx:-1:measurements_count+1]:
+                test_name = excel_data[page].columns[0].strip()
+                _type = determineTypeByTestName(test_name)
+                note = excel_data[page].columns[1].strip()
+                isline = True
+
+                for _idx in range(channel_count):
+                    label = excel_data[page].iloc[0, _idx*2].strip()
+                    curve_x = pd.Series(
+                        excel_data[page].iloc[3:, _idx*2], name='x', dtype=float)
+                    curve_y = pd.Series(
+                        excel_data[page].iloc[3:, _idx*2+1], name='y', dtype=float)
+                    units = [excel_data[page].iloc[2, _idx*2],
+                             excel_data[page].iloc[2, _idx*2+1]]
+                    if (curve_x.dtype != float or curve_y.dtype != float):
+                        isline = False
+                        continue
+
+                    curveData = CurveData(parent=measurementData.channel[_idx],
+                                          label=label, note=note, xdata=curve_x, ydata=curve_y, _type=_type, color=COLORS[curve_idx % 10], units=units)
+                    measurementData.channel[_idx].sequence[test_name] = curveData
+            if (not isline and test_name in test_in_sequnce):
+                print(f"{test_name} is not float type and cannot be plot.")
+                test_in_sequnce.remove(test_name)
                 continue
-            if test_name in filedata.sequence:
-                filedata.sequence[test_name].extend(curveDatas)
-            else:
-                filedata.sequence[test_name] = curveDatas
+
+            filedata.measurements[str(m_idx)] = measurementData
     else:
         pass
+    filedata.print()
     return filedata
 
 
@@ -102,6 +118,7 @@ def load_LEAP_fileData(path):
             test_name = filename
             filedata = FileData(filename, source="LEAP",
                                 file_path=path, import_time=dt.datetime.today())
+            measurementData = Measurement(channel=1, id=1)
 
             # Impedance_PR: T201100003660
             label = headers[4][headers[4].find('=')+1:].strip()
@@ -119,14 +136,20 @@ def load_LEAP_fileData(path):
 
             _type = determineTypeByTestName(test_name)
 
-            curveData_val = CurveData(
-                label=label, note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[0], units=[units[0], units[1]])
+            curveData_val = CurveData(parent=measurementData.channel[0],
+                                      label=label, note=note, xdata=freq,
+                                      ydata=val, _type=_type, color=COLORS[0],
+                                      units=units[0:1])
 
-            curveData_phase = CurveData(
-                label=label, note=note, xdata=freq, ydata=phase, _type=CurveType.PHS, color=COLORS[1], units=[units[0], units[2]])
+            curveData_phase = CurveData(parent=measurementData.channel[0],
+                                        label=label, note=note, xdata=freq,
+                                        ydata=phase, _type=CurveType.PHS,
+                                        color=COLORS[1], units=units[0::1])
 
-            filedata.sequence[test_name] = [curveData_val]
-            filedata.sequence["Phase"] = [curveData_phase]
+            filedata.test_in_sequence = [test_name, "Phase"]
+            measurementData.channel[0].sequence[test_name] = curveData_val
+            measurementData.channel[0].sequence["Phase"] = curveData_phase
+            filedata.measurements['1'] = measurementData
             file.close()
     else:
         pass
@@ -140,6 +163,7 @@ def load_KLIPPEL_fileData(path):
             filename = path[path.rfind('/')+1:path.rfind('.')]
             filedata = FileData(filename, source="KLIPPEL",
                                 file_path=path, import_time=dt.datetime.today())
+            measurementData = Measurement(channel=1, id=1)
 
             headers = file.readlines()[:3]
             if headers[0][0] == '%':
@@ -178,16 +202,15 @@ def load_KLIPPEL_fileData(path):
                 filename = unit_arr[i*2][unit_arr[i *
                                                   2].rfind('[')+1:path.rfind(']')]
 
-                curveData_new = CurveData(
-                    label=labels[i], note=note, xdata=freq, ydata=val, _type=_type, color=COLORS[i % 10], units=units)
+                curveData_new = CurveData(parent=measurementData.channel[0],
+                                          label=labels[i], note=note, xdata=freq,
+                                          ydata=val, _type=_type, color=COLORS[i % 10],
+                                          units=units)
 
                 curveDatas.append(curveData_new)
-
-            if test_name in filedata.sequence:
-                pass
-            else:
-                filedata.sequence[test_name] = []
-            filedata.sequence[test_name].extend(curveDatas)
+            filedata.test_in_sequence = [test_name]
+            measurementData.channel[0].sequence[test_name] = curveDatas
+            filedata.measurements['1'] = measurementData
     else:
         pass
     return filedata
@@ -202,6 +225,7 @@ def load_COMSOL_fileData(path):
             test_name = filename
             filedata = FileData(filename, source="COMSOL",
                                 file_path=path, import_time=dt.datetime.today())
+            measurementData = Measurement(channel=1, id=1)
 
     #         label = headers[4][headers[4].find('=')+1:]   # Impedance_PR: T201100003660
 
@@ -216,10 +240,12 @@ def load_COMSOL_fileData(path):
             # print(freq, val)
 
             note = ""
-            curveData_new = CurveData(
-                label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL, color=COLORS[0])
+            curveData_new = CurveData(parent=measurementData.channel[0],
+                                      label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL, color=COLORS[0])
 
-            filedata.sequence[test_name] = [curveData_new]
+            filedata.test_in_sequence = [test_name]
+            measurementData.channel[0].sequence[test_name] = curveData_new
+            filedata.measurements['1'] = measurementData
             file.close()
     else:
         pass
@@ -239,11 +265,14 @@ def determineTypeByTestName(test_name):
         return CurveType.NoType
 
 
-AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
+AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
+AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
 LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
 KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
 
 AP_DATA = load_AP_fileData(AP_path)
+AP_DATA2 = load_AP_fileData(AP_path)
+
 # LEAP_DATA = load_LEAP_fileData(LEAP_path)
 # KLIPPEL_DATA = load_KLIPPEL_fileData(KLIPPEL_path)
 

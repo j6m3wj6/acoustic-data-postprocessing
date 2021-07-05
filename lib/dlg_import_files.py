@@ -124,7 +124,7 @@ class ImportDialog(QDialog):
 
     def import_file(self, source):
         file = load_file(source)
-        if (file and file.sequence):
+        if file:
             file_existed = False
             for _f in self.mainwindow.project.files:
                 if (_f.info["Name"] == file.info["Name"]):

@@ -49,7 +49,7 @@ class MyToolBar(NavigationToolbar2QT):
         dlg = GraphProperties_Dialog(mainwindow=self.mainwindow)
         if dlg.exec():
             # print("edit_parameter")
-            self.mainwindow.dwg_data.tree.sync_with_canvas()
+            self.mainwindow.dwg_data.filepool.copy_params_from_canvas()
         else:
             pass
 
