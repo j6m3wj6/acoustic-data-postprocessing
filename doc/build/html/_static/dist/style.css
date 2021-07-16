@@ -30,31 +30,48 @@ span[canvas_label] {
   font-family: "Roboto Slab";
 }
 
-div.columns {
+div[columns] {
   display: flex;
   flex-direction: row;
   max-width: 100%;
 }
-div.columns div {
+div[columns] div {
   margin: 5px;
 }
-div.columns div[text_center] {
+div[columns] div[text_center] {
   text-align: center;
 }
-div.columns div.item[width_percent="25"] {
-  min-width: 25%;
+div[columns] div[item][w25] {
+  width: 25%;
 }
-div.columns div.item[width_percent="40"] {
-  min-width: 40%;
+div[columns] div[item][w40] {
+  width: 40%;
 }
-div.columns div.item[width_percent="50"] {
-  min-width: 50%;
+div[columns] div[item][w50] {
+  width: 50%;
 }
-div.columns div.item[width_percent="60"] {
-  min-width: 60%;
+div[columns] div[item][w60] {
+  width: 60%;
 }
-div.columns div.item[width_percent="75"] {
-  min-width: 75%;
+div[columns] div[item][w75] {
+  width: 75%;
+}
+
+img[inline] {
+  display: inline-block;
+}
+img[right] {
+  float: right;
+  margin-left: 10px;
+  margin-right: auto;
+}
+img[left] {
+  float: left;
+  margin-left: auto;
+  margin-right: 10px;
+}
+img[margin0] {
+  margin: 0;
 }
 
 img {
@@ -62,29 +79,35 @@ img {
   margin: 10px auto;
   display: block;
 }
-img[width_percent="100"] {
+img[w100] {
   width: 100%;
 }
-img[width_percent="90"] {
+img[w90] {
   width: 90%;
 }
-img[width_percent="80"] {
+img[w80] {
   width: 80%;
 }
-img[width_percent="60"] {
+img[w75] {
+  width: 75%;
+}
+img[w70] {
+  width: 70%;
+}
+img[w60] {
   width: 60%;
 }
-img[width_percent="50"] {
+img[w50] {
   width: 50%;
 }
-img[width_percent="40"] {
+img[w40] {
   width: 40%;
 }
-img[width_percent="25"] {
-  width: 25%;
+img[w30] {
+  width: 30%;
 }
-img[inline-block] {
-  display: inline;
+img[w25] {
+  width: 25%;
 }
 
 /**

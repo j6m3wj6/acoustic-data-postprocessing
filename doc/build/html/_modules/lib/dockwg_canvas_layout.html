@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.dockwg_canvas_layout &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lib.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.dockwg_canvas_layout</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.dockwg_canvas_layout</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QWidgetItem</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>\
+    <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QScrollArea</span><span class="p">,</span>\
+    <span class="n">QDockWidget</span><span class="p">,</span> <span class="n">QSizePolicy</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QMimeData</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QDrag</span>
+
+
+<div class="viewcode-block" id="Draggable_Label"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.Draggable_Label">[docs]</a><span class="k">class</span> <span class="nc">Draggable_Label</span><span class="p">(</span><span class="n">QLabel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span>
+        <span class="c1"># self.setContentsMargins(10, 10, 15, 15)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            border: 2px solid black;</span>
+<span class="s2">            border-radius: 10px;</span>
+<span class="s2">            padding: 5px;</span>
+<span class="s2">            min-height: 50px;</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Draggable_Label.mouseMoveEvent"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">buttons</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
+            <span class="n">mimeData</span> <span class="o">=</span> <span class="n">QMimeData</span><span class="p">()</span>
+            <span class="n">mimeData</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">))</span>
+            <span class="n">drag</span> <span class="o">=</span> <span class="n">QDrag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">drag</span><span class="o">.</span><span class="n">setMimeData</span><span class="p">(</span><span class="n">mimeData</span><span class="p">)</span>
+            <span class="n">drag</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">MoveAction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Draggable_Label.set_text"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.Draggable_Label.set_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="c1"># self.text = text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DockWidget_CanvasLayout"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout">[docs]</a><span class="k">class</span> <span class="nc">DockWidget_CanvasLayout</span><span class="p">(</span><span class="n">QDockWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainwindow</span><span class="p">,</span> <span class="n">Position</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;Canvas Properties&quot;</span><span class="p">,</span> <span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">mainwindow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">(</span><span class="n">mainwindow</span><span class="p">,</span> <span class="n">Position</span><span class="p">)</span>
+
+        <span class="n">mainwindow</span><span class="o">.</span><span class="n">addDockWidget</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">DockWidgetArea</span><span class="p">(</span><span class="n">Position</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_canvas_mode</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DockWidget_CanvasLayout.initUI"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainwindow</span><span class="p">,</span> <span class="n">Position</span><span class="p">):</span>
+      <span class="c1"># Create Component</span>
+        <span class="n">btn_Main</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Main&#39;</span><span class="p">)</span>
+        <span class="n">btn_UpAndDown</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Up and Down&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_canvas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lb_canvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Draggable_Label</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+        <span class="n">btn_Quater</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Quater&#39;</span><span class="p">)</span>
+        <span class="n">btn_MainwithThreeSmallWindows</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Main + 3&#39;</span><span class="p">)</span>
+
+        <span class="n">btn_axis_setting</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Axis Setting&quot;</span><span class="p">)</span>
+        <span class="n">btn_processing</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Post-Processing&quot;</span><span class="p">)</span>
+
+        <span class="c1"># btn_MainwithScrollArea = QPushButton(&#39;Main + Scroll&#39;)</span>
+
+        <span class="n">vbly</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Setting ————————&quot;</span><span class="p">))</span>
+        <span class="n">btnGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">btn_Main</span><span class="p">,</span> <span class="n">btn_UpAndDown</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">btn</span> <span class="ow">in</span> <span class="n">btnGroup</span><span class="p">:</span>
+            <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_axis_setting</span><span class="p">)</span>
+
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Operation ————————&quot;</span><span class="p">))</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_processing</span><span class="p">)</span>
+
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Canvas ————————&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">lb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lb_canvas</span><span class="p">:</span>
+            <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+
+        <span class="n">wg</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">wg</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbly</span><span class="p">)</span>
+        <span class="n">wg</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;wg_main&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">wg</span><span class="p">)</span>
+
+      <span class="c1"># Connect Functions</span>
+        <span class="n">btn_Main</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_canvas_mode</span><span class="p">(</span><span class="s2">&quot;Main&quot;</span><span class="p">))</span>
+        <span class="n">btn_UpAndDown</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_canvas_mode</span><span class="p">(</span><span class="s2">&quot;UpAndDown&quot;</span><span class="p">))</span>
+        <span class="n">btn_Quater</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_canvas_mode</span><span class="p">(</span><span class="s2">&quot;Quater&quot;</span><span class="p">))</span>
+        <span class="n">btn_MainwithThreeSmallWindows</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_canvas_mode</span><span class="p">(</span><span class="s2">&quot;MainwithThreeSmallWindows&quot;</span><span class="p">))</span>
+        <span class="c1"># btn_MainwithScrollArea.clicked.connect(</span>
+        <span class="c1">#     lambda: self._setCanvasLayout_MainwithScrollArea(mainwindow.wg_canvas))</span>
+        <span class="n">btn_axis_setting</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">btn_axis_setting_handleClicked</span><span class="p">)</span>
+        <span class="n">btn_processing</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">btn_processingDlg_handleClicked</span><span class="p">)</span>
+      <span class="c1"># Style and Setting</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DockWidget_CanvasLayout.clearLayout"><a class="viewcode-back" href="../../lib.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.clearLayout">[docs]</a>    <span class="k">def</span> <span class="nf">clearLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">())):</span>
+            <span class="c1"># print(i, layout.itemAt(i))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">==</span> <span class="n">QWidgetItem</span><span class="p">):</span>
+                <span class="n">widget</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+                <span class="n">layout</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">==</span> <span class="n">QGridLayout</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_canvas_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Main&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setCanvasLayout_Main</span><span class="p">,</span>
+            <span class="s2">&quot;UpAndDown&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setCanvasLayout_UpAndDown</span><span class="p">,</span>
+            <span class="s2">&quot;Quater&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setCanvasLayout_Quater</span><span class="p">,</span>
+            <span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setCanvasLayout_MainwithThreeSmall</span>
+        <span class="p">}</span>
+        <span class="n">func</span><span class="p">[</span><span class="n">mode</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setCanvasLayout_Main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_canvas</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span><span class="p">)</span>
+        <span class="n">active_canvas</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;Main&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">wg_canvas</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setCanvasLayout_UpAndDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_canvas</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span><span class="p">)</span>
+        <span class="n">active_canvas1</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;UpAndDown&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">active_canvas2</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;UpAndDown&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">wg_canvas</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;UpAndDown&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setCanvasLayout_Quater</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_canvas</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span><span class="p">)</span>
+
+        <span class="n">active_canvas0</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;Quater&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">active_canvas1</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;Quater&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">active_canvas2</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;Quater&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">active_canvas3</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;Quater&quot;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">wg_canvas</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;Quater&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setCanvasLayout_MainwithScrollArea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_canvas</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span><span class="p">)</span>
+        <span class="n">scroll</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">hboxLayout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">hboxLayout</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOn</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">Label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span>
+                <span class="s1">&#39;BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla&#39;</span><span class="p">)</span>
+            <span class="n">Label</span><span class="o">.</span><span class="n">setFixedWidth</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+            <span class="n">hboxLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">Label</span><span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">scroll</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">wg_canvas</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;MainwithScrollArea&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setCanvasLayout_MainwithThreeSmall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_canvas</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearLayout</span><span class="p">(</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span><span class="p">)</span>
+
+        <span class="n">active_canvas0</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">active_canvas1</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">active_canvas2</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">active_canvas3</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="p">[</span><span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">wg_canvas</span><span class="o">.</span><span class="n">gdly_canvasPool</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">active_canvas3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setColumnStretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setRowStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">wg_canvas</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;MainwithThreeSmall&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

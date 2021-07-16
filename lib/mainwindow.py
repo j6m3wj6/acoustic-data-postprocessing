@@ -2,13 +2,14 @@
 from PyQt5.QtWidgets import QPushButton, QWidget,\
     QFileDialog, QVBoxLayout, QMainWindow
 from PyQt5.QtCore import Qt
-from lib.wg_menubar import MyMenuBar
-from lib.dockwg_data import DockWidget_Data
-from lib.dlg_operation import OperationDialog
-from lib.dlg_canvas_setting import CanvasSetting_Dialog
-from lib.wg_canvas import MyCanvas
-from lib.dockwg_canvas_layout import DockWidget_CanvasLayout
-from lib.obj_data import Project, FileData
+from .wg_menubar import MyMenuBar
+from .dockwg_data import DockWidget_Data
+from .dlg_operation import OperationDialog
+from .dlg_canvas_setting import CanvasSetting_Dialog
+from .wg_canvas import MyCanvas
+from .dockwg_canvas_layout import DockWidget_CanvasLayout
+from .obj_data import Project, FileData
+from lib.dlg_load_files import KLIPPEL_DATA, AP_DATA, LEAP_DATA
 
 
 class MainWindow(QMainWindow):
@@ -40,14 +41,16 @@ class MainWindow(QMainWindow):
         self.app = app
         self.project = Project.load_project(project_path)
         self.initUI()
+        self.append_file(AP_DATA)
+        # self.append_file(LEAP_DATA)
+        # self.append_file(KLIPPEL_DATA)
 
     def initUI(self):
         """ Initial mainwindow's user interface. """
       # Create Component
         btn_clearData = QPushButton('Clear data')
         btn_processingDlg = QPushButton('Operation')
-        self.wg_canvas = MyCanvas(
-            self, ui_conf=self.project.ui_conf["MyCanvas"])
+        self.wg_canvas = MyCanvas(self)
         self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
         self.dwg_canvasLayout = DockWidget_CanvasLayout(
             self, Qt.LeftDockWidgetArea)
@@ -80,10 +83,11 @@ class MainWindow(QMainWindow):
         When the button is clicked, all imported datas and curves on canvases would be cleared.
         """
         for _c in self.wg_canvas.canvasPool:
-            for ax in _c.fig.axes:
-                ax.lines = []
+            _c.clear_lines(0)
+            _c.clear_lines(1)
             _c.replot()
-        self.dwg_data.tab_data.tree.clear()
+        # Not DONE
+        # self.dwg_data.filepool.clear()
         self.project.files = []
 
     def btn_processingDlg_handleClicked(self) -> None:
@@ -157,8 +161,9 @@ class MainWindow(QMainWindow):
         """
         if (self.project.info["Name"] == "Untitled"):
             self.save_file_as()
-        self.dwg_data.tree.save_back_to_project()
-        self.project.dump(location=self.project.get_path())
+        else:
+            self.dwg_data.filepool.save_in_project()
+            self.project.dump(location=self.project.get_path())
 
     def save_file_as(self) -> None:
         """
@@ -170,10 +175,14 @@ class MainWindow(QMainWindow):
 
         file_path, file_type = QFileDialog.getSaveFileName(
             self, 'Save File', self.project.info['Name'], "Pickle Files (*.pkl)")
-        self.project.info['File Location'] = file_path[0:file_path.rfind(
-            '/')]
-        self.project.info['Name'] = file_path[file_path.rfind(
-            '/')+1:file_path.rfind('.')]
-        self.setWindowTitle(self.project.info["Name"])
 
-        self.save_file()
+        if file_path:
+            self.project.info['File Location'] = file_path[0:file_path.rfind(
+                '/')]
+            self.project.info['Name'] = file_path[file_path.rfind(
+                '/')+1:file_path.rfind('.')]
+            self.setWindowTitle(self.project.info["Name"])
+            self.dwg_data.filepool.save_in_project()
+            self.project.dump(location=self.project.get_path())
+        else:
+            pass

@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QComboBox, QDialog, QDialogButtonBox, \
     QHBoxLayout, QVBoxLayout, QFormLayout
 from PyQt5.QtCore import Qt
 from .obj_data import CurveType
+from .dlg_load_files import determineTypeByTestName
 
 
 class CanvasSetting_Dialog(QDialog):
@@ -59,13 +60,13 @@ class CanvasSetting_Dialog(QDialog):
         """
         canvas = self.wg_canvas.get_canvas(id=canvas_id)
         type_to_set = CurveType(event)
-        tree = self.mainwindow.dwg_data.tree
+        filepool = self.mainwindow.dwg_data.filepool
 
         if type_to_set == canvas.ax_types[ax_id]:
             pass
         elif type_to_set == canvas.ax_types[not ax_id]:
-            canvas.fig.axes[ax_id].lines = []
-            canvas.fig.axes[not ax_id].lines = []
+            canvas.clear_lines(ax_id)
+            canvas.clear_lines(not ax_id)
             types = canvas.ax_types
             canvas.ax_types = [types[1], types[0]]
         else:
@@ -73,18 +74,38 @@ class CanvasSetting_Dialog(QDialog):
             canvas_origin, ax_id_origin, ax_origin = self.wg_canvas.get_canvas(
                 _type=type_to_set)
             canvas.ax_types[ax_id] = type_to_set
-            canvas.fig.axes[ax_id].lines = []
+            canvas.clear_lines(ax_id)
 
             if canvas_origin:
-                ax_origin.lines = []
+                canvas_origin.clear_lines(ax_id_origin)
                 canvas_origin.ax_types[ax_id_origin] = type_to_transfer
-            tree.set_children_checkstate(type_to_transfer, Qt.Unchecked)
-            canvas_origin.replot()
+                self._set_type_checkstate(type_to_transfer, Qt.Unchecked)
+                canvas_origin.replot()
 
-        tree.set_children_checkstate(type_to_set, Qt.Unchecked)
+        self._set_type_checkstate(type_to_set, Qt.Unchecked)
         canvas.replot()
 
+        for idx, _c in enumerate(self.wg_canvas.canvasPool):
+            self.mainwindow.project.ui_conf["MyCanvas"]["canvasPool"][str(idx)]["types"] = [
+                _c.ax_types[0].value, _c.ax_types[1].value]
+
         self._load_form_parameter()
+
+    def _set_type_checkstate(self, _type, checkstate):
+        filepool = self.mainwindow.dwg_data.filepool
+        wg_files = filepool.findChildren(QWidget, "Wg_File")
+
+        for wg_file in wg_files:
+            wg_curves = wg_file.findChildren(QWidget, "Wg_Curve")
+
+            for testname in wg_file.fileData.valid_testnames:
+                if determineTypeByTestName(testname) is not _type:
+                    continue
+                for wg_curve in wg_curves:
+                    wg_curve.handle_checked(checkstate, False, testname)
+                    wg_curve.get_curveData(testname).line_props["visible"] = (
+                        checkstate == Qt.Checked)
+            wg_file.changetab_test()
 
     def _load_form_parameter(self):
         for idx, _c in enumerate(self.wg_canvas.canvasPool[:-1]):

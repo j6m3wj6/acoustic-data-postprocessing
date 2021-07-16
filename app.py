@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
-from PyQt5.QtWidgets import QLabel, QMainWindow, QApplication, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication
 from lib.mainwindow import MainWindow
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl, QFileInfo
 import sys
 import os
 import traceback
+
+AP_yetilarge_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl"
 
 
 class MyApp(QMainWindow):

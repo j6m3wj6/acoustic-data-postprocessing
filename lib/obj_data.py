@@ -3,9 +3,9 @@ import pickle
 import sys
 import dill
 import datetime as dt
-from matplotlib.lines import Line2D
 from textwrap import fill
-from .ui_conf import UI_CONF, COLORS, LINEWIDTH_DEFAULT, LEGEND_WRAP
+from .ui_conf import UI_CONF, COLORS, LINEWIDTH_DEFAULT
+import traceback
 
 
 class Extended_Enum(Enum):
@@ -42,6 +42,7 @@ class Project():
         }
         self.files = []
         self.ui_conf = UI_CONF
+        print(sys.path[0])
         # # self.newattr = []
         # self.newattr2 = []
 
@@ -66,8 +67,8 @@ class Project():
         print("____keys: ", self.__dict__.keys())
         print("Name: %s \nFile location: %s" %
               (self.info["Name"], self.get_path()))
-        for _f in self.files:
-            _f.print()
+        # for _f in self.files:
+        #     _f.print()
         print("============================\n")
         # return msg
 
@@ -88,15 +89,29 @@ class Project():
         if not location:
             location = self.get_path()
         # update curveData
-
-        self.print()
         try:
             with open(location, 'wb') as fh:
                 self.info["Last Saved Time"] = dt.datetime.today().strftime(
                     "%Y/%m/%d %H:%M:%S")
+                # self.sync_files()
+                self.print()
                 pickle.dump(self, fh)
-        except:
-            print(dill.detect.baditems(self))
+                print("____________finish obj_data.Project.dump()")
+
+        except Exception as e:
+            error_class = e.__class__.__name__
+            detail = e.args[0]
+            cl, exc, tb = sys.exc_info()
+            # print(cl, exc, tb)
+            lastCallStack = traceback.extract_tb(tb)[-1]
+            fileName = lastCallStack[0]
+            lineName = lastCallStack[1]
+            funcName = lastCallStack[2]
+            print("#########  Error Message   #########\n")
+            errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(
+                fileName, lineName, funcName, error_class, detail)
+            print(errMsg)
+            print("\n####################################")
 
     @classmethod
     def load_project(cls, location=None):
@@ -110,9 +125,13 @@ class Project():
                 # with open(f"%s.pkl" % (location), 'rb') as fh:
                 unpickled_project = pickle.load(fh)
                 if location is not unpickled_project.get_path():
+                    print(location, unpickled_project.get_path())
                     print(
-                        "WARNING: File location not the same --> change project info.")
-                    unpickled_project.info["File Location"] = location
+                        "WARNING: File location not the same ===> change project info.")
+                    print(unpickled_project.info["File Location"])
+                    print(location[0:location.rfind('/')])
+                    unpickled_project.info["File Location"] = location[0:location.rfind(
+                        '/')]
                 unpickled_project.print()
                 # Project._check_attr(unpickled_project)
                 print("____________finish obj_data.Project.load_project()")
@@ -152,10 +171,19 @@ class FileData():
             'Import Time': import_time,
             'Last Modified Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
         }
-        self.sequence = {}
         # ----
-        self.test_in_sequence = []
+        self.testnames = []
+        self.valid_testnames = []
         self.measurements = {}
+
+    def isAP(self):
+        return self.info["Source"] == "AP"
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        print(state)
+        # Add baz back since it doesn't exist in the pickle
+        self.valid_testnames = self.testnames
 
   # Funcs
     def print(self):
@@ -165,12 +193,12 @@ class FileData():
                 (self.info["Name"], self.info["Source"], self.info["File Path"]))
         msg += ("\n\tImport time: %s" % str(self.get_import_time()))
         msg += "\n\tSequence:"
-        for _k, _v in self.sequence.items():
-            msg += ("\n\t  Key: %s" % _k)
-            msg += ("\n\t  Curves: ")
-            for _c in _v:
-                msg += (f"\n\t\t%s, %s, %s" %
-                        (_c.type.value, _c.label, _c.note))
+        # for _k, _v in self.sequence.items():
+        #     msg += ("\n\t  Key: %s" % _k)
+        #     msg += ("\n\t  Curves: ")
+        #     for _c in _v:
+        #         msg += (f"\n\t\t%s, %s, %s" %
+        #                 (_c.type.value, _c.label, _c.note))
         for _m in self.measurements.values():
             msg += _m.print()
         msg += ("\n-----------------------------")
@@ -185,33 +213,42 @@ class FileData():
         return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
 
     # [(test1->(ch1 ch2 ...)) (test2->(ch1 ch2 ...))...]
-    def dict_measurement(self):
-        dict_measurement = {}
+    def to_sequence_dict(self, chIdx_arr=None):
+        sequence_dict = {}
         for _m in self.measurements.values():
-            for test in _m.channel[1].sequence.keys():
-                dict_measurement[test] = []
-                for _ch in _m.channel:
-                    dict_measurement[test].append(_ch.sequence[test])
-        return dict_measurement
+            for test in self.testnames:
+                if test not in sequence_dict.keys():
+                    sequence_dict[test] = []
+                for _idx, _ch in enumerate(_m.channel):
+                    if chIdx_arr and _idx not in chIdx_arr:
+                        continue
+                    else:
+                        sequence_dict[test].append(_ch.sequence[test])
+        return sequence_dict
+
+    def get_sequence(self, chIdx_arr=None):
+        if chIdx_arr:
+            return self.to_sequence_dict(chIdx_arr)
+        else:
+            return self.to_sequence_dict()
 
 
 class Measurement:
-    def __init__(self, channel=1, id=None):
+    def __init__(self, channel_count=1, id=None):
         self.id = id
         self.channel = []
-        self.init_channels(channel)
+        self.init_channels(channel_count)
 
-    def init_channels(self, num: int) -> None:
-        for i in range(num):
+    def init_channels(self, count: int) -> None:
+        for i in range(count):
             self.channel.append(Channel(self, i+1))
 
     def print(self, console=True):
-        msg = "\n============================\n"
+        msg = ""
         msg += f"Measurement____id={self.id}\n"
 
         for c in self.channel:
             msg += "%s" % c.print(False)
-        msg += "\n============================\n"
         if (console):
             print(msg)
         return msg
@@ -253,7 +290,7 @@ class CurveData:
         self.line = None
         self.line_props = {
             "visible": False,
-            "color": color,
+            "color": "",
             "linewidth": LINEWIDTH_DEFAULT,
         }
   # Class Function
@@ -270,8 +307,12 @@ class CurveData:
         # Add baz back since it doesn't exist in the pickle
         self.line = None
 
-    def print(self):
-        print(f"%s, %s, %s" % (self.type.value, self.label, self.note))
+    def print(self, console=True):
+        msg = (f"%s, %s, %st, line = {bool(self.line)}" % (
+            self.type.value, self.label, self.note))
+        if console:
+            print(msg)
+        return msg
   # Get and Set Function
 
     def get_label(self, link=False):
@@ -279,6 +320,11 @@ class CurveData:
             return self.parent.label
         else:
             return self.label
+
+    def set_label(self, label, link=False):
+        self.label = label
+        if self.parent and link:
+            self.parent.label = label
 
     def get_legend(self, legend_wrap):
         return fill(self.get_label(), legend_wrap)
@@ -298,10 +344,12 @@ class CurveData:
         return dictToJSON
 
     def create_line2D(self, ax, legend_wrap, order):
-        self.label = self.label.replace('\n', '')
+        # print("create_line2D")
         linecount = len(ax.lines)
-        self.line_props["color"] = COLORS[linecount % 10]
-        self.line, = ax.plot(self.xdata, self.ydata,
+        if not self.line_props["color"]:
+            self.line_props["color"] = COLORS[(linecount-2) % 10]
+        ydata = [d+self.shifted for d in self.ydata]
+        self.line, = ax.plot(self.xdata, ydata,
                              label=self.get_legend(legend_wrap), color=self.line_props["color"], picker=True)
         self.line.set_zorder(order)
         return self.line
@@ -322,9 +370,8 @@ class CurveData:
 
     def sync_with_line(self):
         if self.line:
-            self.label = self.line.get_label().replace('\n', '')
-            if self.parent:
-                self.parent.label = self.label
+            print("sync----", self.get_label(), self.line.get_label())
+            self.set_label(self.line.get_label().replace('\n', ''))
             self.line_props["color"] = self.line.get_color()
             self.line_props["linewidth"] = self.line.get_linewidth()
         else:

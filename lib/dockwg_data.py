@@ -1,10 +1,9 @@
 
-from lib.dlg_load_files import AP_DATA
-from PyQt5.QtWidgets import QWidget, QPushButton, QTabWidget, QDockWidget, QVBoxLayout
+from PyQt5.QtWidgets import QScrollArea, QWidget, QPushButton, QTabWidget, QDockWidget, QVBoxLayout
 from PyQt5.QtCore import Qt
 from .dlg_import_files import ImportDialog
 from .obj_data import FileData, CurveData, CurveType, Measurement, Channel
-from .tmp import FilePool
+from .wg_filepool import FilePool
 
 
 class DockWidget_Data(QDockWidget):
@@ -13,6 +12,7 @@ class DockWidget_Data(QDockWidget):
         super().__init__("Data", mainwindow)
         self.mainwindow = mainwindow
         self.initUI(mainwindow, position)
+        self.load_project(mainwindow.project)
 
     def initUI(self, mainwindow, position: Qt.DockWidgetArea):
         """
@@ -28,14 +28,16 @@ class DockWidget_Data(QDockWidget):
         # vbly = QVBoxLayout()
 
         self.filepool = FilePool(self.mainwindow)
-        self.append_file(AP_DATA)
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(self.filepool)
 
-        wg = QWidget()
+        wg=QWidget()
         wg.setObjectName("wg_main")
         self.setWidget(wg)
-        vbly = QVBoxLayout(wg)
+        vbly=QVBoxLayout(wg)
         vbly.addWidget(btn_importDlg)
-        vbly.addWidget(self.filepool)
+        vbly.addWidget(scroll)
         vbly.addWidget(btn_save)
         mainwindow.addDockWidget(Qt.DockWidgetArea(position), self)
       # Style and Setting
@@ -47,7 +49,7 @@ class DockWidget_Data(QDockWidget):
 
     def append_file(self, file: FileData):
         """
-        Listing each curve data from a new imported file on the component ``tree``.
+        Listing each curve data from a new imported file on the component ``filepool``.
 
         :param file: A FileData object generated from the imported file.
         """
@@ -55,13 +57,13 @@ class DockWidget_Data(QDockWidget):
 
     def delete_files(self, files):
         """
-        Removing each curve data of a specific file on the component ``tree``.
+        Removing each curve data of a specific file on the component ``filepool``.
 
         :param file: A FileData object user intends to delete.
         """
         self.filepool.delete_files(files)
 
-    def _load_project(self, project):
+    def load_project(self, project):
         """
         Listing each curve data existing in the project on the component ``tree``.
 
@@ -75,5 +77,5 @@ class DockWidget_Data(QDockWidget):
         This function connect with QPushButton component ``btn_importDlg``
         When the button is clicked, execute ``ImportDialog`` and pop up a dialog window.
         """
-        dlg = ImportDialog(mainwindow=self.parent())
+        dlg=ImportDialog(mainwindow = self.parent())
         dlg.exec()

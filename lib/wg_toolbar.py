@@ -48,14 +48,16 @@ class MyToolBar(NavigationToolbar2QT):
     def edit_parameter(self):
         dlg = GraphProperties_Dialog(mainwindow=self.mainwindow)
         if dlg.exec():
-            # print("edit_parameter")
+            print("edit_parameter")
             self.mainwindow.dwg_data.filepool.copy_params_from_canvas()
         else:
             pass
 
     def autoscale_yaxis(self):
-        self.focusing_canvas.ax_main.set_ylim(auto=True)
-        self.focusing_canvas.ax_sub.set_ylim(auto=True)
+        # self.focusing_canvas.autoscale(0)
+        # self.focusing_canvas.autoscale(1)
+        self.focusing_canvas.parameter["Axis"]["Y-Axis"]['auto-scale'] = True
+        self.focusing_canvas.parameter["Axis"]["Sub_Y-Axis"]['auto-scale'] = True
         self.focusing_canvas.replot()
 
     def show_draggable_lines(self, toggle):

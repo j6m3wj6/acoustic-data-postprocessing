@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.mainwindow &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lib.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.mainwindow</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.mainwindow</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding:utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span>\
+    <span class="n">QFileDialog</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QMainWindow</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">.wg_menubar</span> <span class="kn">import</span> <span class="n">MyMenuBar</span>
+<span class="kn">from</span> <span class="nn">.dockwg_data</span> <span class="kn">import</span> <span class="n">DockWidget_Data</span>
+<span class="kn">from</span> <span class="nn">.dlg_operation</span> <span class="kn">import</span> <span class="n">OperationDialog</span>
+<span class="kn">from</span> <span class="nn">.dlg_canvas_setting</span> <span class="kn">import</span> <span class="n">CanvasSetting_Dialog</span>
+<span class="kn">from</span> <span class="nn">.wg_canvas</span> <span class="kn">import</span> <span class="n">MyCanvas</span>
+<span class="kn">from</span> <span class="nn">.dockwg_canvas_layout</span> <span class="kn">import</span> <span class="n">DockWidget_CanvasLayout</span>
+<span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">FileData</span>
+<span class="kn">from</span> <span class="nn">lib.dlg_load_files</span> <span class="kn">import</span> <span class="n">KLIPPEL_DATA</span><span class="p">,</span> <span class="n">AP_DATA</span><span class="p">,</span> <span class="n">LEAP_DATA</span>
+
+
+<div class="viewcode-block" id="MainWindow"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow">[docs]</a><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :ivar MyApp app: Object MyApp.</span>
+<span class="sd">    :vartype app: MyApp</span>
+
+<span class="sd">    :ivar Project project: </span>
+<span class="sd">            A Project object retrieved from existing project file(.pkl)</span>
+<span class="sd">            or a empty Project object with default setting.</span>
+
+<span class="sd">    :ivar MyMenuBar menutopbar: mainwindow&#39;s menubar.</span>
+
+<span class="sd">    :ivar MyCanvas wg_canvas: </span>
+<span class="sd">            A self-defined QWidget component placed on the center of the mainwindow.</span>
+
+<span class="sd">    :ivar DockWidget_Data dwg_data: </span>
+<span class="sd">            A self-defined QDockWidget placed on the left area by default </span>
+<span class="sd">            that contains imported data listing by a treelist </span>
+<span class="sd">            and several functions interacting with the canvases.</span>
+
+<span class="sd">    :ivar DockWidget_CanvasLayout dwg_canvasLayout: </span>
+<span class="sd">            A self-defined QDockWidget placed on the left area by default that buttons</span>
+<span class="sd">            in order to switch canvas layout mode and customize canvas setting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">project_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">load_project</span><span class="p">(</span><span class="n">project_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">AP_DATA</span><span class="p">)</span>
+        <span class="c1"># self.append_file(LEAP_DATA)</span>
+        <span class="c1"># self.append_file(KLIPPEL_DATA)</span>
+
+<div class="viewcode-block" id="MainWindow.initUI"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initial mainwindow&#39;s user interface. &quot;&quot;&quot;</span>
+      <span class="c1"># Create Component</span>
+        <span class="n">btn_clearData</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Clear data&#39;</span><span class="p">)</span>
+        <span class="n">btn_processingDlg</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Operation&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span> <span class="o">=</span> <span class="n">MyCanvas</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span> <span class="o">=</span> <span class="n">DockWidget_Data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">RightDockWidgetArea</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_canvasLayout</span> <span class="o">=</span> <span class="n">DockWidget_CanvasLayout</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftDockWidgetArea</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_canvasLayout</span><span class="o">.</span><span class="n">_setCanvasLayout_Main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menutopbar</span> <span class="o">=</span> <span class="n">MyMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+      <span class="c1"># Layout</span>
+        <span class="n">vbly_main</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">wg_main</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">wg_main</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;wg_central&quot;</span><span class="p">)</span>
+        <span class="n">vbly_main</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="p">)</span>
+        <span class="n">wg_main</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbly_main</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMenuBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menutopbar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">wg_main</span><span class="p">)</span>
+
+      <span class="c1"># Style and Setting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">1600</span><span class="p">,</span> <span class="mi">900</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">vbly_main</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+      <span class="c1"># Connect Functions</span>
+        <span class="n">btn_clearData</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_clearData_handleClicked</span><span class="p">)</span>
+        <span class="n">btn_processingDlg</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_processingDlg_handleClicked</span><span class="p">)</span></div>
+
+  <span class="c1"># Handle Functions</span>
+<div class="viewcode-block" id="MainWindow.btn_clearData_handleClicked"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.btn_clearData_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_clearData_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function connect with QPushButton component ``btn_clearData``</span>
+<span class="sd">        When the button is clicked, all imported datas and curves on canvases would be cleared.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">_c</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">_c</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+        <span class="c1"># Not DONE</span>
+        <span class="c1"># self.dwg_data.filepool.clear()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="MainWindow.btn_processingDlg_handleClicked"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.btn_processingDlg_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_processingDlg_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function connect with QPushButton component ``btn_processingDlg``</span>
+<span class="sd">        When the button is clicked, execute ``OperationDialog`` and pop up a dialog window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">OperationDialog</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.btn_axis_setting_handleClicked"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.btn_axis_setting_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_axis_setting_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function connect with QPushButton component ``btn_axis_setting``</span>
+<span class="sd">        When the button is clicked, execute ``CanvasSetting_Dialog`` and pop up a dialog window.</span>
+
+<span class="sd">        It is used for customizing which curve types ``CurveType`` would be drawn on a canvas.</span>
+<span class="sd">        Each canvas has main axis and sub axis.</span>
+<span class="sd">        After dialog window closed, update related component with new setting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">CanvasSetting_Dialog</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">_lb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dwg_canvasLayout</span><span class="o">.</span><span class="n">lb_canvas</span><span class="p">:</span>
+                <span class="n">_lb</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">[</span><span class="n">_lb</span><span class="o">.</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+
+            <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">:</span>
+                <span class="n">_c</span><span class="o">.</span><span class="n">ax_main</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">_c</span><span class="o">.</span><span class="n">update_title</span><span class="p">())</span>
+                <span class="n">_c</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">update_focus_canvas</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">focusing_canvas</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+  <span class="c1"># Canves Pool Func</span>
+<div class="viewcode-block" id="MainWindow.append_file"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">FileData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append a new imported file to attributes ``project``, </span>
+<span class="sd">        And also append to the treelist in DockWidget component ``dwg_data``.</span>
+
+<span class="sd">        :param FileData file: A FileData object generated from the imported file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.delete_files"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames_to_del</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete files from attributes ``project``, </span>
+<span class="sd">        And also delete curves data on the treelist in DockWidget component ``dwg_data``.</span>
+
+<span class="sd">        :param FileData file: A FileData object user intends to delete.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files_to_del</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">get_files</span><span class="p">(</span><span class="n">filenames_to_del</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">files_to_del</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">filenames_to_del</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.clear_files"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.clear_files">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all the files in attributes ``project``, </span>
+<span class="sd">        And also clear curves data on the treelist in DockWidget component ``dwg_data``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filenames_to_del</span> <span class="o">=</span> <span class="p">[</span><span class="n">_f</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">files</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">clear_files</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">filenames_to_del</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.save_file"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.save_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save project to file.</span>
+<span class="sd">        If this project is &quot;Untitled&quot;, which is the default name for a new project, </span>
+<span class="sd">        it would execute ``QFileDialog`` and pop up a dialog window letting user to determain a new name and where to save. </span>
+<span class="sd">        Otherwise, it would be updated to the origin project file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Untitled&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_file_as</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">save_in_project</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">get_path</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="MainWindow.save_file_as"><a class="viewcode-back" href="../../lib.html#lib.mainwindow.MainWindow.save_file_as">[docs]</a>    <span class="k">def</span> <span class="nf">save_file_as</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save project to file.</span>
+<span class="sd">        If this project is &quot;Untitled&quot;, which is the default name for a new project, </span>
+<span class="sd">        it would execute ``QFileDialog`` and pop up a dialog window letting user to determain a new name and where to save. </span>
+<span class="sd">        Otherwise, it would be updated to the origin project file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">file_path</span><span class="p">,</span> <span class="n">file_type</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Save File&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">],</span> <span class="s2">&quot;Pickle Files (*.pkl)&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;File Location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span>
+                <span class="s1">&#39;/&#39;</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span>
+                <span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">save_in_project</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">get_path</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

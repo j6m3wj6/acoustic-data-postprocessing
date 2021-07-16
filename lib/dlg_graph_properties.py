@@ -90,26 +90,32 @@ class Curve_Style_Page(QWidget):
   # Handle Functions
 
     def tb_curves_handleSelect(self):
-        seleced_items = self.tb_curves.selectedItems()[0::3]
+        seleced_items = self.tb_curves.selectedItems()[0::4]
         if len(seleced_items) > 1:
             self.le_legend.setText("")
             self.cbox_linewidth.setCurrentIndex(-1)
             self.cbox_color.setCurrentIndex(-1)
 
         elif len(seleced_items) == 1:
-            curve = seleced_items[0].data(Qt.UserRole)
-            color_index = COLORS.index(curve.line.get_color())
+            curveDatas = seleced_items[0].data(Qt.UserRole)
+            curveData = list(
+                filter(lambda x: x.line_props["visible"] == True, curveDatas))[0]
+            color_index = COLORS.index(curveData.line.get_color())
             self.cbox_color.setCurrentIndex(color_index)
-            linewidth_index = LINEWIDTHS.index(curve.line.get_linewidth())
+            linewidth_index = LINEWIDTHS.index(curveData.line.get_linewidth())
             self.cbox_linewidth.setCurrentIndex(linewidth_index)
-            self.le_legend.setText(curve.label)
+            self.le_legend.setText(curveData.label)
 
     def le_legend_handleEdited(self, event):
-        for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(Qt.UserRole)
-            curveData.line.set_label(
-                fill(event, int(
-                    self.canvas.parameter["General"]['Legend']['text-wrap'])))
+        for item in self.tb_curves.selectedItems()[0::4]:
+            curveDatas = item.data(Qt.UserRole)
+            for curveData in curveDatas:
+                # curveData.set_label(event)
+                if not curveData.line_props["visible"]:
+                    continue
+                curveData.line.set_label(
+                    fill(event, int(
+                        self.canvas.parameter["General"]['Legend']['text-wrap'])))
             row, col = item.row(), item.column()
             self.tb_curves.item(row, col).setText(event)
 
@@ -118,26 +124,39 @@ class Curve_Style_Page(QWidget):
     def cbox_linewidth_handleChange(self, event):
         if event == -1:
             return
-        for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(Qt.UserRole)
-            curveData.line.set_linewidth(LINEWIDTHS[event])
-            row, col = item.row(), item.column()
+        for item in self.tb_curves.selectedItems()[0::4]:
+            curveDatas = item.data(Qt.UserRole)
+            for curveData in curveDatas:
+                curveData.line_props["linewidth"] = LINEWIDTHS[event]
+                if not curveData.line_props["visible"]:
+                    continue
+                curveData.line.set_linewidth(LINEWIDTHS[event])
+                row, col = item.row(), item.column()
 
-            icon_dir = ICON_DIR + f"linewidth_%s.png" % (event)
-            self.tb_curves.item(row, col+2).setIcon(QIcon(icon_dir))
+                icon_dir = ICON_DIR + f"linewidth_%s.png" % (event)
+            self.tb_curves.item(row, col+3).setIcon(QIcon(icon_dir))
         self.canvas.replot()
 
     def cbox_color_handleChange(self, event):
         if event == -1:
             return
-        for item in self.tb_curves.selectedItems()[0::3]:
-            curveData = item.data(Qt.UserRole)
-            curveData.line.set_color(COLORS[event])
-            row, col = item.row(), item.column()
-            pixmap = QPixmap(65, 20)
-            pixmap.fill(QColor(COLORS[event]))
-            self.tb_curves.item(row, col+1).setIcon(QIcon(pixmap))
+        for item in self.tb_curves.selectedItems()[0::4]:
+            curveDatas = item.data(Qt.UserRole)
+            for curveData in curveDatas:
+                curveData.line_props["color"] = COLORS[event]
+                if not curveData.line_props["visible"]:
+                    continue
+                curveData.line.set_color(COLORS[event])
+                row, col = item.row(), item.column()
+                pixmap = QPixmap(65, 20)
+                pixmap.fill(QColor(COLORS[event]))
+            self.tb_curves.item(row, col+2).setIcon(QIcon(pixmap))
         self.canvas.replot()
+
+    def _apply_parameters(self):
+        self.le_legend_handleEdited(self.le_legend.text())
+        self.cbox_linewidth_handleChange(self.cbox_linewidth.currentIndex())
+        self.cbox_color_handleChange(self.cbox_color.currentIndex())
 
 
 class GraphProperties_Dialog(QDialog):
@@ -332,12 +351,17 @@ class GraphProperties_Dialog(QDialog):
                     pass
 
     def _apply_parameters(self):
+        print("_apply_parameters")
         # print("Before update", self.wg_canvas.focusing_canvas.parameter)
         self._update_parameters(
             self.parameter, self.wg_canvas.focusing_canvas.parameter)
         # print("After update", self.wg_canvas.focusing_canvas.parameter)
+        self.page_curves._apply_parameters()
         self.wg_canvas.focusing_canvas.apply_style()
+        self._load_parameters(
+            self.parameter, self.wg_canvas.focusing_canvas.parameter)
 
     def btn_ok_handleClicked(self):
+        print("btn_ok_handleClicked")
         self._apply_parameters()
         self.accept()

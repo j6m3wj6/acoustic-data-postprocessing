@@ -18,7 +18,7 @@ class OperationDialog(QDialog):
         self.setWindowTitle("Post-Processing Operation")
         self.resize(800, 600)
 
-        self.listWidget = self.mainwindow.dwg_data.tree.get_focusing_curves_lists()
+        self.listWidget = self.mainwindow.dwg_data.filepool.transfer_to_list()
         # self.listWidget.itemSelectionChanged.connect(self.handleSelect)
         vbly_list = QVBoxLayout()
         vbly_list.addWidget(QLabel("Curves"))
@@ -63,10 +63,14 @@ class OperationDialog(QDialog):
         hbly_align.addWidget(self.le_align_y)
         hbly_align.addWidget(QLabel("dB"))
 
+        btn_reset = QPushButton("Reset")
+        btn_reset.clicked.connect(self.curve_reset)
+
         gb_vbly = QVBoxLayout()
         gb_vbly.setAlignment(Qt.AlignTop)
         gb_vbly.addLayout(hbly_offset)
         gb_vbly.addLayout(hbly_align)
+        gb_vbly.addWidget(btn_reset, alignment=Qt.AlignLeft)
         gb_vbly.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum,
                                     QSizePolicy.Expanding))
         self.warning_massage = QLabel("Error: ")
@@ -90,8 +94,8 @@ class OperationDialog(QDialog):
         btn_lineWidth.clicked.connect(self.curveLineWidth)
 
         hbly = QHBoxLayout()
-        hbly.addLayout(vbly_list, 2)
-        hbly.addWidget(self.gb_opperation, 3)
+        hbly.addLayout(vbly_list, 3)
+        hbly.addWidget(self.gb_opperation, 2)
 
         vbly = QVBoxLayout()
         vbly.addLayout(hbly)
@@ -188,4 +192,19 @@ class OperationDialog(QDialog):
                 curveData = item.data(Qt.UserRole)
                 curveData.align(align_y, align_x)
 
+            self.canvas.replot()
+
+    def curve_reset(self):
+        try:
+            selectedItems = self.listWidget.selectedItems()
+            selectedItems[0]
+        except IndexError:
+            self.warning_massage.setText(
+                f"ERROR:\n Please select at least one curve.")
+            self.warning_massage.setVisible(True)
+        else:
+            self.warning_massage.setVisible(False)
+            for item in selectedItems:
+                curveData = item.data(Qt.UserRole)
+                curveData.shift(0)
             self.canvas.replot()

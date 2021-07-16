@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SAE聲學測試軟體 &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lib.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>SAE聲學測試軟體</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="tex2jax_ignore mathjax_ignore section" id="sae">
+<h1>SAE聲學測試軟體<a class="headerlink" href="#sae" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ap">
+<h2>AP<a class="headerlink" href="#ap" title="Permalink to this headline">¶</a></h2>
+<p>AP以Sequence序列的模式進行測試，每次測試(measurement)會包含多個項目(result)。</p>
+<p>以最常用的Acoustic Response測試序列為例，其包含Impulse Response、RMS Level、Delay、Phase、THD Ratio、THD Level、Rub and Buzz、Acquired Waveform等測試項目。</p>
+<ol class="simple">
+<li><p>可一次輸出多個測試數據(measurement)。
+而目前有多個測試項目的資料型態尚未支援，故在輸出時請僅輸出RMS Level、THD、Impedence、THD Ratio等測試項目。
+<a class="reference external" href="#pending">AP測項支援列表</a></p></li>
+</ol>
+<p><img alt="data_ap_exporting" src="_images/data_ap_exporting.png" /></p>
+<ol class="simple">
+<li><p>輸出格式: .xlsx。</p></li>
+<li><p>輸出資料</p>
+<ul class="simple">
+<li><p>包含: 測試項目名稱、測試的註解、曲線的XY資料、單位、名稱(預設為測試訊號的頻道名稱Ch1或Ch2)。</p></li>
+<li><p>不包含: 畫布個人化設定(包含曲線的顏色、粗細等)、測試的時間。</p></li>
+</ul>
+</li>
+</ol>
+<div class='columns'>
+<div class="column-item">
+<p><img alt="data_ap_software" src="_images/data_ap_software.png" /></p>
+</div>
+<div class="column-item">
+<p><img alt="data_ap_xlsxfile" src="_images/data_ap_xlsxfile.png" /></p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="klippel">
+<h2>Klippel<a class="headerlink" href="#klippel" title="Permalink to this headline">¶</a></h2>
+<p>Klippel可進行NFS與Excursion等測試，測試結果由Klippel軟體內的多個視窗呈現。</p>
+<ol class="simple">
+<li><p>以視窗為單位輸出視窗內的資料。
+<img alt="data_klippel_exporting" src="./_images/data_klippel_exporting.png" width_percent=50 /></p></li>
+<li><p>輸出格式: .txt。</p></li>
+<li><p>輸出資料</p>
+<ul class="simple">
+<li><p>包含: 測試項目名稱、曲線的XY資料、單位、名稱。</p></li>
+<li><p>不包含: 畫布個人化設定(包含曲線的顏色、粗細等)、測試的時間。</p></li>
+</ul>
+</li>
+</ol>
+<div class='columns'>
+<div class="column-item">
+<img alt="data_klippel_software" src="./_images/data_klippel_software.png" width_percent=100 />
+</div>
+<div class="column-item">
+<img alt="data_klippel_txtfile" src="./_images/data_klippel_txtfile.png" width_percent=100 />
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="leap">
+<h2>LEAP<a class="headerlink" href="#leap" title="Permalink to this headline">¶</a></h2>
+<p>LEAP可進行喇叭特性的模擬。</p>
+<ol class="simple">
+<li><p>一次僅能輸出一條曲線與其相位曲線。
+<img alt="data_leap_exporting" src="./_images/data_leap_exporting.png" width_percent=50 /></p></li>
+<li><p>輸出格式: .txt。</p></li>
+<li><p>書出資料</p>
+<ul class="simple">
+<li><p>包含: 曲線的XY資料、單位、名稱、註解、資料數目、時間、檔案路徑。</p></li>
+<li><p>不包含: 畫布個人化設定(包含曲線的顏色、粗細等)。</p></li>
+</ul>
+</li>
+</ol>
+<div class='columns'>
+<div class="column-item">
+<img alt="data_leap_software" src="./_images/data_leap_software.png" width_percent=100 />
+</div>
+<div class="column-item">
+<img alt="data_leap_txtfile" src="./_images/data_leap_txtfile.png" width_percent=100 />
+</div>
+</div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
