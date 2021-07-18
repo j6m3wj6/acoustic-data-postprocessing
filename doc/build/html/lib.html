@@ -316,12 +316,28 @@ Otherwise, it would be updated to the origin project file.</p>
 <div class="section" id="module-lib.dlg_graph_properties">
 <span id="lib-dlg-graph-properties"></span><h2>lib.dlg_graph_properties<a class="headerlink" href="#module-lib.dlg_graph_properties" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Delegate">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_graph_properties.</span></span><span class="sig-name descname"><span class="pre">Delegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Delegate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Delegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QStyledItemDelegate</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Delegate.eventFilter">
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Delegate.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Delegate.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_graph_properties.</span></span><span class="sig-name descname"><span class="pre">Curve_Style_Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.initUI">
 <span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.initUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.handle_cellChanged">
+<span class="sig-name descname"><span class="pre">handle_cellChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.handle_cellChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.handle_cellChanged" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -332,6 +348,11 @@ Otherwise, it would be updated to the origin project file.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.le_legend_handleEdited">
 <span class="sig-name descname"><span class="pre">le_legend_handleEdited</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.le_legend_handleEdited"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.le_legend_handleEdited" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.le_note_handleEdited">
+<span class="sig-name descname"><span class="pre">le_note_handleEdited</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.le_note_handleEdited"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.le_note_handleEdited" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -831,7 +852,7 @@ When the button is clicked, execute <code class="docutils literal notranslate"><
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lib.obj_data.Channel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.obj_data.Channel.print">
@@ -854,7 +875,7 @@ When the button is clicked, execute <code class="docutils literal notranslate"><
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lib.obj_data.CurveData">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#1f77b4'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#1f77b4'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.obj_data.CurveData.print">
@@ -938,6 +959,11 @@ Use for highlighting a specific coordinate.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.clear_lines">
+<span class="sig-name descname"><span class="pre">clear_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.clear_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.clear_lines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.toggle_focus_style">
 <span class="sig-name descname"><span class="pre">toggle_focus_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">focus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.toggle_focus_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.toggle_focus_style" title="Permalink to this definition">¶</a></dt>

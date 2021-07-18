@@ -341,7 +341,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="c1"># Add baz back since it doesn&#39;t exist in the pickle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valid_testnames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">testnames</span>
+        <span class="c1"># if &quot;valid_testnames&quot; not in self.__dict__.keys():</span>
+        <span class="c1">#     self.valid_testnames = self.testnames</span>
 
   <span class="c1"># Funcs</span>
 <div class="viewcode-block" id="FileData.print"><a class="viewcode-back" href="../../lib.html#lib.obj_data.FileData.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -413,8 +414,8 @@
 
 
 <div class="viewcode-block" id="Channel"><a class="viewcode-back" href="../../lib.html#lib.obj_data.Channel">[docs]</a><span class="k">class</span> <span class="nc">Channel</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurement_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">measurement_obj</span> <span class="o">=</span> <span class="n">measurement_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Ch</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="p">{}</span>
@@ -436,8 +437,8 @@
 
 
 <div class="viewcode-block" id="CurveData"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData">[docs]</a><span class="k">class</span> <span class="nc">CurveData</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xdata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ydata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLORS</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">note</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xdata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ydata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLORS</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel_obj</span> <span class="o">=</span> <span class="n">channel_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">note</span> <span class="o">=</span> <span class="n">note</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xdata</span> <span class="o">=</span> <span class="n">xdata</span>
@@ -474,15 +475,16 @@
   <span class="c1"># Get and Set Function</span>
 
 <div class="viewcode-block" id="CurveData.get_label"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData.get_label">[docs]</a>    <span class="k">def</span> <span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">and</span> <span class="n">link</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">label</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_obj</span> <span class="ow">and</span> <span class="n">link</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_obj</span><span class="o">.</span><span class="n">label</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span></div>
 
 <div class="viewcode-block" id="CurveData.set_label"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData.set_label">[docs]</a>    <span class="k">def</span> <span class="nf">set_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">and</span> <span class="n">link</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_obj</span> <span class="ow">and</span> <span class="n">link</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channel_obj</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span></div>
 
 <div class="viewcode-block" id="CurveData.get_legend"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData.get_legend">[docs]</a>    <span class="k">def</span> <span class="nf">get_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_label</span><span class="p">(),</span> <span class="n">legend_wrap</span><span class="p">)</span></div>
@@ -502,6 +504,7 @@
         <span class="k">return</span> <span class="n">dictToJSON</span></div>
 
 <div class="viewcode-block" id="CurveData.create_line2D"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData.create_line2D">[docs]</a>    <span class="k">def</span> <span class="nf">create_line2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+        <span class="c1"># print(&quot;create_line2D&quot;)</span>
         <span class="n">linecount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">COLORS</span><span class="p">[(</span><span class="n">linecount</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
@@ -527,7 +530,7 @@
 
 <div class="viewcode-block" id="CurveData.sync_with_line"><a class="viewcode-back" href="../../lib.html#lib.obj_data.CurveData.sync_with_line">[docs]</a>    <span class="k">def</span> <span class="nf">sync_with_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sync----&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_label</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_label</span><span class="p">())</span>
+            <span class="c1"># print(&quot;sync----&quot;, self.get_label(), self.line.get_label())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_color</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">()</span>

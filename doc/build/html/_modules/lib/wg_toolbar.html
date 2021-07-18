@@ -205,11 +205,13 @@
 
 <div class="viewcode-block" id="MyToolBar.edit_parameter"><a class="viewcode-back" href="../../lib.html#lib.wg_toolbar.MyToolBar.edit_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">edit_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dlg</span> <span class="o">=</span> <span class="n">GraphProperties_Dialog</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;edit_parameter&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">copy_params_from_canvas</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span></div>
+        <span class="n">dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="c1"># if dlg.exec():</span>
+        <span class="c1"># print(&quot;edit_parameter&quot;)</span>
+        <span class="c1"># self.mainwindow.dwg_data.filepool.copy_params_from_canvas()</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">copy_params_from_canvas</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MyToolBar.autoscale_yaxis"><a class="viewcode-back" href="../../lib.html#lib.wg_toolbar.MyToolBar.autoscale_yaxis">[docs]</a>    <span class="k">def</span> <span class="nf">autoscale_yaxis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># self.focusing_canvas.autoscale(0)</span>

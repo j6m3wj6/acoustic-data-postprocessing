@@ -183,7 +183,8 @@ class FileData():
         self.__dict__.update(state)
         print(state)
         # Add baz back since it doesn't exist in the pickle
-        self.valid_testnames = self.testnames
+        # if "valid_testnames" not in self.__dict__.keys():
+        #     self.valid_testnames = self.testnames
 
   # Funcs
     def print(self):
@@ -255,8 +256,8 @@ class Measurement:
 
 
 class Channel:
-    def __init__(self, parent=None, id=None):
-        self.parent = parent
+    def __init__(self, measurement_obj=None, id=None):
+        self.measurement_obj = measurement_obj
         self.id = id
         self.label = f"Ch{id}"
         self.sequence = {}
@@ -278,8 +279,8 @@ class Channel:
 
 
 class CurveData:
-    def __init__(self, parent=None, label=None, note=None, xdata=None, ydata=None, _type=None, units=[], color=COLORS[0]):
-        self.parent = parent
+    def __init__(self, channel_obj=None, label=None, note=None, xdata=None, ydata=None, _type=None, units=[], color=COLORS[0]):
+        self.channel_obj = channel_obj
         self.label = label
         self.note = note
         self.xdata = xdata
@@ -316,15 +317,16 @@ class CurveData:
   # Get and Set Function
 
     def get_label(self, link=False):
-        if self.parent and link:
-            return self.parent.label
+        if self.channel_obj and link:
+            return self.channel_obj.label
         else:
             return self.label
 
     def set_label(self, label, link=False):
-        self.label = label
-        if self.parent and link:
-            self.parent.label = label
+        if self.channel_obj and link:
+            self.channel_obj.label = label
+        else:
+            self.label = label
 
     def get_legend(self, legend_wrap):
         return fill(self.get_label(), legend_wrap)
@@ -370,7 +372,7 @@ class CurveData:
 
     def sync_with_line(self):
         if self.line:
-            print("sync----", self.get_label(), self.line.get_label())
+            # print("sync----", self.get_label(), self.line.get_label())
             self.set_label(self.line.get_label().replace('\n', ''))
             self.line_props["color"] = self.line.get_color()
             self.line_props["linewidth"] = self.line.get_linewidth()

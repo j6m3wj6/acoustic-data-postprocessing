@@ -99,7 +99,7 @@ def load_AP_fileData(path):
                         isline = False
                         continue
 
-                    curveData = CurveData(parent=measurementData.channel[_idx],
+                    curveData = CurveData(channel_obj=measurementData.channel[_idx],
                                           label=label, note=note, xdata=curve_x,
                                           ydata=curve_y, _type=_type, units=units)
                     measurementData.channel[_idx].sequence[test_name] = curveData
@@ -142,12 +142,12 @@ def load_LEAP_fileData(path):
 
             _type = determineTypeByTestName(test_name)
 
-            curveData_val = CurveData(parent=measurementData.channel[0],
+            curveData_val = CurveData(channel_obj=measurementData.channel[0],
                                       label=label, note=note, xdata=freq,
                                       ydata=val, _type=_type,
                                       units=units[0:1])
 
-            curveData_phase = CurveData(parent=measurementData.channel[0],
+            curveData_phase = CurveData(channel_obj=measurementData.channel[0],
                                         label=label, note=note, xdata=freq,
                                         ydata=phase, _type=CurveType.PHS, units=units[0::1])
 
@@ -203,7 +203,7 @@ def load_KLIPPEL_fileData(path):
                 filename = unit_arr[i*2][unit_arr[i *
                                                   2].rfind('[')+1:path.rfind(']')]
 
-                curveData_new = CurveData(parent=measurementData.channel[0],
+                curveData_new = CurveData(channel_obj=measurementData.channel[0],
                                           label=labels[i], note=note, xdata=freq,
                                           ydata=val, _type=_type,
                                           units=units)
@@ -241,7 +241,7 @@ def load_COMSOL_fileData(path):
             # print(freq, val)
 
             note = ""
-            curveData_new = CurveData(parent=measurementData.channel[0],
+            curveData_new = CurveData(channel_obj=measurementData.channel[0],
                                       label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL)
 
             filedata.testnames = [test_name]

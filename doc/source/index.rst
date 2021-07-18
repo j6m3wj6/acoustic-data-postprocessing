@@ -11,9 +11,7 @@ Welcome to SAE_PlotTool's documentation!
    :caption: Contents:
 
    GUI introduction
-   app
-   lib
-   
+   Data Source
 
 
 

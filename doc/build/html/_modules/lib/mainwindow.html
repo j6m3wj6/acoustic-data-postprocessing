@@ -197,9 +197,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">project_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="c1"># project_path = &#39;C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yeti.pkl&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">load_project</span><span class="p">(</span><span class="n">project_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">AP_DATA</span><span class="p">)</span>
+        <span class="c1"># self.append_file(AP_DATA)</span>
         <span class="c1"># self.append_file(LEAP_DATA)</span>
         <span class="c1"># self.append_file(KLIPPEL_DATA)</span>
 
@@ -241,8 +242,8 @@
 <span class="sd">        When the button is clicked, all imported datas and curves on canvases would be cleared.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">_c</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">_c</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">_c</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">_c</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
         <span class="c1"># Not DONE</span>
         <span class="c1"># self.dwg_data.filepool.clear()</span>

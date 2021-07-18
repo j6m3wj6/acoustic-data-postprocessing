@@ -160,6 +160,7 @@
     <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QFormLayout</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="n">CurveType</span>
+<span class="kn">from</span> <span class="nn">.dlg_load_files</span> <span class="kn">import</span> <span class="n">determineTypeByTestName</span>
 
 
 <div class="viewcode-block" id="CanvasSetting_Dialog"><a class="viewcode-back" href="../../lib.html#lib.dlg_canvas_setting.CanvasSetting_Dialog">[docs]</a><span class="k">class</span> <span class="nc">CanvasSetting_Dialog</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
@@ -222,8 +223,8 @@
         <span class="k">if</span> <span class="n">type_to_set</span> <span class="o">==</span> <span class="n">canvas</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="n">ax_id</span><span class="p">]:</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="n">type_to_set</span> <span class="o">==</span> <span class="n">canvas</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="ow">not</span> <span class="n">ax_id</span><span class="p">]:</span>
-            <span class="n">canvas</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">ax_id</span><span class="p">]</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">canvas</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="ow">not</span> <span class="n">ax_id</span><span class="p">]</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">canvas</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="n">ax_id</span><span class="p">)</span>
+            <span class="n">canvas</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="ow">not</span> <span class="n">ax_id</span><span class="p">)</span>
             <span class="n">types</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">ax_types</span>
             <span class="n">canvas</span><span class="o">.</span><span class="n">ax_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">types</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -231,16 +232,15 @@
             <span class="n">canvas_origin</span><span class="p">,</span> <span class="n">ax_id_origin</span><span class="p">,</span> <span class="n">ax_origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">get_canvas</span><span class="p">(</span>
                 <span class="n">_type</span><span class="o">=</span><span class="n">type_to_set</span><span class="p">)</span>
             <span class="n">canvas</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="n">ax_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_to_set</span>
-            <span class="n">canvas</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">ax_id</span><span class="p">]</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">canvas</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="n">ax_id</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">canvas_origin</span><span class="p">:</span>
-                <span class="n">ax_origin</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">canvas_origin</span><span class="o">.</span><span class="n">clear_lines</span><span class="p">(</span><span class="n">ax_id_origin</span><span class="p">)</span>
                 <span class="n">canvas_origin</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="n">ax_id_origin</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_to_transfer</span>
-                <span class="n">filepool</span><span class="o">.</span><span class="n">set_children_checkstate</span><span class="p">(</span>
-                    <span class="n">type_to_transfer</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_type_checkstate</span><span class="p">(</span><span class="n">type_to_transfer</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
                 <span class="n">canvas_origin</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
 
-        <span class="n">filepool</span><span class="o">.</span><span class="n">set_children_checkstate</span><span class="p">(</span><span class="n">type_to_set</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_type_checkstate</span><span class="p">(</span><span class="n">type_to_set</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">):</span>
@@ -248,6 +248,22 @@
                 <span class="n">_c</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">_c</span><span class="o">.</span><span class="n">ax_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_form_parameter</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_type_checkstate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_type</span><span class="p">,</span> <span class="n">checkstate</span><span class="p">):</span>
+        <span class="n">filepool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span>
+        <span class="n">wg_files</span> <span class="o">=</span> <span class="n">filepool</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">wg_file</span> <span class="ow">in</span> <span class="n">wg_files</span><span class="p">:</span>
+            <span class="n">wg_curves</span> <span class="o">=</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">determineTypeByTestName</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_type</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+                    <span class="n">wg_curve</span><span class="o">.</span><span class="n">handle_checked</span><span class="p">(</span><span class="n">checkstate</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">testname</span><span class="p">)</span>
+                    <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">checkstate</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+            <span class="n">wg_file</span><span class="o">.</span><span class="n">changetab_test</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_load_form_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">_c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>

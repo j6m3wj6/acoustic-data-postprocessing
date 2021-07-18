@@ -47,11 +47,13 @@ class MyToolBar(NavigationToolbar2QT):
 
     def edit_parameter(self):
         dlg = GraphProperties_Dialog(mainwindow=self.mainwindow)
-        if dlg.exec():
-            print("edit_parameter")
-            self.mainwindow.dwg_data.filepool.copy_params_from_canvas()
-        else:
-            pass
+        dlg.exec()
+        # if dlg.exec():
+        # print("edit_parameter")
+        # self.mainwindow.dwg_data.filepool.copy_params_from_canvas()
+        # else:
+        #     pass
+        self.mainwindow.dwg_data.filepool.copy_params_from_canvas()
 
     def autoscale_yaxis(self):
         # self.focusing_canvas.autoscale(0)

@@ -73,6 +73,12 @@ img[left] {
 img[margin0] {
   margin: 0;
 }
+img[inline-icon] {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  margin: 0px;
+}
 
 img {
   width: 75%;

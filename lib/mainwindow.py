@@ -39,9 +39,10 @@ class MainWindow(QMainWindow):
     def __init__(self, app, project_path: str = None) -> None:
         super().__init__()
         self.app = app
+        # project_path = 'C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yeti.pkl'
         self.project = Project.load_project(project_path)
         self.initUI()
-        self.append_file(AP_DATA)
+        # self.append_file(AP_DATA)
         # self.append_file(LEAP_DATA)
         # self.append_file(KLIPPEL_DATA)
 

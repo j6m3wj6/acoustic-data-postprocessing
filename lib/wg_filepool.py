@@ -8,6 +8,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QColor, QIcon
 from .dlg_load_files import determineTypeByTestName
 
+TB_CURVES_HEADER = ['Label', 'Note', 'Color', 'LineWidth']
+
 
 class FilePool(QWidget):
     def __init__(self, mainwindow=None):
@@ -67,8 +69,7 @@ class FilePool(QWidget):
         focusing_canvas = self.mainwindow.wg_canvas.focusing_canvas
         tb_curves = QTableWidget()
         tb_curves.setColumnCount(4)
-        tb_curves.setHorizontalHeaderLabels(
-            ['Label', 'Note', 'Color', 'LineWidth'])
+        tb_curves.setHorizontalHeaderLabels(TB_CURVES_HEADER)
 
         for wg_file in wg_files:
             # visible_curveData = wg_file.get_checkedItems(mergeAll=True)
@@ -76,7 +77,7 @@ class FilePool(QWidget):
             if wg_file.link:
                 row = tb_curves.rowCount()
                 tb_curves.setRowCount(row + 1)
-                test_item = QTableWidgetItem(f"%s" % (
+                test_item = QTableWidgetItem(f"%s [Link]" % (
                     wg_file.fileData.info["Name"]))
                 test_item.setBackground(Qt.lightGray)
                 test_item.setFlags(Qt.NoItemFlags)
@@ -85,23 +86,22 @@ class FilePool(QWidget):
                 for wg_curve in checked_wg_curves:
                     curveData = self._get_valid_curveData(
                         wg_curve, wg_file.fileData.valid_testnames)
-                    label_item, note_item, color_item, linewidth_item = self._create_tbcell_color_linewidth(
+                    header_items = self._create_tbcell_color_linewidth(
                         curveData)
-                    label_item.setFlags(label_item.flags() ^ Qt.ItemIsEditable)
-                    label_item.setData(Qt.UserRole, wg_curve.get_curveDatas())
+                    label_item = header_items[TB_CURVES_HEADER.index('Label')]
+                    label_item.setData(
+                        Qt.UserRole, (wg_curve, wg_file.fileData.testnames))
                     row = tb_curves.rowCount()
                     tb_curves.setRowCount(row + 1)
-                    tb_curves.setItem(row, 0, label_item)
-                    tb_curves.setItem(row, 1, note_item)
-                    tb_curves.setItem(row, 2, color_item)
-                    tb_curves.setItem(row, 3, linewidth_item)
+                    for idx, item in enumerate(header_items):
+                        tb_curves.setItem(row, idx, item)
             else:
                 for testname in wg_file.fileData.valid_testnames:
                     if determineTypeByTestName(testname) not in focusing_canvas.ax_types:
                         continue
                     row = tb_curves.rowCount()
                     tb_curves.setRowCount(row + 1)
-                    test_item = QTableWidgetItem(f"%s - %s" % (
+                    test_item = QTableWidgetItem(f"%s [Unlink] - %s" % (
                         wg_file.fileData.info["Name"], testname))
                     test_item.setBackground(Qt.lightGray)
                     test_item.setFlags(Qt.NoItemFlags)
@@ -112,18 +112,16 @@ class FilePool(QWidget):
                         if not curveData.line or not curveData.line_props["visible"]:
                             continue
                         print("curveData to carry, ", curveData.print(False))
-                        label_item, note_item, color_item, linewidth_item = self._create_tbcell_color_linewidth(
+                        header_items = self._create_tbcell_color_linewidth(
                             curveData)
-                        label_item.setFlags(
-                            label_item.flags() ^ Qt.ItemIsEditable)
-                        label_item.setData(Qt.UserRole, [curveData])
+                        label_item = header_items[TB_CURVES_HEADER.index(
+                            'Label')]
+                        label_item.setData(
+                            Qt.UserRole, (wg_curve, [testname]))
                         row = tb_curves.rowCount()
                         tb_curves.setRowCount(row + 1)
-                        tb_curves.setItem(row, 0, label_item)
-                        tb_curves.setItem(row, 1, note_item)
-                        tb_curves.setItem(row, 2, color_item)
-                        tb_curves.setItem(row, 3, linewidth_item)
-        print("\ntranfer_to_table_______")
+                        for idx, item in enumerate(header_items):
+                            tb_curves.setItem(row, idx, item)
         return tb_curves
 
     def transfer_to_list(self):
@@ -158,6 +156,7 @@ class FilePool(QWidget):
     def _create_tbcell_color_linewidth(self, curveData):
         label_item = QTableWidgetItem(curveData.label)
         note_item = QTableWidgetItem(curveData.note)
+
         pixmap = QPixmap(65, 20)
         pixmap.fill(QColor(curveData.line.get_color()))
         color_item = QTableWidgetItem()
@@ -169,7 +168,12 @@ class FilePool(QWidget):
             linewidth_index)
         linewidth_item = QTableWidgetItem()
         linewidth_item.setIcon(QIcon(icon_dir))
-        return label_item, note_item, color_item, linewidth_item
+
+        # label_item.setFlags(label_item.flags() ^ Qt.ItemIsEditable)
+        # note_item.setFlags(note_item.flags() ^ Qt.ItemIsEditable)
+        color_item.setFlags(color_item.flags() ^ Qt.ItemIsEditable)
+        linewidth_item.setFlags(linewidth_item.flags() ^ Qt.ItemIsEditable)
+        return [label_item, note_item, color_item, linewidth_item]
 
     def copy_params_from_canvas(self):
         # focusing_canvas = self.mainwindow.wg_canvas.focusing_canvas

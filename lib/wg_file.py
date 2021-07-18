@@ -226,14 +226,14 @@ class Wg_File(QWidget):
         return self.btngp_tests.checkedButton().text()
 
     def toggle_all(self, event=None, checkState=None, link=None, testname=None, set_and_handle=True):
-        # print("\n\nwg_file.toggle_all", checkState, testname)
+        print("\n\nwg_file.toggle_all", checkState, testname)
         wg_curves = self.findChildren(QWidget, "Wg_Curve")
         for wg in wg_curves:
-            if set_and_handle:
-                wg.set_and_handle_checkState(checkState, link, testname)
-
-            else:
-                wg.handle_checked(checkState, link, testname)
+            if wg.checkbox.checkState() is not checkState:
+                if set_and_handle:
+                    wg.set_and_handle_checkState(checkState, link, testname)
+                else:
+                    wg.handle_checked(checkState, link, testname)
 
     def handle_checked(self, checkState, m_idx, ch_idx, curveOrder, link=None, testname=None):
         measurement = self.fileData.measurements[m_idx]
@@ -270,7 +270,6 @@ class Wg_File(QWidget):
                     ax, int(canvas.parameter["General"]['Legend']['text-wrap']), curveOrder)
                 curveData.line_props["visible"] = True
         canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
-        print("replot")
         canvas.replot()
         # print("  :::%s, order=%s" %
         #       (curveData.print(console=False), curveOrder), bool(checkState))

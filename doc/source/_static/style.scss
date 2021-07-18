@@ -160,7 +160,13 @@ img {
 
     &[margin0] {
         margin: 0;
+    }
 
+    &[inline-icon] {
+        display: inline-block;
+        height: 14px;
+        width: 14px;
+        margin: 0px
     }
 }
 

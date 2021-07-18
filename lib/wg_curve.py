@@ -20,6 +20,9 @@ class Wg_Curve(QWidget):
         self.setObjectName("Wg_Curve")
         self.initUI()
 
+    def set_curveData(self, curveData, testname):
+        self.wg_file.fileData.measurements[self.m_idx].channel[self.ch_idx].sequence[testname] = curveData
+
     def get_measurement(self):
         return self.wg_file.fileData.measurements[self.m_idx]
 
@@ -32,11 +35,10 @@ class Wg_Curve(QWidget):
         return measurement.channel[self.ch_idx].sequence[testname]
 
     def get_curveDatas(self):
-        curveDatas = []
+        curveDatas = {}
         measurement = self.wg_file.fileData.measurements[self.m_idx]
-        for testname in self.wg_file.fileData.valid_testnames:
-            curveDatas.append(
-                measurement.channel[self.ch_idx].sequence[testname])
+        for testname in self.wg_file.fileData.testnames:
+            curveDatas[testname] = measurement.channel[self.ch_idx].sequence[testname]
         return curveDatas
 
     def get_curveOrder(self, include_test=False):
