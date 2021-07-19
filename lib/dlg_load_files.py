@@ -6,6 +6,7 @@ from .obj_data import FileData, CurveData, CurveType, Measurement, Channel
 from .ui_conf import COLORS
 import sys
 import traceback
+import os
 
 
 def load_file(source):
@@ -49,10 +50,9 @@ def load_file(source):
 
 
 def load_AP_fileData(path):
-    print("load_AP_fileData --->")
     filename = path[path.rfind('/')+1:path.rfind('.')]
     filedata = None
-    if path.endswith('.xlsx'):
+    if path.endswith('.xlsx') and os.path.exists(path):
         excel_data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
         filedata = FileData(filename, source="AP", file_path=path,
                             import_time=dt.datetime.today())
@@ -116,7 +116,8 @@ def load_AP_fileData(path):
 
 def load_LEAP_fileData(path):
     filedata = None
-    if path.endswith('.txt'):
+    if path.endswith('.txt') and os.path.exists(path):
+
         with open(path, 'r', encoding='UTF-8', errors='ignore') as file:
             headers = file.readlines()[:11]
             # LEAP_Impedance
@@ -164,7 +165,7 @@ def load_LEAP_fileData(path):
 
 def load_KLIPPEL_fileData(path):
     filedata = None
-    if path.endswith('.txt'):
+    if path.endswith('.txt') and os.path.exists(path):
         with open(path, 'r', encoding='UTF-8') as file:
             filename = path[path.rfind('/')+1:path.rfind('.')]
             filedata = FileData(filename, source="KLIPPEL",
@@ -219,7 +220,7 @@ def load_KLIPPEL_fileData(path):
 
 def load_COMSOL_fileData(path):
     filedata = None
-    if path.endswith('.txt'):
+    if path.endswith('.txt') and os.path.exists(path):
         with open(path, 'r', encoding='UTF-8', errors='ignore') as file:
             headers = file.readlines()[:8]
             filename = path[path.rfind('/')+1:path.rfind('.')]
@@ -267,10 +268,15 @@ def determineTypeByTestName(test_name):
         return CurveType.NoType
 
 
-AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
-AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
-LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
-KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
+# AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
+# AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
+# LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
+# KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
+
+
+AP_path = ""
+LEAP_path = ""
+KLIPPEL_path = ""
 
 AP_DATA = load_AP_fileData(AP_path)
 # AP_DATA2 = load_AP_fileData(AP_path)

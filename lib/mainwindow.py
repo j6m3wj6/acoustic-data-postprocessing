@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QPushButton, QWidget,\
     QFileDialog, QVBoxLayout, QMainWindow
 from PyQt5.QtCore import Qt
@@ -10,6 +11,7 @@ from .wg_canvas import MyCanvas
 from .dockwg_canvas_layout import DockWidget_CanvasLayout
 from .obj_data import Project, FileData
 from lib.dlg_load_files import KLIPPEL_DATA, AP_DATA, LEAP_DATA
+from .ui_conf import ICON_DIR
 
 
 class MainWindow(QMainWindow):
@@ -18,36 +20,36 @@ class MainWindow(QMainWindow):
     :vartype app: MyApp
 
     :ivar Project project: 
-            A Project object retrieved from existing project file(.pkl)
-            or a empty Project object with default setting.
+            A Mainwindow object contains only one Project object. \n
+            It is the data base.
 
-    :ivar MyMenuBar menutopbar: mainwindow's menubar.
+    :ivar MyMenuBar menutopbar: 
 
     :ivar MyCanvas wg_canvas: 
-            A self-defined QWidget component placed on the center of the mainwindow.
+            A self-defined QWidget component placed on the center of the mainwindow.\n
+            It contains most of the ploting functions.
 
     :ivar DockWidget_Data dwg_data: 
-            A self-defined QDockWidget placed on the left area by default 
-            that contains imported data listing by a treelist 
-            and several functions interacting with the canvases.
+            A self-defined QDockWidget placed on the left area by default.\n
+            It contains a list of imported files and several functions interacting with the canvases in ``wg_canvas``.
 
     :ivar DockWidget_CanvasLayout dwg_canvasLayout: 
-            A self-defined QDockWidget placed on the left area by default that buttons
-            in order to switch canvas layout mode and customize canvas setting.
+            A self-defined QDockWidget placed on the left area by default.\n
+            It contains functions of switching canvas layout mode, customizing canvas setting and post-processing.
     """
 
     def __init__(self, app, project_path: str = None) -> None:
         super().__init__()
         self.app = app
-        # project_path = 'C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yeti.pkl'
         self.project = Project.load_project(project_path)
         self.initUI()
+        # project_path = 'C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yeti.pkl'
         # self.append_file(AP_DATA)
         # self.append_file(LEAP_DATA)
         # self.append_file(KLIPPEL_DATA)
 
     def initUI(self):
-        """ Initial mainwindow's user interface. """
+        """ Initial mainwindow's user interface base on data in attribute ``project``. """
       # Create Component
         btn_clearData = QPushButton('Clear data')
         btn_processingDlg = QPushButton('Operation')
@@ -69,6 +71,7 @@ class MainWindow(QMainWindow):
       # Style and Setting
         self.setWindowTitle(self.project.info["Name"])
         self.resize(1600, 900)
+        self.setWindowIcon(QIcon(ICON_DIR+"audiowave.png"))
         self.setContentsMargins(0, 0, 0, 0)
         vbly_main.setContentsMargins(0, 0, 0, 0)
 
@@ -80,20 +83,20 @@ class MainWindow(QMainWindow):
   # Handle Functions
     def btn_clearData_handleClicked(self) -> None:
         """
-        This function connect with QPushButton component ``btn_clearData``
+        This function connect with QPushButton component ``btn_clearData``.\n
         When the button is clicked, all imported datas and curves on canvases would be cleared.
         """
-        for _c in self.wg_canvas.canvasPool:
-            _c.clear_lines(0)
-            _c.clear_lines(1)
-            _c.replot()
+        for _canvas_ in self.wg_canvas.canvasPool:
+            _canvas_.clear_lines(0)
+            _canvas_.clear_lines(1)
+            _canvas_.replot()
         # Not DONE
         # self.dwg_data.filepool.clear()
         self.project.files = []
 
     def btn_processingDlg_handleClicked(self) -> None:
         """
-        This function connect with QPushButton component ``btn_processingDlg``
+        This function connect with QPushButton component ``btn_processingDlg``.\n
         When the button is clicked, execute ``OperationDialog`` and pop up a dialog window.
         """
         dlg = OperationDialog(mainwindow=self)
@@ -101,21 +104,22 @@ class MainWindow(QMainWindow):
 
     def btn_axis_setting_handleClicked(self) -> None:
         """
-        This function connect with QPushButton component ``btn_axis_setting``
+        This function connect with QPushButton component ``btn_axis_setting``.\n
         When the button is clicked, execute ``CanvasSetting_Dialog`` and pop up a dialog window.
 
         It is used for customizing which curve types ``CurveType`` would be drawn on a canvas.
-        Each canvas has main axis and sub axis.
+        Each canvas has main axis and sub axis.\n
         After dialog window closed, update related component with new setting.
         """
         dlg = CanvasSetting_Dialog(mainwindow=self)
         if dlg.exec_():
-            for _lb in self.dwg_canvasLayout.lb_canvas:
-                _lb.set_text(self.wg_canvas.canvasPool[_lb.idx].get_name())
+            for _label_ in self.dwg_canvasLayout.lb_canvas:
+                _label_.set_text(
+                    self.wg_canvas.canvasPool[_label_.idx].get_name())
 
-            for _c in self.wg_canvas.canvasPool:
-                _c.ax_main.set_title(_c.update_title())
-                _c.replot()
+            for _canvas_ in self.wg_canvas.canvasPool:
+                _canvas_.ax_main.set_title(_canvas_.update_title())
+                _canvas_.replot()
 
             self.wg_canvas.toolbar.update_focus_canvas(
                 self.wg_canvas.focusing_canvas)

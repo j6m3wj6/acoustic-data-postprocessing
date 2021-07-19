@@ -42,7 +42,7 @@ class Project():
         }
         self.files = []
         self.ui_conf = UI_CONF
-        print(sys.path[0])
+        print("::: initial location: ", sys.path[0])
         # # self.newattr = []
         # self.newattr2 = []
 
@@ -115,11 +115,13 @@ class Project():
 
     @classmethod
     def load_project(cls, location=None):
-        print("unpickled project:")
-        print("location: ", location)
+        print("\nLoad Project____")
+
         if location == "None":
+            print("location: None --> create Untitled project")
             return Project()
         else:
+            print("location: ", location)
             try:
                 fh = open(location, 'rb')
                 # with open(f"%s.pkl" % (location), 'rb') as fh:

@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import ctypes
 from lib.license_confrimation import License_Confimation, verify_due_day, verify_license
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from lib.mainwindow import MainWindow
@@ -11,11 +12,13 @@ import json
 import base64
 
 AP_yetilarge_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl"
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 
 
 class MyApp(QMainWindow):
     '''
-    :ivar list(MainWindow) windows: store existing windows.
+    :ivar windows: store existing MainWindow object.
+    :vartype windows: [MainWindow]
     '''
 
     def __init__(self):
@@ -25,9 +28,7 @@ class MyApp(QMainWindow):
         self.create_document()
         self.create_mainwindow()
 
-        # conf.key_due_time = dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
-
-    def create_document(self):
+    def create_document(self) -> None:
         self.document = QMainWindow()
         browser = QWebEngineView()
         relative_html = './doc/build/html/index.html'
@@ -40,7 +41,7 @@ class MyApp(QMainWindow):
 
     def create_mainwindow(self, path: str = None) -> None:
         """
-        Create a new window for a project, and append it in the attrbute ``windows``.
+        Create a new Mainwindow object, and append it in the attrbute ``windows``.
 
         :param path: The absolute path to retrieve project file (*.pkl)
         """
@@ -50,12 +51,20 @@ class MyApp(QMainWindow):
 
         new_windows.show()
 
-    def show_document(self):
+    def show_document(self) -> None:
+        """
+        Show the document window. 
+        All mainwindow object in this app share the same document window.
+        """
         self.document.show()
 
 
 def check_license():
-    print("check_license")
+    """
+    Check the license.
+    If the license doesn't exit or already expired, execute license comfirmation dialog.
+    Otherwise, return True.
+    """
     try:
         with open('./conf.txt') as f:
             code = f.readlines()[0]
@@ -78,6 +87,7 @@ def check_license():
     due_day_isvalid = verify_due_day(license_due_day)
 
     if license_isvalid and due_day_isvalid:
+        print("App Execute!!\n")
         return True
     else:
         dlg = License_Confimation(conf_path="./conf.json")
@@ -87,7 +97,7 @@ def check_license():
 
 
 def main():
-    print("APP", os.path.dirname(__file__))
+    print("app.main os.path.dirname(__file__)", os.path.dirname(__file__))
     app = QApplication(sys.argv)
     app.setStyleSheet("""
         QWidget {
@@ -117,11 +127,6 @@ def main():
         try:
             MyApp()
             sys.exit(app.exec_())
-        # dlg = License_Confimation(conf_path="./conf.py")
-        # if dlg.exec_():
-
-        # else:
-        #     print("Oops")
         except Exception as e:
             error_class = e.__class__.__name__
             detail = e.args[0]

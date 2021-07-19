@@ -158,6 +158,7 @@ Toolbar上的功能只能針對一個特定畫布使用，故一個視窗只有�
 - <span button>Delete</span>: 刪除選取的檔案資料，可長按Shift鍵選取多項。
 
 - <span button>Clear</span>: 清空專案內的檔案資料。
+<!-- - <span button>Export</span> -->
 
 
 ### D-2. Files
@@ -234,8 +235,7 @@ Toolbar上的功能只能針對一個特定畫布使用，故一個視窗只有�
 
 若想更動某一畫布的資料類別，則被更動的y軸上的圖形都會被清空。
 而因每個資料類別無法同時繪製在兩個y軸上，故單一y軸的更動可能會同時影響兩張畫布。
-例如，若想將Canvas 0畫布的主軸改為Impedance，而Impedance原本為Canvas 1的主軸，故會同時清除Canvas 0畫布與Canvas 1畫布的主軸，並將兩軸的資料類別互換。
-
+例如，若想將Canvas 0畫布的主軸改為Impedance，而Impedance原本為Canvas 1的主軸，故會同時清除Canvas 0畫布與Canvas 1畫布的主軸，並將
 
 ### E-3. Post-Processing
 <div columns>

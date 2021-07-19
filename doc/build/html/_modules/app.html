@@ -88,8 +88,8 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../app.html">App Module API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../lib.html">Library Module API</a></li>
 </ul>
 
             
@@ -157,7 +157,8 @@
             
   <h1>Source code for app</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding:utf-8 -*-</span>
-<span class="kn">from</span> <span class="nn">lib.license_confrimation</span> <span class="kn">import</span> <span class="n">License_Confimation</span><span class="p">,</span> <span class="n">code_tranfer_dtStr</span><span class="p">,</span> <span class="n">verify_due_day</span><span class="p">,</span> <span class="n">verify_license</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">from</span> <span class="nn">lib.license_confrimation</span> <span class="kn">import</span> <span class="n">License_Confimation</span><span class="p">,</span> <span class="n">verify_due_day</span><span class="p">,</span> <span class="n">verify_license</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">lib.mainwindow</span> <span class="kn">import</span> <span class="n">MainWindow</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWebEngineWidgets</span> <span class="kn">import</span> <span class="n">QWebEngineView</span>
@@ -165,14 +166,17 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
-<span class="kn">import</span> <span class="nn">conf</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">base64</span>
 
 <span class="n">AP_yetilarge_path</span> <span class="o">=</span> <span class="s2">&quot;C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl&quot;</span>
+<span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span><span class="s2">&quot;myappid&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="MyApp"><a class="viewcode-back" href="../app.html#app.MyApp">[docs]</a><span class="k">class</span> <span class="nc">MyApp</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    :ivar list(MainWindow) windows: store existing windows.</span>
+<span class="sd">    :ivar windows: store existing MainWindow object.</span>
+<span class="sd">    :vartype windows: [MainWindow]</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -182,9 +186,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">create_document</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_mainwindow</span><span class="p">()</span>
 
-        <span class="c1"># conf.key_due_time = dt.datetime.today().strftime(&quot;%Y/%m/%d %H:%M:%S&quot;)</span>
-
-<div class="viewcode-block" id="MyApp.create_document"><a class="viewcode-back" href="../app.html#app.MyApp.create_document">[docs]</a>    <span class="k">def</span> <span class="nf">create_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MyApp.create_document"><a class="viewcode-back" href="../app.html#app.MyApp.create_document">[docs]</a>    <span class="k">def</span> <span class="nf">create_document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">document</span> <span class="o">=</span> <span class="n">QMainWindow</span><span class="p">()</span>
         <span class="n">browser</span> <span class="o">=</span> <span class="n">QWebEngineView</span><span class="p">()</span>
         <span class="n">relative_html</span> <span class="o">=</span> <span class="s1">&#39;./doc/build/html/index.html&#39;</span>
@@ -197,7 +199,7 @@
 
 <div class="viewcode-block" id="MyApp.create_mainwindow"><a class="viewcode-back" href="../app.html#app.MyApp.create_mainwindow">[docs]</a>    <span class="k">def</span> <span class="nf">create_mainwindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a new window for a project, and append it in the attrbute ``windows``.</span>
+<span class="sd">        Create a new Mainwindow object, and append it in the attrbute ``windows``.</span>
 
 <span class="sd">        :param path: The absolute path to retrieve project file (*.pkl)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -207,36 +209,59 @@
 
         <span class="n">new_windows</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MyApp.show_document"><a class="viewcode-back" href="../app.html#app.MyApp.show_document">[docs]</a>    <span class="k">def</span> <span class="nf">show_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MyApp.show_document"><a class="viewcode-back" href="../app.html#app.MyApp.show_document">[docs]</a>    <span class="k">def</span> <span class="nf">show_document</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show the document window. </span>
+<span class="sd">        All mainwindow object in this app share the same document window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="check_license"><a class="viewcode-back" href="../app.html#app.check_license">[docs]</a><span class="k">def</span> <span class="nf">check_license</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;check_license&quot;</span><span class="p">)</span>
-    <span class="n">license_isvalid</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">due_day_isvalid</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the license.</span>
+<span class="sd">    If the license doesn&#39;t exit or already expired, execute license comfirmation dialog.</span>
+<span class="sd">    Otherwise, return True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./conf.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">decode</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="n">conf</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">decode</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;license_due_day&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+        <span class="n">conf_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+        <span class="n">encode</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">conf_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./conf.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;wb+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">encode</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;license&quot;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">license_isvalid</span> <span class="o">=</span> <span class="n">verify_license</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">license</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;license_due_day&quot;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">due_day_code</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">license_due_day</span>
-        <span class="n">license_due_day</span> <span class="o">=</span> <span class="n">code_tranfer_dtStr</span><span class="p">(</span><span class="n">due_day_code</span><span class="p">)</span>
-        <span class="n">due_day_isvalid</span> <span class="o">=</span> <span class="n">verify_due_day</span><span class="p">(</span><span class="n">license_due_day</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;license&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;license&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;license_due_day&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;license_due_day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">license_isvalid</span> <span class="o">=</span> <span class="n">verify_license</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s2">&quot;license&quot;</span><span class="p">])</span>
+
+    <span class="n">license_due_day</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;license_due_day&quot;</span><span class="p">]</span>
+    <span class="n">due_day_isvalid</span> <span class="o">=</span> <span class="n">verify_due_day</span><span class="p">(</span><span class="n">license_due_day</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">license_isvalid</span> <span class="ow">and</span> <span class="n">due_day_isvalid</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;App Execute!!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">dlg</span> <span class="o">=</span> <span class="n">License_Confimation</span><span class="p">(</span><span class="n">conf_path</span><span class="o">=</span><span class="s2">&quot;./conf.py&quot;</span><span class="p">)</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">License_Confimation</span><span class="p">(</span><span class="n">conf_path</span><span class="o">=</span><span class="s2">&quot;./conf.json&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<span class="c1"># {&quot;license&quot;: &quot;9N9M-KTVT-F49J-S989-URA4&quot;, &quot;license_due_day&quot;: &quot;dswe/ex/cx sd:we:xn&quot;}</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../app.html#app.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;APP&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;app.main os.path.dirname(__file__)&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
     <span class="n">app</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        QWidget {</span>
 <span class="s2">            font-family: Arial;</span>
 <span class="s2">        }</span>
-<span class="s2">        QMainWindow { </span>
+<span class="s2">        QMainWindow {</span>
 <span class="s2">            background-color: white;</span>
 <span class="s2">            font-family: Arial;</span>
 <span class="s2">        }</span>
@@ -260,11 +285,6 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">MyApp</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
-        <span class="c1"># dlg = License_Confimation(conf_path=&quot;./conf.py&quot;)</span>
-        <span class="c1"># if dlg.exec_():</span>
-
-        <span class="c1"># else:</span>
-        <span class="c1">#     print(&quot;Oops&quot;)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">error_class</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="n">detail</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
