@@ -1,14 +1,14 @@
 from pickle import TRUE
-from lib.obj_data import CurveData
-from PyQt5.QtWidgets import QScrollArea, QWidget, QListWidget, QListWidgetItem, QTableWidget, QTableWidgetItem, \
+from PyQt5.QtWidgets import QComboBox, QWidget, QListWidget, QListWidgetItem, QTableWidget, QTableWidgetItem, \
     QVBoxLayout, QAbstractItemView
 from .ui_conf import ICON_DIR, LINEWIDTHS
 from .wg_file import Wg_File
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QColor, QIcon
 from .dlg_load_files import determineTypeByTestName
+from .wg_selfdefined import Cbox_Color, Cbox_Linewidth
 
-TB_CURVES_HEADER = ['Label', 'Note', 'Color', 'LineWidth']
+TB_CURVES_HEADER = ['Label', 'Note', 'Data testname', 'Color', 'LineWidth']
 
 
 class FilePool(QWidget):
@@ -19,6 +19,7 @@ class FilePool(QWidget):
         self.initUI()
 
     def initUI(self):
+        """Initial User Interface."""
         self.vbly = QVBoxLayout()
         self.vbly.setContentsMargins(0, 0, 0, 0)
         self.vbly.setAlignment(Qt.AlignTop)
@@ -34,28 +35,12 @@ class FilePool(QWidget):
         wg_files_to_del = []
         for wg_file in wg_files:
             if wg_file.fileData.info["Name"] in files:
-                wg_file.toolbtn_link.setChecked(True)
                 wg_files_to_del.append(wg_file)
         print("wg_files_to_del", wg_files_to_del)
         for wg_del in wg_files_to_del:
             wg_del.toggle_all(checkState=Qt.Unchecked, link=True)
             self.vbly.removeWidget(wg_del)
             wg_del.setParent(None)
-
-    # def set_children_checkstate(self, _type, checkstate):
-    #     wg_files = self.findChildren(QWidget, "Wg_File")
-    #     wg_curves = self.findChildren(QWidget, "Wg_Curve")
-
-    #     for wg_file in wg_files:
-    #         for testname in wg_file.fileData.valid_testnames:
-    #             if determineTypeByTestName(testname) is not _type:
-    #                 continue
-    #             for wg_curve in wg_curves:
-    #                 if wg_file.get_testname() == testname:
-    #                     wg_curve.checkbox.handle_checked(
-    #                         checkstate, False, testname)
-    #                 wg_curve.get_curveData(testname).line_props["visible"] = (
-    #                     checkstate == Qt.Checked)
 
     def _get_valid_curveData(self, wg_curve, valid_testnames):
         for testname in valid_testnames:
@@ -68,7 +53,7 @@ class FilePool(QWidget):
         wg_files = self.findChildren(QWidget, "Wg_File")
         focusing_canvas = self.mainwindow.wg_canvas.focusing_canvas
         tb_curves = QTableWidget()
-        tb_curves.setColumnCount(4)
+        tb_curves.setColumnCount(len(TB_CURVES_HEADER))
         tb_curves.setHorizontalHeaderLabels(TB_CURVES_HEADER)
 
         for wg_file in wg_files:
@@ -82,38 +67,41 @@ class FilePool(QWidget):
                 test_item.setBackground(Qt.lightGray)
                 test_item.setFlags(Qt.NoItemFlags)
                 tb_curves.setItem(row, 0, test_item)
-                tb_curves.setSpan(row, 0, 1, 4)
+                tb_curves.setSpan(row, 0, 1, len(TB_CURVES_HEADER))
                 for wg_curve in checked_wg_curves:
                     curveData = self._get_valid_curveData(
                         wg_curve, wg_file.fileData.valid_testnames)
-                    header_items = self._create_tbcell_color_linewidth(
-                        curveData)
+                    header_items = self._create_row(
+                        curveData, testname="(Link)")
                     label_item = header_items[TB_CURVES_HEADER.index('Label')]
                     label_item.setData(
                         Qt.UserRole, (wg_curve, wg_file.fileData.testnames))
                     row = tb_curves.rowCount()
                     tb_curves.setRowCount(row + 1)
                     for idx, item in enumerate(header_items):
-                        tb_curves.setItem(row, idx, item)
+                        if isinstance(item, QTableWidgetItem):
+                            tb_curves.setItem(row, idx, item)
+                        elif isinstance(item, QComboBox):
+                            tb_curves.setCellWidget(row, idx, item)
             else:
+                row = tb_curves.rowCount()
+                tb_curves.setRowCount(row + 1)
+                test_item = QTableWidgetItem(f"%s [Unlink]" % (
+                    wg_file.fileData.info["Name"]))
+                test_item.setBackground(Qt.lightGray)
+                test_item.setFlags(Qt.NoItemFlags)
+                tb_curves.setItem(row, 0, test_item)
+                tb_curves.setSpan(row, 0, 1, 4)
                 for testname in wg_file.fileData.valid_testnames:
                     if determineTypeByTestName(testname) not in focusing_canvas.ax_types:
                         continue
-                    row = tb_curves.rowCount()
-                    tb_curves.setRowCount(row + 1)
-                    test_item = QTableWidgetItem(f"%s [Unlink] - %s" % (
-                        wg_file.fileData.info["Name"], testname))
-                    test_item.setBackground(Qt.lightGray)
-                    test_item.setFlags(Qt.NoItemFlags)
-                    tb_curves.setItem(row, 0, test_item)
-                    tb_curves.setSpan(row, 0, 1, 4)
+
                     for wg_curve in checked_wg_curves:
                         curveData = wg_curve.get_curveData(testname)
                         if not curveData.line or not curveData.line_props["visible"]:
                             continue
                         print("curveData to carry, ", curveData.print(False))
-                        header_items = self._create_tbcell_color_linewidth(
-                            curveData)
+                        header_items = self._create_row(curveData,  testname)
                         label_item = header_items[TB_CURVES_HEADER.index(
                             'Label')]
                         label_item.setData(
@@ -121,7 +109,11 @@ class FilePool(QWidget):
                         row = tb_curves.rowCount()
                         tb_curves.setRowCount(row + 1)
                         for idx, item in enumerate(header_items):
-                            tb_curves.setItem(row, idx, item)
+                            if isinstance(item, QTableWidgetItem):
+                                tb_curves.setItem(row, idx, item)
+                            elif isinstance(item, QComboBox):
+                                tb_curves.setCellWidget(row, idx, item)
+
         return tb_curves
 
     def transfer_to_list(self):
@@ -153,27 +145,36 @@ class FilePool(QWidget):
                     listWidget.addItem(curve_item)
         return listWidget
 
-    def _create_tbcell_color_linewidth(self, curveData):
+    def _create_row(self, curveData, testname):
         label_item = QTableWidgetItem(curveData.label)
         note_item = QTableWidgetItem(curveData.note)
+        testname_item = QTableWidgetItem(testname)
 
-        pixmap = QPixmap(65, 20)
-        pixmap.fill(QColor(curveData.line.get_color()))
-        color_item = QTableWidgetItem()
-        color_item.setIcon(QIcon(pixmap))
-
-        linewidth_index = LINEWIDTHS.index(
-            curveData.line.get_linewidth())
-        icon_dir = ICON_DIR + f"linewidth_%s.png" % (
-            linewidth_index)
-        linewidth_item = QTableWidgetItem()
-        linewidth_item.setIcon(QIcon(icon_dir))
+        # pixmap = QPixmap(65, 20)
+        # pixmap.fill(QColor(curveData.line.get_color()))
+        # color_item = QTableWidgetItem()
+        # color_item.setIcon(QIcon(pixmap))
+        cbox_color = Cbox_Color()
+        cbox_color.set_color(curveData.line.get_color())
+        cbox_color.setObjectName("cbox_color")
+        # linewidth_index = LINEWIDTHS.index(
+        #     curveData.line.get_linewidth())
+        # icon_dir = ICON_DIR + f"linewidth_%s.png" % (
+        #     linewidth_index)
+        # linewidth_item = QTableWidgetItem()
+        # linewidth_item.setIcon(QIcon(icon_dir))
+        cbox_linewidth = Cbox_Linewidth()
+        cbox_linewidth.set_linewidth(curveData.line.get_linewidth())
+        cbox_linewidth.setObjectName("cbox_linewidth")
 
         # label_item.setFlags(label_item.flags() ^ Qt.ItemIsEditable)
-        # note_item.setFlags(note_item.flags() ^ Qt.ItemIsEditable)
-        color_item.setFlags(color_item.flags() ^ Qt.ItemIsEditable)
-        linewidth_item.setFlags(linewidth_item.flags() ^ Qt.ItemIsEditable)
-        return [label_item, note_item, color_item, linewidth_item]
+        testname_item.setFlags(testname_item.flags() ^ Qt.ItemIsEditable)
+        # color_item.setFlags(color_item.flags() ^ Qt.ItemIsEditable)
+        # linewidth_item.setFlags(linewidth_item.flags() ^ Qt.ItemIsEditable)
+        # color_item.setTextAlignment(Qt.AlignCenter)
+        # linewidth_item.setTextAlignment(Qt.AlignCenter)
+        # return [label_item, note_item, testname_item, color_item, linewidth_item]
+        return [label_item, note_item, testname_item, cbox_color, cbox_linewidth]
 
     def copy_params_from_canvas(self):
         # focusing_canvas = self.mainwindow.wg_canvas.focusing_canvas

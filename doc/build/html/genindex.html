@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data Object Module API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="library.html">Library Module API</a></li>
 </ul>
 
@@ -164,15 +165,26 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveData.align">align() (lib.obj_data.CurveData method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.CurveType.ALL">ALL (lib.obj_data.CurveType attribute)</a>
+</li>
       <li>
     app
 
@@ -182,7 +194,15 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.mainwindow.MainWindow.append_file">append_file() (lib.mainwindow.MainWindow method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.append_file">append_file() (lib.dockwg_data.DockWidget_Data method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.mainwindow.MainWindow.append_file">(lib.mainwindow.MainWindow method)</a>
+</li>
+        <li><a href="data.html#lib.obj_data.Project.append_file">(lib.obj_data.Project method)</a>
+</li>
+      </ul></li>
+      <li><a href="data.html#lib.obj_data.FileData.append_measurement">append_measurement() (lib.obj_data.FileData method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -194,7 +214,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.mainwindow.MainWindow.btn_clearData_handleClicked">btn_clearData_handleClicked() (lib.mainwindow.MainWindow method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">btn_importDlg_handleClicked() (lib.dockwg_data.DockWidget_Data method)</a>
 </li>
       <li><a href="library.html#lib.mainwindow.MainWindow.btn_processingDlg_handleClicked">btn_processingDlg_handleClicked() (lib.mainwindow.MainWindow method)</a>
 </li>
@@ -204,15 +224,27 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.Channel">Channel (class in lib.obj_data)</a>
+</li>
       <li><a href="app.html#app.check_license">check_license() (in module app)</a>
 </li>
       <li><a href="library.html#lib.mainwindow.MainWindow.clear_files">clear_files() (lib.mainwindow.MainWindow method)</a>
+
+      <ul>
+        <li><a href="data.html#lib.obj_data.Project.clear_files">(lib.obj_data.Project method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="app.html#app.MyApp.create_document">create_document() (app.MyApp method)</a>
 </li>
+      <li><a href="data.html#lib.obj_data.CurveData.create_line2D">create_line2D() (lib.obj_data.CurveData method)</a>
+</li>
       <li><a href="app.html#app.MyApp.create_mainwindow">create_mainwindow() (app.MyApp method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.CurveData">CurveData (class in lib.obj_data)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.CurveType">CurveType (class in lib.obj_data)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -220,7 +252,57 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.mainwindow.MainWindow.delete_files">delete_files() (lib.mainwindow.MainWindow method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.delete_files">delete_files() (lib.dockwg_data.DockWidget_Data method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.mainwindow.MainWindow.delete_files">(lib.mainwindow.MainWindow method)</a>
+</li>
+        <li><a href="data.html#lib.obj_data.Project.delete_files">(lib.obj_data.Project method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout">DockWidget_CanvasLayout (class in lib.dockwg_canvas_layout)</a>
+</li>
+      <li><a href="library.html#lib.dockwg_data.DockWidget_Data">DockWidget_Data (class in lib.dockwg_data)</a>
+</li>
+      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label">Draggable_Label (class in lib.dockwg_canvas_layout)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.Project.dump">dump() (lib.obj_data.Project method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveType.EXC">EXC (lib.obj_data.CurveType attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.Extended_Enum">Extended_Enum (class in lib.obj_data)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.FileData">FileData (class in lib.obj_data)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.FileData.get_import_time">get_import_time() (lib.obj_data.FileData method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveData.get_legend">get_legend() (lib.obj_data.CurveData method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.Project.get_path">get_path() (lib.obj_data.Project method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -228,8 +310,22 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.mainwindow.MainWindow.initUI">initUI() (lib.mainwindow.MainWindow method)</a>
+      <li><a href="data.html#lib.obj_data.CurveType.IMP">IMP (lib.obj_data.CurveType attribute)</a>
 </li>
+      <li><a href="data.html#lib.obj_data.Extended_Enum.index">index() (lib.obj_data.Extended_Enum class method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.Measurement.init_channels">init_channels() (lib.obj_data.Measurement method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI">initUI() (lib.dockwg_canvas_layout.DockWidget_CanvasLayout method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.dockwg_data.DockWidget_Data.initUI">(lib.dockwg_data.DockWidget_Data method)</a>
+</li>
+        <li><a href="library.html#lib.mainwindow.MainWindow.initUI">(lib.mainwindow.MainWindow method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -237,10 +333,41 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    lib.dockwg_canvas_layout
+
+      <ul>
+        <li><a href="library.html#module-lib.dockwg_canvas_layout">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.dockwg_data
+
+      <ul>
+        <li><a href="library.html#module-lib.dockwg_data">module</a>
+</li>
+      </ul></li>
+      <li>
     lib.mainwindow
 
       <ul>
         <li><a href="library.html#module-lib.mainwindow">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    lib.obj_data
+
+      <ul>
+        <li><a href="data.html#module-lib.obj_data">module</a>
+</li>
+      </ul></li>
+      <li><a href="data.html#lib.obj_data.Extended_Enum.list">list() (lib.obj_data.Extended_Enum class method)</a>
+</li>
+      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.load_project">load_project() (lib.dockwg_data.DockWidget_Data method)</a>
+
+      <ul>
+        <li><a href="data.html#lib.obj_data.Project.load_project">(lib.obj_data.Project class method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -253,18 +380,60 @@
 </li>
       <li><a href="library.html#lib.mainwindow.MainWindow">MainWindow (class in lib.mainwindow)</a>
 </li>
+      <li><a href="data.html#lib.obj_data.Measurement">Measurement (class in lib.obj_data)</a>
+</li>
       <li>
     module
 
       <ul>
         <li><a href="app.html#module-app">app</a>
 </li>
+        <li><a href="library.html#module-lib.dockwg_canvas_layout">lib.dockwg_canvas_layout</a>
+</li>
+        <li><a href="library.html#module-lib.dockwg_data">lib.dockwg_data</a>
+</li>
         <li><a href="library.html#module-lib.mainwindow">lib.mainwindow</a>
+</li>
+        <li><a href="data.html#module-lib.obj_data">lib.obj_data</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent">mouseMoveEvent() (lib.dockwg_canvas_layout.Draggable_Label method)</a>
+</li>
       <li><a href="app.html#app.MyApp">MyApp (class in app)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveType.NoType">NoType (lib.obj_data.CurveType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveType.PHS">PHS (lib.obj_data.CurveType attribute)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.Channel.print">print() (lib.obj_data.Channel method)</a>
+
+      <ul>
+        <li><a href="data.html#lib.obj_data.CurveData.print">(lib.obj_data.CurveData method)</a>
+</li>
+        <li><a href="data.html#lib.obj_data.FileData.print">(lib.obj_data.FileData method)</a>
+</li>
+        <li><a href="data.html#lib.obj_data.Measurement.print">(lib.obj_data.Measurement method)</a>
+</li>
+        <li><a href="data.html#lib.obj_data.Project.print">(lib.obj_data.Project method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.Project">Project (class in lib.obj_data)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -274,11 +443,35 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="library.html#lib.mainwindow.MainWindow.save_file">save_file() (lib.mainwindow.MainWindow method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="library.html#lib.mainwindow.MainWindow.save_file_as">save_file_as() (lib.mainwindow.MainWindow method)</a>
 </li>
+      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode">set_canvas_mode() (lib.dockwg_canvas_layout.DockWidget_CanvasLayout method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label.set_text">set_text() (lib.dockwg_canvas_layout.Draggable_Label method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.CurveData.shift">shift() (lib.obj_data.CurveData method)</a>
+</li>
       <li><a href="app.html#app.MyApp.show_document">show_document() (app.MyApp method)</a>
+</li>
+      <li><a href="data.html#lib.obj_data.CurveType.SPL">SPL (lib.obj_data.CurveType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.CurveType.THD">THD (lib.obj_data.CurveType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="data.html#lib.obj_data.Project.update_ui_conf">update_ui_conf() (lib.obj_data.Project method)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -1,6 +1,7 @@
 from enum import Enum
 import pickle
 import sys
+from typing import Dict, Optional
 import dill
 import datetime as dt
 from textwrap import fill
@@ -19,6 +20,7 @@ class Extended_Enum(Enum):
 
 
 class CurveType(Extended_Enum):
+    '''Common acoustic test data types.'''
     NoType = 'None'
     SPL = 'SPL'
     IMP = 'Impedance'
@@ -28,12 +30,17 @@ class CurveType(Extended_Enum):
     ALL = 'All'
 
 
-def Diff(li1, li2):
-    return list(set(li1) - set(li2)) + list(set(li2) - set(li1))
-
-
 class Project():
-    def __init__(self, name="Untitled"):
+    '''
+    The top level of data structure.
+    It contains general infomation and configuration of the project.
+
+    :ivar dict info: general infomation including name, file location, create time, last saved time.
+    :ivar List(FileData) files: files imported in this project.
+    :ivar dict ui_cong: user interface configuration.
+    '''
+
+    def __init__(self, name: str = "Untitled") -> None:
         self.info = {
             "Name": name,
             "File Location": sys.path[0],
@@ -43,8 +50,31 @@ class Project():
         self.files = []
         self.ui_conf = UI_CONF
         print("::: initial location: ", sys.path[0])
-        # # self.newattr = []
-        # self.newattr2 = []
+
+    def get_path(self) -> None:
+        """Return absolute path of this project file location in user's computer."""
+        return self.info['File Location'] + '/' + self.info['Name'] + '.pkl'
+
+    def append_file(self, file) -> None:
+        """
+        Append a file to this Project instance.
+
+        :param FileData file: Given FileData instance.
+        """
+        self.files.append(file)
+
+    def delete_files(self, files) -> None:
+        """
+        Delete specific files from this Project instance.
+
+        :param List(FileData) files: A list of FileData instance.
+        """
+        for _f in files:
+            self.files.remove(_f)
+
+    def clear_files(self) -> None:
+        """Clear all the files in this Project instance."""
+        self.files = []
 
     @classmethod
     def _check_attr(self, pj):
@@ -52,69 +82,19 @@ class Project():
             print("Not the same", )
             print("\tpj.__dict__.keys(): ", pj.__dict__.keys())
             print("\tProject.__dict__.keys(): ", Project().__dict__.keys())
-            print("Difference:", Diff(
-                pj.__dict__.keys(), Project().__dict__.keys()))
+            li1 = pj.__dict__.keys()
+            li2 = Project().__dict__.keys()
 
-    def print(self):
-        # msg = ""
-        # msg += "\nProject: ================="
-        # msg += ("____keys: ", self.__dict__.keys())
-        # msg += ("Name: %s \nFile location: %s" %
-        #         (self.info["Name"], self.get_path()))
-        # msg += "============================\n"
+            print("Difference:", list(set(li1) - set(li2)) +
+                  list(set(li2) - set(li1)))
 
-        print("\nProject: =================")
-        print("____keys: ", self.__dict__.keys())
-        print("Name: %s \nFile location: %s" %
-              (self.info["Name"], self.get_path()))
-        # for _f in self.files:
-        #     _f.print()
-        print("============================\n")
-        # return msg
+    @ classmethod
+    def load_project(cls, location: Optional[str] = None) -> None:
+        """
+        Retrieve project's data from a computer file on specific location.
 
-    def append_file(self, file):
-        self.files.append(file)
-
-    def delete_files(self, files):
-        for _f in files:
-            self.files.remove(_f)
-
-    def clear_files(self):
-        self.files = []
-
-    def get_path(self):
-        return self.info['File Location'] + '/' + self.info['Name'] + '.pkl'
-
-    def dump(self, location=None):
-        if not location:
-            location = self.get_path()
-        # update curveData
-        try:
-            with open(location, 'wb') as fh:
-                self.info["Last Saved Time"] = dt.datetime.today().strftime(
-                    "%Y/%m/%d %H:%M:%S")
-                # self.sync_files()
-                self.print()
-                pickle.dump(self, fh)
-                print("____________finish obj_data.Project.dump()")
-
-        except Exception as e:
-            error_class = e.__class__.__name__
-            detail = e.args[0]
-            cl, exc, tb = sys.exc_info()
-            # print(cl, exc, tb)
-            lastCallStack = traceback.extract_tb(tb)[-1]
-            fileName = lastCallStack[0]
-            lineName = lastCallStack[1]
-            funcName = lastCallStack[2]
-            print("#########  Error Message   #########\n")
-            errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(
-                fileName, lineName, funcName, error_class, detail)
-            print(errMsg)
-            print("\n####################################")
-
-    @classmethod
-    def load_project(cls, location=None):
+        :param Optional[str] location: The absolute path of a computer file(/.pkl).
+        """
         print("\nLoad Project____")
 
         if location == "None":
@@ -142,6 +122,57 @@ class Project():
             except Exception as e:
                 return Project()
 
+    def dump(self, location: Optional[str] = None) -> None:
+        """
+        Save project's data to computer file on specific location.
+
+        :param Optional[str] location: The absolute path of a folder.
+        """
+
+        if not location:
+            location = self.get_path()
+        try:
+            with open(location, 'wb') as fh:
+                self.info["Last Saved Time"] = dt.datetime.today().strftime(
+                    "%Y/%m/%d %H:%M:%S")
+                self.print()
+                pickle.dump(self, fh)
+                print("____________finish obj_data.Project.dump()")
+
+        except Exception as e:
+            error_class = e.__class__.__name__
+            detail = e.args[0]
+            cl, exc, tb = sys.exc_info()
+            # print(cl, exc, tb)
+            lastCallStack = traceback.extract_tb(tb)[-1]
+            fileName = lastCallStack[0]
+            lineName = lastCallStack[1]
+            funcName = lastCallStack[2]
+            print("#########  Error Message   #########\n")
+            errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(
+                fileName, lineName, funcName, error_class, detail)
+            print(errMsg)
+            print("\n####################################")
+
+    def print(self) -> None:
+        """Print the infomation of this Project instance."""
+        # msg = ""
+        # msg += "\nProject: ================="
+        # msg += ("____keys: ", self.__dict__.keys())
+        # msg += ("Name: %s \nFile location: %s" %
+        #         (self.info["Name"], self.get_path()))
+        # msg += "============================\n"
+
+        print("\nProject: =================")
+        print("____keys: ", self.__dict__.keys())
+        print("Name: %s \nFile location: %s" %
+              (self.info["Name"], self.get_path()))
+        # for _f in self.files:
+        #     _f.print()
+        print("============================\n")
+        # return msg
+
+#### Undo #####
     def update_ui_conf(self):
         self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
         for mode, canvas_set in self.wg_canvas.status.items():
@@ -152,19 +183,20 @@ class Project():
                 _t.value for _t in _c.ax_types]
             self.ui_conf["MyCanvas"]["canvasPool"][str(
                 _c.id)]["parameter"] = _c.parameter
-        # with open("ui_conf.json", "w") as fj:
-        #     json.dump(self.ui_conf, fj)
-        # print("update_ui_conf", self.ui_conf)
-
-    def get_files(self, filenames):
-        files_to_return = []
-        for _f in self.files:
-            if _f.info["Name"] in filenames and _f not in files_to_return:
-                files_to_return.append(_f)
-        return files_to_return
 
 
 class FileData():
+    '''
+    The 2nd level of data structure.
+    It contains general infomation of an imported files.
+
+    :ivar Dict info: general infomation including name, source, file path, create time, last modified time.
+    :ivar List(str) testnames: a list of all testnames.
+    :ivar List(str) valid_testnames:
+            a list of testnames that is visible and operatable in app, which is customized by user.
+    :ivar Dict measurements: user interface configuration.
+    '''
+
     def __init__(self, name=None, source=None, file_path=None, import_time=None):
         self.info = {
             "Name": name,
@@ -173,14 +205,25 @@ class FileData():
             'Import Time': import_time,
             'Last Modified Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
         }
-        # ----
+#### Undo #####
         self.testnames = []
         self.valid_testnames = []
         self.measurements = {}
 
-    def isAP(self):
-        return self.info["Source"] == "AP"
+    def get_import_time(self) -> str:
+        "Return imported time of this FileData instance."
+        return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
 
+    def append_measurement(self, m_idx: int, measurement) -> None:
+        """
+        Append a measurement to this FileData instance.
+
+        :param int m_idx: Index of the measurement.
+        :param Measurement measurement: Given Measurement instance.
+        """
+        self.measurements[str(m_idx)] = measurement
+
+#### Undo #####
     def __setstate__(self, state):
         self.__dict__.update(state)
         print(state)
@@ -188,10 +231,9 @@ class FileData():
         # if "valid_testnames" not in self.__dict__.keys():
         #     self.valid_testnames = self.testnames
 
-  # Funcs
     def print(self):
-        msg = ""
-        msg += "------------"
+        """Print the infomation of this FileData instance."""
+        msg = "------------"
         msg += ("\n\tName: %s \n\tSource: %s \n\tfile_path: %s" %
                 (self.info["Name"], self.info["Source"], self.info["File Path"]))
         msg += ("\n\tImport time: %s" % str(self.get_import_time()))
@@ -208,45 +250,31 @@ class FileData():
         print(msg)
         return msg
 
-    def update_sequence(self, dataSequence):
-        for test, curveData in dataSequence:
-            self.sequence[test] = curveData
-
-    def get_import_time(self):
-        return self.info["Import Time"].strftime("%Y/%m/%d %H:%M:%S")
-
-    # [(test1->(ch1 ch2 ...)) (test2->(ch1 ch2 ...))...]
-    def to_sequence_dict(self, chIdx_arr=None):
-        sequence_dict = {}
-        for _m in self.measurements.values():
-            for test in self.testnames:
-                if test not in sequence_dict.keys():
-                    sequence_dict[test] = []
-                for _idx, _ch in enumerate(_m.channel):
-                    if chIdx_arr and _idx not in chIdx_arr:
-                        continue
-                    else:
-                        sequence_dict[test].append(_ch.sequence[test])
-        return sequence_dict
-
-    def get_sequence(self, chIdx_arr=None):
-        if chIdx_arr:
-            return self.to_sequence_dict(chIdx_arr)
-        else:
-            return self.to_sequence_dict()
-
 
 class Measurement:
+    '''
+    The 3rd level of data structure.
+
+    :ivar int id: index of this measurement.
+    :ivar List(Channel) channel: a list of Channel instances in this Measurement instance.
+    '''
+
     def __init__(self, channel_count=1, id=None):
         self.id = id
         self.channel = []
         self.init_channels(channel_count)
 
     def init_channels(self, count: int) -> None:
+        """
+        Create given numbers of Channel instances for this Measurement instance.
+
+        :param int count: Total numbers of channels.
+        """
         for i in range(count):
             self.channel.append(Channel(self, i+1))
 
     def print(self, console=True):
+        """Print the infomation."""
         msg = ""
         msg += f"Measurement____id={self.id}\n"
 
@@ -258,13 +286,21 @@ class Measurement:
 
 
 class Channel:
+    '''
+    The 4th level of data structure.
+
+    :ivar Measurement measurement_obj: The Measurement instance this Channel instance belongs to.
+    :ivar int id: Channel's id.
+    :ivar Dict sequence: A dictionary of testname and its corresponding CurveData instance.
+    '''
+
     def __init__(self, measurement_obj=None, id=None):
         self.measurement_obj = measurement_obj
         self.id = id
-        self.label = f"Ch{id}"
         self.sequence = {}
 
     def print(self, console=True):
+        """Print the infomation."""
         msg = f"Channel____id={self.id}\n"
         msg += "  Sequence:\n"
         for test, curve in self.sequence.items():
@@ -273,118 +309,120 @@ class Channel:
             print(msg)
         return msg
 
-    def set_label(self, label: str) -> None:
-        self.label = label
-
-    def get_label(self):
-        return self.label
-
 
 class CurveData:
-    def __init__(self, channel_obj=None, label=None, note=None, xdata=None, ydata=None, _type=None, units=[], color=COLORS[0]):
+    '''
+    The bottom (5th) level of data structure.
+
+    :ivar Channel channel_obj: The Channel instance this CurveData instance belongs to.
+    :ivar List(float) xdata: Curve's data of x-axis.
+    :ivar List(float) ydata: Curve's data of y-axis.
+    :ivar str label: Curve's label.
+    :ivar str note: Curve's note.
+    :ivar CurveType _type: Curve's data category.
+    :ivar List(str) units: Units of xdata and ydata.
+    :ivar float shifted: Recorded offset value.
+    :ivar matplotlib.lines.Line2D line: Matplolib Line2D object created by this CurveData instance.
+    :ivar Dict line_props: style properties of ``line``.
+    '''
+
+    def __init__(self, xdata, ydata, channel_obj, label: str = "Curve", note: str = "",
+                 _type=CurveType.NoType, units=[]):
         self.channel_obj = channel_obj
-        self.label = label
-        self.note = note
         self.xdata = xdata
         self.ydata = ydata
+        self.label = label
+        self.note = note
         self.type = _type
-        self.shifted = 0
         self.units = units
+        self.shifted = 0
         self.line = None
         self.line_props = {
             "visible": False,
             "color": "",
             "linewidth": LINEWIDTH_DEFAULT,
         }
-  # Class Function
 
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        # Don't pickle baz
-
-        del state["line"]
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-        # Add baz back since it doesn't exist in the pickle
-        self.line = None
-
-    def print(self, console=True):
-        msg = (f"%s, %s, %st, line = {bool(self.line)}" % (
-            self.type.value, self.label, self.note))
-        if console:
-            print(msg)
-        return msg
   # Get and Set Function
+    def get_legend(self, legend_wrap: int) -> str:
+        """
+        Return the legend wrapped with a given characters long.
 
-    def get_label(self, link=False):
-        if self.channel_obj and link:
-            return self.channel_obj.label
-        else:
-            return self.label
+        :param int legend_wrap: A given number .
+        """
+        return fill(self.label, legend_wrap)
 
-    def set_label(self, label, link=False):
-        if self.channel_obj and link:
-            self.channel_obj.label = label
-        else:
-            self.label = label
+    def create_line2D(self, canvas, ax_id, order, legend_wrap, color=None, linewidth=LINEWIDTH_DEFAULT):
+        """
+        Plot a curve on given canvas's axis with specific order, text-wrap and color.
 
-    def get_legend(self, legend_wrap):
-        return fill(self.get_label(), legend_wrap)
-
-    def get_ymax(self):
-        print(self.ydata.max())
-
-    def get_dict(self):
-        dictToJSON = {
-            'Data Type': self.type.value,
-            'xData': self.xdata.to_numpy().tolist(),
-            'yData': self.ydata.to_numpy().tolist(),
-            'Label': self.get_label(),
-            'Note': self.note,
-            'line_props': self.line_props
-        }
-        return dictToJSON
-
-    def create_line2D(self, ax, legend_wrap, order):
+        :param matplotlib.figure canvas: Given matplot figure.
+        :param int ax_id: Id of axis.
+        :param int order: Figure would plot each curve by this order.
+        :param str color: Curve's color.
+        :param float linewidth: Curve's linewidth.
+        """
         # print("create_line2D")
-        linecount = len(ax.lines)
-        if not self.line_props["color"]:
-            self.line_props["color"] = COLORS[(linecount-2) % 10]
+        ax = canvas.fig.axes[ax_id]
+        if ax_id == 0:
+            linecount = len(ax.lines)-2  # two initial draggable cross lines
+        else:
+            linecount = len(ax.lines)
+        if not color:
+            if self.line_props["color"]:
+                color = self.line_props["color"]
+            else:
+                color = COLORS[linecount % 10]
+        if self.line_props["linewidth"]:
+            linewidth = self.line_props["linewidth"]
+
         ydata = [d+self.shifted for d in self.ydata]
         self.line, = ax.plot(self.xdata, ydata,
-                             label=self.get_legend(legend_wrap), color=self.line_props["color"], picker=True)
+                             label=self.get_legend(legend_wrap), color=color,
+                             linewidth=linewidth, picker=True)
         self.line.set_zorder(order)
         return self.line
-  # Curve Unary Function
 
-    def shift(self, offset):
+  # Unary Post-processing
+    def shift(self, offset: float):
+        """
+        Shift ydata with given offset, which is always compared with the original data.
+        That is, if the given offset is zero, it would be the original curve.
+
+        :param float offset: Given offset.
+        """
         xdata, ydata = self.line.get_data()
         new_ydata = [d+(offset-self.shifted) for d in ydata]
         self.line.set_data(xdata, new_ydata)
         self.shifted += (offset-self.shifted)
 
     def align(self, targetDB, freq):
+        """
+        Shift the curve to align given magnitude at given frequency.
+
+        :param float targetDB: The target y-magnitude to align.
+        :param float freq: The target x-magnitude to align.
+        """
         xdata, ydata = self.line.get_data()
         (index, freq) = min(enumerate(xdata), key=lambda x: abs(x[1]-freq))
         offset = targetDB - ydata[index]
         self.shift(offset)
-  # Save and Sync
 
-    def sync_with_line(self):
-        if self.line:
-            # print("sync----", self.get_label(), self.line.get_label())
-            self.set_label(self.line.get_label().replace('\n', ''))
-            self.line_props["color"] = self.line.get_color()
-            self.line_props["linewidth"] = self.line.get_linewidth()
-        else:
-            pass
+  # Class Function
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        # Don't pickle attribute line, which includes package Matplotlib.
+        del state["line"]
+        return state
 
-    def dump(self):
-        self.print()
-        try:
-            with open(f"%s.pkl" % ("curvedata"), 'wb') as fh:
-                pickle.dump(self, fh)
-        except:
-            print(dill.detect.baditems(self))
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.line = None
+
+    def print(self, console=True) -> str:
+        """Print the infomation."""
+        msg = (f"%s, %s, %s, line = {bool(self.line)}" % (
+            self.type.value, self.label, self.note))
+        if console:
+            print(msg)
+        return msg

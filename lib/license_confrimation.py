@@ -59,6 +59,7 @@ class License_Confimation(QDialog):
         self.initUI()
 
     def initUI(self):
+        """Initial User Interface."""
       # Create
         btn_ok = QPushButton("Ok")
         btn_cancel = QPushButton("Cancel")
@@ -70,11 +71,7 @@ class License_Confimation(QDialog):
         btn_cancel.clicked.connect(self.reject)
         self.le_license = QLineEdit()
         self.warning_massage = QLabel()
-        self.warning_massage.setStyleSheet("""
-            background-color: "#e80000";
-            padding: 4px;
-            color: "white";
-        """)
+        self.warning_massage.setObjectName("warning_massage")
         self.warning_massage.setVisible(False)
 
         vbly = QVBoxLayout()

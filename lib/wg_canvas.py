@@ -61,13 +61,13 @@ class MyCanvasItem(FigureCanvasQTAgg):
       # Default Setting
         self.ax_sub.set_visible(False)
         self.ax_main.format_coord = lambda x, y: ""
-        for ax in self.fig.axes:
-            ax.set_ylim(auto=False)
+        for _ax_ in self.fig.axes:
+            _ax_.set_ylim(auto=False)
 
-            ax.grid()
-            ax.grid(which='minor', linestyle=':',
-                    linewidth='0.5', color='black')
-            ax.yaxis.set_minor_locator(ticker.AutoMinorLocator(5))
+            _ax_.grid()
+            _ax_.grid(which='minor', linestyle=':',
+                      linewidth='0.5', color='black')
+            _ax_.yaxis.set_minor_locator(ticker.AutoMinorLocator(5))
 
         self.apply_style()
         self.fig.set_constrained_layout_pads(w_pad=10/72., h_pad=10/72.,
@@ -97,14 +97,14 @@ class MyCanvasItem(FigureCanvasQTAgg):
         '''
         param_gen = self.parameter["General"]
         self.ax_main.set_title(param_gen["Title"])
-        for idx, _type in enumerate(self.ax_types):
-            if _type == CurveType.THD:
-                self.fig.axes[idx].yaxis.set_major_formatter(
+        for _idx_, _type_ in enumerate(self.ax_types):
+            if _type_ == CurveType.THD:
+                self.fig.axes[_idx_].yaxis.set_major_formatter(
                     matplotlib.ticker.PercentFormatter())
             else:
-                # self.fig.axes[idx].yaxis.set_major_formatter(
+                # self.fig.axes[_idx_].yaxis.set_major_formatter(
                 #     matplotlib.ticker.ScalarFormatter())
-                self.fig.axes[idx].yaxis.set_major_formatter(
+                self.fig.axes[_idx_].yaxis.set_major_formatter(
                     matplotlib.ticker.EngFormatter())
 
         w_pad = int(param_gen["Margin"]["left-right"])
@@ -113,16 +113,16 @@ class MyCanvasItem(FigureCanvasQTAgg):
                                              hspace=0.5, wspace=0.5)
 
         handles, labels = self.ax_main.get_legend_handles_labels()
-        for _hd, _lb in zip(handles, labels):
-            _lb = _lb.replace('\n', '')
-            _hd.set_label(fill(_lb,
-                               int(param_gen['Legend']['text-wrap'])))
+        for _hd_, _lb_ in zip(handles, labels):
+            _lb_ = _lb_.replace('\n', '')
+            _hd_.set_label(fill(_lb_,
+                                int(param_gen['Legend']['text-wrap'])))
 
         handles, labels = self.ax_sub.get_legend_handles_labels()
-        for _hd, _lb in zip(handles, labels):
-            _lb = _lb.replace('\n', '')
-            _hd.set_label(fill(_lb,
-                               int(param_gen['Legend']['text-wrap'])))
+        for _hd_, _lb_ in zip(handles, labels):
+            _lb_ = _lb_.replace('\n', '')
+            _hd_.set_label(fill(_lb_,
+                                int(param_gen['Legend']['text-wrap'])))
 
         param_axis = self.parameter["Axis"]
         self.ax_main.set_xlabel(param_axis["X-Axis"]['label'])
@@ -142,13 +142,13 @@ class MyCanvasItem(FigureCanvasQTAgg):
             [float(Quantity(param_axis["Sub_Y-Axis"]['min'])), float(Quantity(param_axis["Sub_Y-Axis"]['max']))])
         # self.ax_sub.set_ymargin(1)
 
-        for ax in self.fig.axes:
-            ax.set_xscale(param_axis["X-Axis"]['scale'])
+        for _ax_ in self.fig.axes:
+            _ax_.set_xscale(param_axis["X-Axis"]['scale'])
             if (param_axis["X-Axis"]['auto-scale']):
-                ax.set_xlim(auto=True)
+                _ax_.set_xlim(auto=True)
             else:
-                ax.set_xlim([int(param_axis["X-Axis"]['min']),
-                            int(param_axis["X-Axis"]['max'])])
+                _ax_.set_xlim([int(param_axis["X-Axis"]['min']),
+                               int(param_axis["X-Axis"]['max'])])
 
         self.replot()
 
@@ -170,9 +170,9 @@ class MyCanvasItem(FigureCanvasQTAgg):
             lines = self.fig.axes[ax_idx].lines
         else:
             return
-        for _l in lines:
-            line_ymax = max(_l.get_ydata())
-            line_ymin = min(_l.get_ydata())
+        for _line_ in lines:
+            line_ymax = max(_line_.get_ydata())
+            line_ymin = min(_line_.get_ydata())
             if line_ymax > ylim[1]:
                 ylim[1] = line_ymax
             if line_ymin < ylim[0]:
@@ -277,8 +277,8 @@ class MyCanvasItem(FigureCanvasQTAgg):
         '''
         Set linewidth of all curves on the canvas to default value.
         '''
-        for ax in self.fig.axes:
-            for line in ax.lines:
+        for _ax_ in self.fig.axes:
+            for line in _ax_.lines:
                 line.set_linewidth(LINEWIDTH_DEFAULT)
 
     def handle_pick(self, event):
@@ -318,8 +318,8 @@ class MyCanvas(QWidget):
         ui_conf = mainwindow.project.ui_conf["MyCanvas"]
         self.canvasPool = []
         self.status = {}
-        for _k, _v in ui_conf["canvasPool"].items():
-            id, types, parameter = _v.values()
+        for _key_, _value_ in ui_conf["canvasPool"].items():
+            id, types, parameter = _value_.values()
 
             self.canvasPool.append(MyCanvasItem(parent=self, id=id, types=[
                 CurveType(types[0]), CurveType(types[1])], params=parameter))
@@ -335,6 +335,7 @@ class MyCanvas(QWidget):
         self.initUI()
 
     def initUI(self) -> None:
+        """Initial User Interface."""
         # Create Component
         self.toolbar = MyToolBar(
             canvas=self.canvasPool[0], parent=self.mainwindow)
@@ -356,14 +357,14 @@ class MyCanvas(QWidget):
         return id
 
     def replot(self) -> None:
-        for _c in self.get_active_canvas():
-            _c.replot()
+        for _canvas_ in self.get_active_canvas():
+            _canvas_.replot()
 
     def change_focusing_canvas(self, focusing_canvas) -> None:
         self.focusing_canvas = focusing_canvas
 
-        for _c in self.get_active_canvas():
-            _c.toggle_focus_style(_c == focusing_canvas)
+        for _canvas_ in self.get_active_canvas():
+            _canvas_.toggle_focus_style(_canvas_ == focusing_canvas)
 
         self.toolbar.update_focus_canvas(focusing_canvas)
         self.replot()
@@ -392,10 +393,10 @@ class MyCanvas(QWidget):
             self.status[self.mode] = [new_canvas if _c ==
                                       old_canvas else _c for _c in self.status[self.mode]]
         self.change_focusing_canvas(new_canvas)
-        for mode, canvas in self.status.items():
-            canvas_set = [_c.id for _c in canvas]
+        for _mode_, _canvas_arr_ in self.status.items():
+            canvas_set = [_canvas_.id for _canvas_ in _canvas_arr_]
             self.mainwindow.project.ui_conf["MyCanvas"]["status"].update({
-                                                                         mode: canvas_set})
+                                                                         _mode_: canvas_set})
 
     def set_mode(self, mode: str) -> None:
         self.mode = mode
@@ -404,21 +405,21 @@ class MyCanvas(QWidget):
 
     def get_canvas(self, _type: CurveType = None, id: int = None):
         if _type is not None:
-            for _c in self.canvasPool:
-                ax_id, ax_match = _c.get_ax(_type)
+            for _canvas_ in self.canvasPool:
+                ax_id, ax_match = _canvas_.get_ax(_type)
                 if ax_match:
-                    return _c, ax_id, ax_match
+                    return _canvas_, ax_id, ax_match
 
         elif id is not None:
-            for _c in self.canvasPool:
-                if id == _c.id:
-                    return _c
+            for _canvas_ in self.canvasPool:
+                if id == _canvas_.id:
+                    return _canvas_
         return None, None, None
 
     def get_active_canvas_names(self):
         active_canvas_names = []
-        for act_c in self.get_active_canvas():
-            active_canvas_names.append(act_c.get_name())
+        for _canvas_ in self.get_active_canvas():
+            active_canvas_names.append(_canvas_.get_name())
         return active_canvas_names
 
     def get_active_canvas(self): return self.status[self.mode]

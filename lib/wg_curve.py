@@ -55,8 +55,9 @@ class Wg_Curve(QWidget):
         return curveOrder
 
     def initUI(self):
+        """Initial User Interface."""
         self.checkbox = QCheckBox()
-        self.lb_label = QLabel(self.curveData.get_label())
+        self.lb_label = QLabel(self.curveData.label)
         self.lb_note = QLabel(self.curveData.note)
         self.lb_curve_id = QLabel(str(self.get_curveOrder()))
         self.lb_measurement_id = QLabel("")
@@ -136,7 +137,6 @@ class Wg_Curve(QWidget):
     def copy_params_from_canvas(self):
         for testname in self.wg_file.fileData.valid_testnames:
             curveData = self.get_curveData(testname)
-            curveData.sync_with_line()
             self.wg_file.fileData.measurements[self.m_idx].channel[
                 self.ch_idx].sequence[testname] = curveData
         self.update_info()

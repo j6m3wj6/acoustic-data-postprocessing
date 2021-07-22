@@ -41,7 +41,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="App Module API" href="app.html" /> 
+    <link rel="prev" title="Data Object Module API" href="data.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,8 +91,11 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data Object Module API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Library Module API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-lib.mainwindow">lib.mainwindow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lib.mainwindow">mainwindow.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lib.dockwg_data">dockwg_data.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lib.dockwg_canvas_layout">dockwg_canvas_layout.py</a></li>
 </ul>
 </li>
 </ul>
@@ -187,7 +190,7 @@
 <div class="section" id="library-module-api">
 <h1>Library Module API<a class="headerlink" href="#library-module-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-lib.mainwindow">
-<span id="lib-mainwindow"></span><h2>lib.mainwindow<a class="headerlink" href="#module-lib.mainwindow" title="Permalink to this headline">¶</a></h2>
+<span id="mainwindow-py"></span><h2>mainwindow.py<a class="headerlink" href="#module-lib.mainwindow" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.mainwindow.</span></span><span class="sig-name descname"><span class="pre">MainWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow" title="Permalink to this definition">¶</a></dt>
@@ -196,17 +199,17 @@
 <dt class="field-odd">Variables</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>app</strong> (<a class="reference internal" href="app.html#app.MyApp" title="app.MyApp"><em>MyApp</em></a>) – Object MyApp.</p></li>
-<li><p><strong>project</strong> (<em>Project</em>) – <p>A <code class="docutils literal notranslate"><span class="pre">Mainwindow</span></code> object contains only one Project object.</p>
+<li><p><strong>project</strong> (<a class="reference internal" href="data.html#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – <p>A Mainwindow object contains only one Project object.</p>
 <p>It is the data base.</p>
 </p></li>
 <li><p><strong>menutopbar</strong> (<em>MyMenuBar</em>) – </p></li>
 <li><p><strong>wg_canvas</strong> (<em>MyCanvas</em>) – <p>A self-defined QWidget component placed on the center of the mainwindow.</p>
 <p>It contains most of the ploting functions.</p>
 </p></li>
-<li><p><strong>dwg_data</strong> (<em>DockWidget_Data</em>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
+<li><p><strong>dwg_data</strong> (<a class="reference internal" href="#lib.dockwg_data.DockWidget_Data" title="lib.dockwg_data.DockWidget_Data"><em>DockWidget_Data</em></a>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
 <p>It contains a list of imported files and several functions interacting with the canvases in <code class="docutils literal notranslate"><span class="pre">wg_canvas</span></code>.</p>
 </p></li>
-<li><p><strong>dwg_canvasLayout</strong> (<em>DockWidget_CanvasLayout</em>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
+<li><p><strong>dwg_canvasLayout</strong> (<a class="reference internal" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout" title="lib.dockwg_canvas_layout.DockWidget_CanvasLayout"><em>DockWidget_CanvasLayout</em></a>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
 <p>It contains functions of switching canvas layout mode, customizing canvas setting and post-processing.</p>
 </p></li>
 </ul>
@@ -215,14 +218,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.initUI">
 <span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.initUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initial mainwindow’s user interface.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="lib.mainwindow.MainWindow.btn_clearData_handleClicked">
-<span class="sig-name descname"><span class="pre">btn_clearData_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.btn_clearData_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.btn_clearData_handleClicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_clearData</span></code>
-When the button is clicked, all imported datas and curves on canvases would be cleared.</p>
+<dd><p>Initial mainwindow’s user interface base on data in attribute <code class="docutils literal notranslate"><span class="pre">project</span></code>.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -230,8 +226,8 @@ When the button is clicked, all imported datas and curves on canvases would be c
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.btn_processingDlg_handleClicked">
 <span class="sig-name descname"><span class="pre">btn_processingDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.btn_processingDlg_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.btn_processingDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_processingDlg</span></code>
-When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">OperationDialog</span></code> and pop up a dialog window.</p>
+<dd><p>This function connect with QPushButton component in <code class="docutils literal notranslate"><span class="pre">dockwg_canvas_setting</span></code>.</p>
+<p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">OperationDialog</span></code> and pop up a dialog window.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -239,11 +235,11 @@ When the button is clicked, execute <code class="docutils literal notranslate"><
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.btn_axis_setting_handleClicked">
 <span class="sig-name descname"><span class="pre">btn_axis_setting_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.btn_axis_setting_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.btn_axis_setting_handleClicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_axis_setting</span></code>
-When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">CanvasSetting_Dialog</span></code> and pop up a dialog window.</p>
+<dd><p>This function connect with QPushButton component <code class="docutils literal notranslate"><span class="pre">btn_axis_setting</span></code>.</p>
+<p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">CanvasSetting_Dialog</span></code> and pop up a dialog window.</p>
 <p>It is used for customizing which curve types <code class="docutils literal notranslate"><span class="pre">CurveType</span></code> would be drawn on a canvas.
-Each canvas has main axis and sub axis.
-After dialog window closed, update related component with new setting.</p>
+Each canvas has main axis and sub axis.</p>
+<p>After dialog window closed, update related component with new setting.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -252,10 +248,10 @@ After dialog window closed, update related component with new setting.</p>
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.append_file">
 <span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.append_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a new imported file to attributes <code class="docutils literal notranslate"><span class="pre">project</span></code>, 
-And also append to the treelist in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
+and also to the list in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<em>FileData</em>) – A FileData object generated from the imported file.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -264,10 +260,10 @@ And also append to the treelist in DockWidget component <code class="docutils li
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.delete_files">
 <span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames_to_del</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.delete_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete files from attributes <code class="docutils literal notranslate"><span class="pre">project</span></code>, 
-And also delete curves data on the treelist in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
+and also the data on the list in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<em>FileData</em>) – A FileData object user intends to delete.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object user intends to delete.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,16 +272,17 @@ And also delete curves data on the treelist in DockWidget component <code class=
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.clear_files">
 <span class="sig-name descname"><span class="pre">clear_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.clear_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.clear_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all the files in attributes <code class="docutils literal notranslate"><span class="pre">project</span></code>, 
-And also clear curves data on the treelist in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
+and also clear curves data on the treelist in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.save_file">
 <span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.save_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save project to file.
-If this project is “Untitled”, which is the default name for a new project, 
-it would execute <code class="docutils literal notranslate"><span class="pre">QFileDialog</span></code> and pop up a dialog window letting user to determain a new name and where to save. 
-Otherwise, it would be updated to the origin project file.</p>
+<dd><p>Save project to file.</p>
+<p>If this project is “Untitled”, which is the default name for a new project, 
+it would execute <code class="docutils literal notranslate"><span class="pre">QFileDialog</span></code> with a dialog window popping up. 
+User can determain a new name and where to save.</p>
+<p>Otherwise, it would be updated to the origin project file.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -293,11 +290,135 @@ Otherwise, it would be updated to the origin project file.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.save_file_as">
 <span class="sig-name descname"><span class="pre">save_file_as</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.save_file_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.save_file_as" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save project to file.
-If this project is “Untitled”, which is the default name for a new project, 
-it would execute <code class="docutils literal notranslate"><span class="pre">QFileDialog</span></code> and pop up a dialog window letting user to determain a new name and where to save. 
-Otherwise, it would be updated to the origin project file.</p>
+<dd><p>Execute <code class="docutils literal notranslate"><span class="pre">QFileDialog</span></code> and pop up a dialog window letting user to determain a new name and where to save.</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dockwg_data">
+<span id="dockwg-data-py"></span><h2>dockwg_data.py<a class="headerlink" href="#module-lib.dockwg_data" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_data.</span></span><span class="sig-name descname"><span class="pre">DockWidget_Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDockWidget</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The MainWindow object that this DockWidget_Data object belongs.</p></li>
+<li><p><strong>filePool</strong> (<em>FilePool</em>) – A QWidget component contains a list of imported file components.
+It contains functions of interaction between file components.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.append_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a new imported file to component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileData</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removing files from component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of filenames user intends to delete.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.load_project">
+<span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.load_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.load_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve files from a specific project and append them to component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>project</strong> (<a class="reference internal" href="data.html#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – A Project object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">
+<span class="sig-name descname"><span class="pre">btn_importDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.btn_importDlg_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function connect with <strong>Import</strong> button.</p>
+<p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">ImportDialog</span></code> and pop up a dialog window.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dockwg_canvas_layout">
+<span id="dockwg-canvas-layout-py"></span><h2>dockwg_canvas_layout.py<a class="headerlink" href="#module-lib.dockwg_canvas_layout" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_canvas_layout.</span></span><span class="sig-name descname"><span class="pre">Draggable_Label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QLabel</span></code></p>
+<p>Self-defined Qlabel that use to represent app’s canvas components on <code class="docutils literal notranslate"><span class="pre">DockWidget_CanvasLayout</span></code>.
+User can drag this label onto the canvas component, which could change the arrangement in the layout.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent">
+<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label.set_text">
+<span class="sig-name descname"><span class="pre">set_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label.set_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label.set_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the displayed text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_canvas_layout.</span></span><span class="sig-name descname"><span class="pre">DockWidget_CanvasLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDockWidget</span></code></p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode">
+<span class="sig-name descname"><span class="pre">set_canvas_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout.set_canvas_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set canvas layout mode, Main/UpAndDown/Quater/MainwithThreeSmall.</p>
+<p>&gt;&gt; <em>Quater/MainwithThreeSmall are not availibale for ver_0.2.0</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>str</em>) – The canvas layout mode user intends to set.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -312,7 +433,7 @@ Otherwise, it would be updated to the origin project file.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="app.html" class="btn btn-neutral float-left" title="App Module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data.html" class="btn btn-neutral float-left" title="Data Object Module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -122,6 +122,11 @@ def main():
         QTabBar::scroller QToolButton  {
             background-color: white;
         }
+        QLabel#warning_massage{
+            background-color: "#e80000";
+            padding: 4px;
+            color: "white";
+        }
     """)
     if check_license():
         try:

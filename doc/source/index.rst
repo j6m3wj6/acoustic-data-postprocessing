@@ -7,11 +7,12 @@ Welcome to SAE_PlotTool's documentation!
 ========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    GUI introduction
    Data Source
    app
+   data
    library
 

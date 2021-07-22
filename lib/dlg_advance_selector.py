@@ -12,6 +12,8 @@ class AdvanceSelector_Dialog(QDialog):
         self.initUI()
 
     def initUI(self):
+        """Initial User Interface."""
+
       # Create
         gb_testnames = QGroupBox("Tests")
         gbly = QGridLayout()
@@ -65,11 +67,7 @@ class AdvanceSelector_Dialog(QDialog):
         vbly_main.addWidget(gb_selector)
         vbly_main.addWidget(gb_widgetHeight)
         self.warning_massage = QLabel("Error: ")
-        self.warning_massage.setStyleSheet("""
-            background-color: "#e80000";
-            padding: 4px;
-            color: "white";
-        """)
+        self.warning_massage.setObjectName("warning_massage")
         vbly_main.addWidget(self.warning_massage)
         self.warning_massage.setVisible(False)
         self.setLayout(vbly_main)

@@ -99,16 +99,14 @@ def load_AP_fileData(path):
                         isline = False
                         continue
 
-                    curveData = CurveData(channel_obj=measurementData.channel[_idx],
-                                          label=label, note=note, xdata=curve_x,
-                                          ydata=curve_y, _type=_type, units=units)
+                    curveData = CurveData(curve_x, curve_y, channel_obj=measurementData.channel[_idx],
+                                          label=label, note=note, _type=_type, units=units)
                     measurementData.channel[_idx].sequence[test_name] = curveData
             if (not isline and test_name in test_in_sequnce):
                 print(f"{test_name} is not float type and cannot be plot.")
                 test_in_sequnce.remove(test_name)
                 continue
-
-            filedata.measurements[str(m_idx)] = measurementData
+            filedata.append_measurement(m_idx, measurementData)
     else:
         pass
     return filedata
@@ -143,20 +141,18 @@ def load_LEAP_fileData(path):
 
             _type = determineTypeByTestName(test_name)
 
-            curveData_val = CurveData(channel_obj=measurementData.channel[0],
-                                      label=label, note=note, xdata=freq,
-                                      ydata=val, _type=_type,
-                                      units=units[0:1])
+            curveData_val = CurveData(freq, val, channel_obj=measurementData.channel[0],
+                                      label=label, note=note, _type=_type, units=units[0:1])
 
-            curveData_phase = CurveData(channel_obj=measurementData.channel[0],
-                                        label=label, note=note, xdata=freq,
-                                        ydata=phase, _type=CurveType.PHS, units=units[0::1])
+            curveData_phase = CurveData(freq, phase, channel_obj=measurementData.channel[0],
+                                        label=label, note=note, _type=CurveType.PHS, units=units[0::1])
 
             filedata.testnames = [test_name, "Phase"]
             filedata.valid_testnames = [test_name, "Phase"]
             measurementData.channel[0].sequence[test_name] = curveData_val
             measurementData.channel[0].sequence["Phase"] = curveData_phase
-            filedata.measurements['0'] = measurementData
+            filedata.append_measurement(0, measurementData)
+
             file.close()
     else:
         pass
@@ -204,13 +200,11 @@ def load_KLIPPEL_fileData(path):
                 filename = unit_arr[i*2][unit_arr[i *
                                                   2].rfind('[')+1:path.rfind(']')]
 
-                curveData_new = CurveData(channel_obj=measurementData.channel[0],
-                                          label=labels[i], note=note, xdata=freq,
-                                          ydata=val, _type=_type,
-                                          units=units)
+                curveData_new = CurveData(freq, val, channel_obj=measurementData.channel[0],
+                                          label=labels[i], note=note, _type=_type, units=units)
 
                 measurementData.channel[0].sequence[test_name] = curveData_new
-                filedata.measurements[str(i)] = measurementData
+                filedata.append_measurement(i, measurementData)
             filedata.testnames = [test_name]
             filedata.valid_testnames = [test_name]
     else:
@@ -242,13 +236,13 @@ def load_COMSOL_fileData(path):
             # print(freq, val)
 
             note = ""
-            curveData_new = CurveData(channel_obj=measurementData.channel[0],
-                                      label=test_name, note=note, xdata=freq, ydata=val, _type=CurveType.SPL)
+            curveData_new = CurveData(freq, val, channel_obj=measurementData.channel[0],
+                                      label=test_name, note=note, _type=CurveType.SPL)
 
             filedata.testnames = [test_name]
             filedata.valid_testnames = [test_name]
             measurementData.channel[0].sequence[test_name] = curveData_new
-            filedata.measurements['0'] = measurementData
+            filedata.append_measurement(0, measurementData)
             file.close()
     else:
         pass
@@ -268,15 +262,15 @@ def determineTypeByTestName(test_name):
         return CurveType.NoType
 
 
-# AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
-# AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
-# LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
-# KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
+AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
+AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
+LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
+KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
 
 
-AP_path = ""
-LEAP_path = ""
-KLIPPEL_path = ""
+# AP_path = ""
+# LEAP_path = ""
+# KLIPPEL_path = ""
 
 AP_DATA = load_AP_fileData(AP_path)
 # AP_DATA2 = load_AP_fileData(AP_path)

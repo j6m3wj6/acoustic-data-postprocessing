@@ -23,6 +23,7 @@ class Wg_File(QWidget):
         self.reload_checkstate()
 
     def initUI(self):
+        """Initial User Interface."""
       # Create Components
         self.lb_filename = QLabel(self.fileData.info["Name"])
         self.lb_filename.setObjectName("lb_filename")
@@ -258,7 +259,7 @@ class Wg_File(QWidget):
                 curveData, checkState, (idx+1)*curveOrder)
 
     def update_canvas(self, curveData, checkState, curveOrder):
-        canvas, _, ax = self.wg_canvas.get_canvas(curveData.type)
+        canvas, ax_id, ax = self.wg_canvas.get_canvas(curveData.type)
         if curveData.line and checkState == Qt.Unchecked:
             curveData.line.set_label('_nolegend_')
             curveData.line_props["visible"] = False
@@ -266,8 +267,10 @@ class Wg_File(QWidget):
                 ax.lines.remove(curveData.line)
         elif checkState == Qt.Checked:
             if curveData.line not in ax.lines:
+                legend_wrap = int(
+                    canvas.parameter["General"]['Legend']['text-wrap'])
                 line = curveData.create_line2D(
-                    ax, int(canvas.parameter["General"]['Legend']['text-wrap']), curveOrder)
+                    canvas, ax_id, curveOrder, legend_wrap)
                 curveData.line_props["visible"] = True
         canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
         canvas.replot()

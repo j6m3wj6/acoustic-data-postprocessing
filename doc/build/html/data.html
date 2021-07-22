@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Data Object Module API &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Library Module API" href="library.html" />
+    <link rel="prev" title="App Module API" href="app.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data%20Source.html">SAE聲學測試軟體</a></li>
+<li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Object Module API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-lib.obj_data">obj_data.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="library.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Data Object Module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="data-object-module-api">
+<h1>Data Object Module API<a class="headerlink" href="#data-object-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lib.obj_data">
+<span id="obj-data-py"></span><h2>obj_data.py<a class="headerlink" href="#module-lib.obj_data" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Extended_Enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum.list">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum.list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum.index">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lib.obj_data.Extended_Enum" title="lib.obj_data.Extended_Enum"><code class="xref py py-class docutils literal notranslate"><span class="pre">lib.obj_data.Extended_Enum</span></code></a></p>
+<p>Common acoustic test data types.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.NoType">
+<span class="sig-name descname"><span class="pre">NoType</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'None'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.NoType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.SPL">
+<span class="sig-name descname"><span class="pre">SPL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'SPL'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.SPL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.IMP">
+<span class="sig-name descname"><span class="pre">IMP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Impedance'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.IMP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.PHS">
+<span class="sig-name descname"><span class="pre">PHS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Phase'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.PHS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.THD">
+<span class="sig-name descname"><span class="pre">THD</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'THD'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.THD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.EXC">
+<span class="sig-name descname"><span class="pre">EXC</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Excursion'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.EXC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.ALL">
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'All'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.ALL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Project">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Untitled'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The top level of data structure.
+It contains general infomation and configuration of the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>info</strong> (<em>dict</em>) – general infomation including name, file location, create time, last saved time.</p></li>
+<li><p><strong>files</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a><em>)</em>) – files imported in this project.</p></li>
+<li><p><strong>ui_cong</strong> (<em>dict</em>) – user interface configuration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.get_path">
+<span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.get_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.get_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return absolute path of this project file location in user’s computer.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.append_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a file to this Project instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – Given FileData instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete specific files from this Project instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>files</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a><em>)</em>) – A list of FileData instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.clear_files">
+<span class="sig-name descname"><span class="pre">clear_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.clear_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.clear_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all the files in this Project instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.load_project">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.load_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.load_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve project’s data from a computer file on specific location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The absolute path of a computer file(/.pkl).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.dump">
+<span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save project’s data to computer file on specific location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The absolute path of a folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation of this Project instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.update_ui_conf">
+<span class="sig-name descname"><span class="pre">update_ui_conf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.update_ui_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.update_ui_conf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.FileData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">FileData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">import_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 2nd level of data structure.
+It contains general infomation of an imported files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>info</strong> (<em>Dict</em>) – general infomation including name, source, file path, create time, last modified time.</p></li>
+<li><p><strong>testnames</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – a list of all testnames.</p></li>
+<li><p><strong>valid_testnames</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – a list of testnames that is visible and operatable in app, which is customized by user.</p></li>
+<li><p><strong>measurements</strong> (<em>Dict</em>) – user interface configuration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.get_import_time">
+<span class="sig-name descname"><span class="pre">get_import_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.get_import_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.get_import_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return imported time of this FileData instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.append_measurement">
+<span class="sig-name descname"><span class="pre">append_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.append_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.append_measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a measurement to this FileData instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_idx</strong> (<em>int</em>) – Index of the measurement.</p></li>
+<li><p><strong>measurement</strong> (<a class="reference internal" href="#lib.obj_data.Measurement" title="lib.obj_data.Measurement"><em>Measurement</em></a>) – Given Measurement instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation of this FileData instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 3rd level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – index of this measurement.</p></li>
+<li><p><strong>channel</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.Channel" title="lib.obj_data.Channel"><em>Channel</em></a><em>)</em>) – a list of Channel instances in this Measurement instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement.init_channels">
+<span class="sig-name descname"><span class="pre">init_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement.init_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement.init_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create given numbers of Channel instances for this Measurement instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>int</em>) – Total numbers of channels.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Channel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 4th level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>measurement_obj</strong> (<a class="reference internal" href="#lib.obj_data.Measurement" title="lib.obj_data.Measurement"><em>Measurement</em></a>) – The Measurement instance this Channel instance belongs to.</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – Channel’s id.</p></li>
+<li><p><strong>sequence</strong> (<em>Dict</em>) – A dictionary of testname and its corresponding CurveData instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Channel.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xdata</span></em>, <em class="sig-param"><span class="pre">ydata</span></em>, <em class="sig-param"><span class="pre">channel_obj</span></em>, <em class="sig-param"><span class="pre">label='Curve'</span></em>, <em class="sig-param"><span class="pre">note=''</span></em>, <em class="sig-param"><span class="pre">_type=&lt;CurveType.NoType:</span> <span class="pre">'None'&gt;</span></em>, <em class="sig-param"><span class="pre">units=[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The bottom (5th) level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel_obj</strong> (<a class="reference internal" href="#lib.obj_data.Channel" title="lib.obj_data.Channel"><em>Channel</em></a>) – The Channel instance this CurveData instance belongs to.</p></li>
+<li><p><strong>xdata</strong> (<em>List</em><em>(</em><em>float</em><em>)</em>) – Curve’s data of x-axis.</p></li>
+<li><p><strong>ydata</strong> (<em>List</em><em>(</em><em>float</em><em>)</em>) – Curve’s data of y-axis.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Curve’s label.</p></li>
+<li><p><strong>note</strong> (<em>str</em>) – Curve’s note.</p></li>
+<li><p><strong>_type</strong> (<a class="reference internal" href="#lib.obj_data.CurveType" title="lib.obj_data.CurveType"><em>CurveType</em></a>) – Curve’s data category.</p></li>
+<li><p><strong>units</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – Units of xdata and ydata.</p></li>
+<li><p><strong>shifted</strong> (<em>float</em>) – Recorded offset value.</p></li>
+<li><p><strong>line</strong> (<em>matplotlib.lines.Line2D</em>) – Matplolib Line2D object created by this CurveData instance.</p></li>
+<li><p><strong>line_props</strong> (<em>Dict</em>) – style properties of <code class="docutils literal notranslate"><span class="pre">line</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.get_legend">
+<span class="sig-name descname"><span class="pre">get_legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legend_wrap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.get_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.get_legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the legend wrapped with a given characters long.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>legend_wrap</strong> (<em>int</em>) – A given number .</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.create_line2D">
+<span class="sig-name descname"><span class="pre">create_line2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_wrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.create_line2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.create_line2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a curve on given canvas’s axis with specific order, text-wrap and color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>canvas</strong> (<em>matplotlib.figure</em>) – Given matplot figure.</p></li>
+<li><p><strong>ax_id</strong> (<em>int</em>) – Id of axis.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Figure would plot each curve by this order.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Curve’s color.</p></li>
+<li><p><strong>linewidth</strong> (<em>float</em>) – Curve’s linewidth.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.shift">
+<span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift ydata with given offset, which is always compared with the original data.
+That is, if the given offset is zero, it would be the original curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>offset</strong> (<em>float</em>) – Given offset.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.align">
+<span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetDB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.align"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift the curve to align given magnitude at given frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targetDB</strong> (<em>float</em>) – The target y-magnitude to align.</p></li>
+<li><p><strong>freq</strong> (<em>float</em>) – The target x-magnitude to align.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="library.html" class="btn btn-neutral float-right" title="Library Module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="app.html" class="btn btn-neutral float-left" title="App Module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

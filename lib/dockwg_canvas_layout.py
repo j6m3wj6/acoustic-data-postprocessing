@@ -2,26 +2,30 @@ from PyQt5.QtWidgets import QWidget, QWidgetItem, QLabel, QPushButton,\
     QHBoxLayout, QVBoxLayout, QGridLayout, QScrollArea,\
     QDockWidget, QSizePolicy
 from PyQt5.QtCore import Qt, QMimeData
-from PyQt5.QtGui import QDrag
+from PyQt5.QtGui import QDrag, QMouseEvent
 
 
 class Draggable_Label(QLabel):
-    def __init__(self, text, idx, parent=None):
-        super().__init__(text, parent=None)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+    '''
+    Self-defined Qlabel that use to represent app's canvas components on ``DockWidget_CanvasLayout``.
+    User can drag this label onto the canvas component, which could change the arrangement in the layout.
+    '''
+
+    def __init__(self, text: str, idx: int) -> None:
+        super().__init__(text)
         self.setText(text)
 
         self.idx = idx
-        # self.setContentsMargins(10, 10, 15, 15)
         self.setStyleSheet("""
             border: 2px solid black;
             border-radius: 10px;
             padding: 5px;
             min-height: 50px;
         """)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.setAlignment(Qt.AlignCenter)
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:
             mimeData = QMimeData()
             mimeData.setText(str(self.idx))
@@ -29,64 +33,61 @@ class Draggable_Label(QLabel):
             drag.setMimeData(mimeData)
             drag.exec_(Qt.MoveAction)
 
-    def set_text(self, text):
-        # self.text = text
+    def set_text(self, text: str) -> None:
+        """
+        Set the displayed text.
+
+        :param str text: 
+        """
         self.setText(text)
 
 
 class DockWidget_CanvasLayout(QDockWidget):
-    def __init__(self, mainwindow, Position):
+    def __init__(self, mainwindow, Position: Qt.DockWidgetArea) -> None:
         super().__init__("Canvas Properties", mainwindow)
         self.mainwindow = mainwindow
-        self.initUI(mainwindow, Position)
-
+        self.initUI()
         mainwindow.addDockWidget(Qt.DockWidgetArea(Position), self)
-        self._set_canvas_mode(mainwindow.wg_canvas.mode)
+        self.set_canvas_mode(mainwindow.wg_canvas.mode)
 
-    def initUI(self, mainwindow, Position):
+    def initUI(self) -> None:
+        """Initial User Interface."""
       # Create Component
         btn_Main = QPushButton('Main')
         btn_UpAndDown = QPushButton('Up and Down')
-        self.lb_canvas = []
-        for c in mainwindow.wg_canvas.canvasPool[:-1]:
-            self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
-
         btn_Quater = QPushButton('Quater')
         btn_MainwithThreeSmallWindows = QPushButton('Main + 3')
-
+        # btn_MainwithScrollArea = QPushButton('Main + Scroll')
+        self.lb_canvas = []
+        for c in self.mainwindow.wg_canvas.canvasPool[:-1]:
+            self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
         btn_axis_setting = QPushButton("Axis Setting")
         btn_processing = QPushButton("Post-Processing")
 
-        # btn_MainwithScrollArea = QPushButton('Main + Scroll')
-
+      # Layout
         vbly = QVBoxLayout()
         vbly.addWidget(QLabel("Setting ————————"))
         btnGroup = [btn_Main, btn_UpAndDown]
         for btn in btnGroup:
             vbly.addWidget(btn)
         vbly.addWidget(btn_axis_setting)
-
         vbly.addWidget(QLabel("Operation ————————"))
         vbly.addWidget(btn_processing)
-
         vbly.addWidget(QLabel("Canvas ————————"))
         for lb in self.lb_canvas:
             vbly.addWidget(lb)
-
-        wg = QWidget()
-        wg.setLayout(vbly)
-        wg.setObjectName("wg_main")
-        self.setWidget(wg)
-
+        wg_main = QWidget()
+        wg_main.setLayout(vbly)
+        self.setWidget(wg_main)
       # Connect Functions
         btn_Main.clicked.connect(
-            lambda: self._set_canvas_mode("Main"))
+            lambda: self.set_canvas_mode("Main"))
         btn_UpAndDown.clicked.connect(
-            lambda: self._set_canvas_mode("UpAndDown"))
+            lambda: self.set_canvas_mode("UpAndDown"))
         btn_Quater.clicked.connect(
-            lambda: self._set_canvas_mode("Quater"))
+            lambda: self.set_canvas_mode("Quater"))
         btn_MainwithThreeSmallWindows.clicked.connect(
-            lambda: self._set_canvas_mode("MainwithThreeSmallWindows"))
+            lambda: self.set_canvas_mode("MainwithThreeSmallWindows"))
         # btn_MainwithScrollArea.clicked.connect(
         #     lambda: self._setCanvasLayout_MainwithScrollArea(mainwindow.wg_canvas))
         btn_axis_setting.clicked.connect(
@@ -97,7 +98,29 @@ class DockWidget_CanvasLayout(QDockWidget):
         vbly.setAlignment(Qt.AlignTop)
         self.setMinimumWidth(120)
 
-    def clearLayout(self, layout):
+    def set_canvas_mode(self, mode: str) -> None:
+        """
+        Set canvas layout mode, Main/UpAndDown/Quater/MainwithThreeSmall.\n
+        >> *Quater/MainwithThreeSmall are not availibale for ver_0.2.0*
+
+        :param str mode: The canvas layout mode user intends to set.
+        """
+
+        func = {
+            "Main": self._setCanvasLayout_Main,
+            "UpAndDown": self._setCanvasLayout_UpAndDown,
+            "Quater": self._setCanvasLayout_Quater,
+            "MainwithThreeSmall": self._setCanvasLayout_MainwithThreeSmall
+        }
+        func[mode]()
+
+    def _clear_layout(self, layout: QGridLayout) -> None:
+        """
+        Clear all the widgets in layout. \n
+        If there is another layout inside, recursively clear it.
+
+        :param QGridLayout layout: 
+        """
         for i in reversed(range(layout.count())):
             # print(i, layout.itemAt(i))
             if (type(layout.itemAt(i)) == QWidgetItem):
@@ -105,19 +128,15 @@ class DockWidget_CanvasLayout(QDockWidget):
                 layout.removeWidget(widget)
                 widget.setParent(None)
             elif (type(layout.itemAt(i)) == QGridLayout):
-                self.clearLayout(layout.itemAt(i))
+                self._clear_layout(layout.itemAt(i))
 
-    def _set_canvas_mode(self, mode):
-        func = {
-            "Main": self._setCanvasLayout_Main,
-            "UpAndDown": self._setCanvasLayout_UpAndDown,
-            "Quater": self._setCanvasLayout_Quater,
-            "MainwithThreeSmall": self._setCanvasLayout_MainwithThreeSmall
-        }
-        func[mode](self.mainwindow.wg_canvas)
-
-    def _setCanvasLayout_Main(self, wg_canvas):
-        self.clearLayout(wg_canvas.gdly_canvasPool)
+    def _setCanvasLayout_Main(self) -> None:
+        """
+        Move all the widgets out of the layout of mainwindow's wg_canvas. \n
+        And then start-over putting canvas into it base on canvas layout mode Main.
+        """
+        wg_canvas = self.mainwindow.wg_canvas
+        self._clear_layout(wg_canvas.gdly_canvasPool)
         active_canvas = wg_canvas.status["Main"][0]
         layout = wg_canvas.gdly_canvasPool
         layout.addWidget(active_canvas, 0, 0, -1, 1)
@@ -129,8 +148,13 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         wg_canvas.set_mode("Main")
 
-    def _setCanvasLayout_UpAndDown(self, wg_canvas):
-        self.clearLayout(wg_canvas.gdly_canvasPool)
+    def _setCanvasLayout_UpAndDown(self) -> None:
+        """
+        Move all the widgets out of the layout of mainwindow's wg_canvas. \n
+        And then start-over putting canvas into it base on canvas layout mode UpAndDown.
+        """
+        wg_canvas = self.mainwindow.wg_canvas
+        self._clear_layout(wg_canvas.gdly_canvasPool)
         active_canvas1 = wg_canvas.status["UpAndDown"][0]
         active_canvas2 = wg_canvas.status["UpAndDown"][1]
 
@@ -146,8 +170,15 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         wg_canvas.set_mode("UpAndDown")
 
-    def _setCanvasLayout_Quater(self, wg_canvas):
-        self.clearLayout(wg_canvas.gdly_canvasPool)
+    def _setCanvasLayout_Quater(self) -> None:
+        """
+        Move all the widgets out of the layout of mainwindow's wg_canvas. \n
+        And then start-over putting canvas into it base on canvas layout mode Quater.
+
+        >> Not support in ver_0.2.0
+        """
+        wg_canvas = self.mainwindow.wg_canvas
+        self._clear_layout(wg_canvas.gdly_canvasPool)
 
         active_canvas0 = wg_canvas.status["Quater"][0]
         active_canvas1 = wg_canvas.status["Quater"][1]
@@ -168,8 +199,15 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         wg_canvas.set_mode("Quater")
 
-    def _setCanvasLayout_MainwithScrollArea(self, wg_canvas):
-        self.clearLayout(wg_canvas.gdly_canvasPool)
+    def _setCanvasLayout_MainwithScrollArea(self) -> None:
+        """
+        Move all the widgets out of the layout of mainwindow's wg_canvas. \n
+        And then start-over putting canvas into it base on canvas layout mode MainwithScrollArea.
+
+        >> Not support in ver_0.2.0
+        """
+        wg_canvas = self.mainwindow.wg_canvas
+        self._clear_layout(wg_canvas.gdly_canvasPool)
         scroll = QScrollArea()
         widget = QWidget()
         hboxLayout = QHBoxLayout()
@@ -196,8 +234,15 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         wg_canvas.set_mode("MainwithScrollArea")
 
-    def _setCanvasLayout_MainwithThreeSmall(self, wg_canvas):
-        self.clearLayout(wg_canvas.gdly_canvasPool)
+    def _setCanvasLayout_MainwithThreeSmall(self) -> None:
+        """
+        Move all the widgets out of the layout of mainwindow's wg_canvas. \n
+        And then start-over putting canvas into it base on canvas layout mode MainwithThreeSmall.
+
+        >> Not support in ver_0.2.0
+        """
+        wg_canvas = self.mainwindow.wg_canvas
+        self._clear_layout(wg_canvas.gdly_canvasPool)
 
         active_canvas0 = wg_canvas.status["MainwithThreeSmall"][0]
         active_canvas1 = wg_canvas.status["MainwithThreeSmall"][1]
