@@ -161,7 +161,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QScrollArea</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">,</span> <span class="n">QVBoxLayout</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">.dlg_import_files</span> <span class="kn">import</span> <span class="n">ImportDialog</span>
+<span class="kn">from</span> <span class="nn">.dlg_import_files</span> <span class="kn">import</span> <span class="n">Dlg_ImportFiles</span>
 <span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="n">FileData</span><span class="p">,</span> <span class="n">Project</span>
 <span class="kn">from</span> <span class="nn">.wg_filepool</span> <span class="kn">import</span> <span class="n">FilePool</span>
 
@@ -235,9 +235,9 @@
 <div class="viewcode-block" id="DockWidget_Data.btn_importDlg_handleClicked"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_importDlg_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function connect with **Import** button.\n </span>
-<span class="sd">        When the button is clicked, execute ``ImportDialog`` and pop up a dialog window.</span>
+<span class="sd">        When the button is clicked, execute ``Dlg_ImportFiles`` and pop up a dialog window.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dlg</span> <span class="o">=</span> <span class="n">ImportDialog</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">())</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">Dlg_ImportFiles</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">())</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div></div>
 </pre></div>
 

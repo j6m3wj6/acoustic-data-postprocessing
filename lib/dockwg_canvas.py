@@ -1,54 +1,15 @@
 from PyQt5.QtWidgets import QWidget, QWidgetItem, QLabel, QPushButton,\
-    QHBoxLayout, QVBoxLayout, QGridLayout, QScrollArea,\
-    QDockWidget, QSizePolicy
-from PyQt5.QtCore import Qt, QMimeData
-from PyQt5.QtGui import QDrag, QMouseEvent
+    QHBoxLayout, QVBoxLayout, QGridLayout, QScrollArea, QDockWidget
+from PyQt5.QtCore import Qt
+from .wg_selfdefined import Lb_Draggable
 
 
-class Draggable_Label(QLabel):
-    '''
-    Self-defined Qlabel that use to represent app's canvas components on ``DockWidget_CanvasLayout``.
-    User can drag this label onto the canvas component, which could change the arrangement in the layout.
-    '''
-
-    def __init__(self, text: str, idx: int) -> None:
-        super().__init__(text)
-        self.setText(text)
-
-        self.idx = idx
-        self.setStyleSheet("""
-            border: 2px solid black;
-            border-radius: 10px;
-            padding: 5px;
-            min-height: 50px;
-        """)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.setAlignment(Qt.AlignCenter)
-
-    def mouseMoveEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton:
-            mimeData = QMimeData()
-            mimeData.setText(str(self.idx))
-            drag = QDrag(self)
-            drag.setMimeData(mimeData)
-            drag.exec_(Qt.MoveAction)
-
-    def set_text(self, text: str) -> None:
-        """
-        Set the displayed text.
-
-        :param str text: 
-        """
-        self.setText(text)
-
-
-class DockWidget_CanvasLayout(QDockWidget):
+class DockWg_Canvas(QDockWidget):
     def __init__(self, mainwindow, Position: Qt.DockWidgetArea) -> None:
         super().__init__("Canvas Properties", mainwindow)
         self.mainwindow = mainwindow
         self.initUI()
         mainwindow.addDockWidget(Qt.DockWidgetArea(Position), self)
-        self.set_canvas_mode(mainwindow.wg_canvas.mode)
 
     def initUI(self) -> None:
         """Initial User Interface."""
@@ -60,7 +21,7 @@ class DockWidget_CanvasLayout(QDockWidget):
         # btn_MainwithScrollArea = QPushButton('Main + Scroll')
         self.lb_canvas = []
         for c in self.mainwindow.wg_canvas.canvasPool[:-1]:
-            self.lb_canvas.append(Draggable_Label(c.get_name(), c.id))
+            self.lb_canvas.append(Lb_Draggable(c.get_name(), c.id))
         btn_axis_setting = QPushButton("Axis Setting")
         btn_processing = QPushButton("Post-Processing")
 
@@ -105,7 +66,6 @@ class DockWidget_CanvasLayout(QDockWidget):
 
         :param str mode: The canvas layout mode user intends to set.
         """
-
         func = {
             "Main": self._setCanvasLayout_Main,
             "UpAndDown": self._setCanvasLayout_UpAndDown,
@@ -113,6 +73,8 @@ class DockWidget_CanvasLayout(QDockWidget):
             "MainwithThreeSmall": self._setCanvasLayout_MainwithThreeSmall
         }
         func[mode]()
+        self.mainwindow.wg_canvas.set_mode(mode)
+        self.mainwindow.project.ui_conf["MyCanvas"]["mode"] = mode
 
     def _clear_layout(self, layout: QGridLayout) -> None:
         """
@@ -146,8 +108,6 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(0, 4)
         layout.setContentsMargins(10, 10, 10, 10)
 
-        wg_canvas.set_mode("Main")
-
     def _setCanvasLayout_UpAndDown(self) -> None:
         """
         Move all the widgets out of the layout of mainwindow's wg_canvas. \n
@@ -167,8 +127,6 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(0, 2)
         layout.setRowStretch(1, 2)
         layout.setContentsMargins(10, 10, 10, 10)
-
-        wg_canvas.set_mode("UpAndDown")
 
     def _setCanvasLayout_Quater(self) -> None:
         """
@@ -196,8 +154,6 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(0, 2)
         layout.setRowStretch(1, 2)
         layout.setContentsMargins(10, 10, 10, 10)
-
-        wg_canvas.set_mode("Quater")
 
     def _setCanvasLayout_MainwithScrollArea(self) -> None:
         """
@@ -232,8 +188,6 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(1, 1)
         layout.setContentsMargins(10, 10, 10, 10)
 
-        wg_canvas.set_mode("MainwithScrollArea")
-
     def _setCanvasLayout_MainwithThreeSmall(self) -> None:
         """
         Move all the widgets out of the layout of mainwindow's wg_canvas. \n
@@ -259,5 +213,3 @@ class DockWidget_CanvasLayout(QDockWidget):
         layout.setRowStretch(0, 5)
         layout.setRowStretch(1, 1)
         layout.setContentsMargins(10, 10, 10, 10)
-
-        wg_canvas.set_mode("MainwithThreeSmall")

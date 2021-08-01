@@ -7,10 +7,61 @@ from .ui_conf import COLORS
 import sys
 import traceback
 import os
+import calendar
+
+
+def swapPositions(list, pos1, pos2):
+    list[pos1], list[pos2] = list[pos2], list[pos1]
+    return list
+
+
+def add_months(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return dt.date(year, month, day)
+
+
+def verify_due_day(due_day_str):
+    print("verify_due_day: ", due_day_str)
+    try:
+        due_day = dt.datetime.strptime(due_day_str, "%Y/%m/%d %H:%M:%S")
+        if due_day < dt.datetime.now():
+            print("::: license is due at %s" % due_day)
+            return False
+        else:
+            print("::: license is not dued until ", due_day)
+            return True
+    except:
+        return False
+
+
+def verify_license(license):
+    print("verify_license: ", license)
+    try:
+        license = license.lower()
+        score = 0
+        check_digit = license[0]
+        check_digit_count = 0
+        chunks = license.split('-')
+        for chunk in chunks:
+            if len(chunk) != 4:
+                return False
+            for char in chunk:
+                if char == check_digit:
+                    check_digit_count += 1
+                score += ord(char)
+        if score == 1772 and check_digit_count == 5:
+            print("::: license (%s) is Valid" % license)
+            return True
+        return False
+    except:
+        return False
 
 
 def load_file(source):
-    print("load_file")
+    print("load_file___")
     dialog = QFileDialog()
     dialog.setFileMode(QFileDialog.AnyFile)
     dialog.setFilter(QDir.Files)
@@ -28,7 +79,7 @@ def load_file(source):
                 filedata = load_KLIPPEL_fileData(path)
             elif (source == 'COMSOL'):
                 filedata = load_COMSOL_fileData(path)
-            # filedata.print()
+            filedata.print()
 
         except Exception as e:
             error_class = e.__class__.__name__
@@ -49,6 +100,9 @@ def load_file(source):
     return filedata
 
 
+AP_TEST_FILTERS = ["Impulse Response", "Window", "Thiele-Small", "Summary"]
+
+
 def load_AP_fileData(path):
     filename = path[path.rfind('/')+1:path.rfind('.')]
     filedata = None
@@ -56,33 +110,30 @@ def load_AP_fileData(path):
         excel_data = pd.read_excel(path, engine="openpyxl", sheet_name=None)
         filedata = FileData(filename, source="AP", file_path=path,
                             import_time=dt.datetime.today())
-        test_in_sequnce = []
-
-        curve_idx = 0
-
-        pages_in_excel = len(excel_data.keys())
-        measurements_count = pages_in_excel-1
-
         first_page = list(excel_data.keys())[0]
-        test_in_sequnce.append(list(excel_data.keys())[0])
         channel_count = int(len(excel_data[first_page].columns)/2)
 
+        test_in_sequence = list(excel_data.keys())[0]
+        measurements_count = 1
         for count, page in enumerate(excel_data.keys()):
             test_name = excel_data[page].columns[0].strip()
-            if test_name not in test_in_sequnce:
-                measurements_count = count-1
-                test_in_sequnce = []
+            if test_name not in test_in_sequence:
+                measurements_count = count
+                test_in_sequence = []
                 break
 
-        test_in_sequnce = list(excel_data.keys())[0:-1:measurements_count+1]
-        filedata.testnames = test_in_sequnce
-        filedata.valid_testnames = test_in_sequnce
-        # print(test_in_sequnce, measurements_count, channel_count)
+        test_in_sequence = list(excel_data.keys())[::measurements_count]
+        test_in_sequence = [
+            t for t in test_in_sequence if t not in AP_TEST_FILTERS]
+        filedata.testnames = test_in_sequence
+        filedata.valid_testnames = test_in_sequence
         for m_idx in range(measurements_count):
             measurementData = Measurement(
                 channel_count=channel_count, id=m_idx+1)
-            for page in list(excel_data.keys())[m_idx:-1:measurements_count+1]:
+            for page in list(excel_data.keys())[m_idx::measurements_count]:
                 test_name = excel_data[page].columns[0].strip()
+                if test_name not in test_in_sequence:
+                    continue
                 _type = determineTypeByTestName(test_name)
                 note = excel_data[page].columns[1].strip()
                 isline = True
@@ -102,9 +153,9 @@ def load_AP_fileData(path):
                     curveData = CurveData(curve_x, curve_y, channel_obj=measurementData.channel[_idx],
                                           label=label, note=note, _type=_type, units=units)
                     measurementData.channel[_idx].sequence[test_name] = curveData
-            if (not isline and test_name in test_in_sequnce):
+            if (not isline and test_name in test_in_sequence):
                 print(f"{test_name} is not float type and cannot be plot.")
-                test_in_sequnce.remove(test_name)
+                test_in_sequence.remove(test_name)
                 continue
             filedata.append_measurement(m_idx, measurementData)
     else:
@@ -262,15 +313,16 @@ def determineTypeByTestName(test_name):
         return CurveType.NoType
 
 
-AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
-AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
-LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
-KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
+# AP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_yeti.xlsx"
+# AP_path2 = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/AP_Acoustic Response_all_xlsx.xlsx"
+# LEAP_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/LEAP_Impedance.txt"
+# KLIPPEL_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/data/NFS_CEA2034.txt"
+# Project_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl"
 
 
-# AP_path = ""
-# LEAP_path = ""
-# KLIPPEL_path = ""
+AP_path = ""
+LEAP_path = ""
+KLIPPEL_path = ""
 
 AP_DATA = load_AP_fileData(AP_path)
 # AP_DATA2 = load_AP_fileData(AP_path)

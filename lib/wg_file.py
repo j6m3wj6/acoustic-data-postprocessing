@@ -1,4 +1,4 @@
-from lib.dlg_advance_selector import AdvanceSelector_Dialog
+from lib.dlg_advance_selector import Dlg_AdvancedSelector
 from operator import indexOf
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton,\
     QGroupBox, QScrollArea, QButtonGroup, QHBoxLayout, \
@@ -7,7 +7,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QIcon
 from .ui_conf import ICON_DIR
 from .wg_curve import Wg_Curve
-from .toolbtn_link import Toolbtn_Link
+from .wg_selfdefined import Toolbtn_Link
+import textwrap
 
 
 class Wg_File(QWidget):
@@ -33,7 +34,9 @@ class Wg_File(QWidget):
         wg_btns.setObjectName("wg_btns")
         self.vbly_tests = QVBoxLayout(wg_btns)
         for idx, testname in enumerate(self.fileData.valid_testnames):
-            btn_test = QPushButton(testname)
+            display_test = "\n".join(textwrap.wrap(
+                testname, 10, drop_whitespace=False))
+            btn_test = QPushButton(display_test)
             btn_test.setObjectName("btn_test")
             btn_test.setToolTip(testname)
             btn_test.clicked.connect(self.changetab_test)
@@ -224,7 +227,7 @@ class Wg_File(QWidget):
         return checked_items
 
     def get_testname(self):
-        return self.btngp_tests.checkedButton().text()
+        return self.btngp_tests.checkedButton().text().replace('\n', '')
 
     def toggle_all(self, event=None, checkState=None, link=None, testname=None, set_and_handle=True):
         print("\n\nwg_file.toggle_all", checkState, testname)
@@ -241,7 +244,7 @@ class Wg_File(QWidget):
         if link == None:
             link = self.link
         if not testname:
-            testname = self.btngp_tests.checkedButton().text()
+            testname = self.get_testname()
         # print("wg_file.handle_checked, checkState %s, self.link %s, link %s, current tab %s, testname %s"
         #       % (checkState, self.link, link, self.btngp_tests.checkedButton().text(), testname))
         # measurement.print()
@@ -279,7 +282,7 @@ class Wg_File(QWidget):
         return curveData
 
     def advance_selector(self):
-        dlg = AdvanceSelector_Dialog(wg_file=self)
+        dlg = Dlg_AdvancedSelector(wg_file=self)
         if dlg.exec():
             print("advance_selector")
         else:

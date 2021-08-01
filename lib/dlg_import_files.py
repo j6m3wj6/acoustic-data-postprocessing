@@ -1,14 +1,21 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QPushButton,\
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QPushButton, QLabel,\
     QHBoxLayout, QVBoxLayout, \
     QDialog, QDialogButtonBox,\
     QAbstractItemView, QHeaderView
 from PyQt5.QtCore import Qt
-from .dlg_load_files import load_file
+from .functions import load_file
 
 
-class ImportDialog(QDialog):
-    def __init__(self, parent=None, mainwindow=None):
-        super().__init__(parent)
+class Dlg_ImportFiles(QDialog):
+    """
+    A dialog for user to import or delete files.
+    There are four file sources
+
+    :ivar MainWindow mainwindow: The MainWindow instance this dialog belongs to.
+    """
+
+    def __init__(self, mainwindow):
+        super().__init__()
         self.mainwindow = mainwindow
         self.initUI()
         self._tb_files_reload_status(mainwindow.project.files)
@@ -32,6 +39,9 @@ class ImportDialog(QDialog):
         self.tb_files.setHorizontalHeaderLabels(
             ['    Source    ', '    FileName    ', '    DateTime    '])
 
+        self.warning_massage = QLabel("")
+        self.warning_massage.setObjectName("warning_massage")
+
         dlg_btnBox = QDialogButtonBox()
         dlg_btnBox.setOrientation(Qt.Horizontal)
         dlg_btnBox.setStandardButtons(QDialogButtonBox.Ok)
@@ -51,6 +61,7 @@ class ImportDialog(QDialog):
 
         vbly_main = QVBoxLayout()
         vbly_main.addLayout(hbly_main)
+        vbly_main.addWidget(self.warning_massage)
         vbly_main.addWidget(dlg_btnBox)
         self.setLayout(vbly_main)
       # Connect Functions
@@ -69,30 +80,42 @@ class ImportDialog(QDialog):
         """)
         self.setWindowTitle("Import Files")
         self.setFixedSize(800, 400)
+        self.warning_massage.setVisible(False)
 
     def delete_files(self):
+        """
+        Delete files that user select from the table.
+        """
         filenames_to_del = [
-            _f.text() for _f in self.tb_files.selectedItems()[0::3]]
+            _f.text() for _f in self.tb_files.selectedItems()[1::3]]
 
-        for _f in self.tb_files.selectedItems()[0::3]:
+        for _f in self.tb_files.selectedItems()[1::3]:
             row = _f.row()
             self.tb_files.removeRow(row)
         self.mainwindow.delete_files(filenames_to_del)
 
     def clear_files(self):
+        """
+        Delete all files of the project and clear the table simultanenously.
+        """
         self.mainwindow.clear_files()
-        for row in range(self.tb_files.rowCount()):
+        for i in range(self.tb_files.rowCount()):
             self.tb_files.removeRow(0)
 
     def _btn_import_handleClicked(self):
         self.import_file(self.sender().text())
 
     def import_file(self, source):
+        """
+        Import file from given source.
+
+        :param str source: Indicate what application is the file exported from.
+        """
         file = load_file(source)
         if file:
             file_existed = False
-            for _f in self.mainwindow.project.files:
-                if (_f.info["Name"] == file.info["Name"]):
+            for _file_ in self.mainwindow.project.files:
+                if (_file_.info["Name"] == file.info["Name"]):
                     print("File already exists")
                     file_existed = True
                     break
@@ -106,16 +129,21 @@ class ImportDialog(QDialog):
                 self.tb_files.setItem(
                     row, 2, QTableWidgetItem(file.get_import_time()))
                 self.mainwindow.append_file(file)
+            self.warning_massage.setVisible(False)
+
         else:
             print("Not support this file!")
+            self.warning_massage.setText(
+                f"ERROR: Not support this file! \n Only accept files from AP, KLIPPEL, LEAP and COMSOL. \n And Please use the import button respectively. ")
+            self.warning_massage.setVisible(True)
 
     def _tb_files_reload_status(self, files):
-        for _f in files:
+        for _file_ in files:
             row = self.tb_files.rowCount()
             self.tb_files.setRowCount(row + 1)
             self.tb_files.setItem(
-                row, 0, QTableWidgetItem(_f.info["Source"]))
+                row, 0, QTableWidgetItem(_file_.info["Source"]))
             self.tb_files.setItem(
-                row, 1, QTableWidgetItem(_f.info["Name"]))
+                row, 1, QTableWidgetItem(_file_.info["Name"]))
             self.tb_files.setItem(
-                row, 2, QTableWidgetItem(_f.get_import_time()))
+                row, 2, QTableWidgetItem(_file_.get_import_time()))

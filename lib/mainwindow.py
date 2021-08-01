@@ -1,17 +1,16 @@
 # -*- coding:utf-8 -*-
-from typing import List
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QPushButton, QWidget,\
-    QFileDialog, QVBoxLayout, QMainWindow
+from PyQt5.QtWidgets import QWidget, QFileDialog, QMainWindow, QVBoxLayout
 from PyQt5.QtCore import Qt
+from typing import List
 from .wg_menubar import MyMenuBar
-from .dockwg_data import DockWidget_Data
-from .dlg_operation import OperationDialog
-from .dlg_canvas_setting import CanvasSetting_Dialog
+from .dockwg_data import DockWg_Data
+from .dlg_operation import Dlg_Operation
+from .dlg_axis_setting import Dlg_AxisSetting
 from .wg_canvas import MyCanvas
-from .dockwg_canvas_layout import DockWidget_CanvasLayout
+from .dockwg_canvas import DockWg_Canvas
 from .obj_data import Project, FileData
-from lib.dlg_load_files import KLIPPEL_DATA, AP_DATA, LEAP_DATA
+from .functions import KLIPPEL_DATA, AP_DATA, LEAP_DATA
 from .ui_conf import ICON_DIR
 
 
@@ -44,17 +43,13 @@ class MainWindow(QMainWindow):
         self.app = app
         self.project = Project.load_project(project_path)
         self.initUI()
-        # project_path = 'C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yeti.pkl'
-        self.append_file(AP_DATA)
-        self.append_file(LEAP_DATA)
-        self.append_file(KLIPPEL_DATA)
 
     def initUI(self) -> None:
         """ Initial mainwindow's user interface base on data in attribute ``project``. """
       # Create Component
         self.wg_canvas = MyCanvas(self)
-        self.dwg_data = DockWidget_Data(self, Qt.RightDockWidgetArea)
-        self.dwg_canvasLayout = DockWidget_CanvasLayout(
+        self.dwg_data = DockWg_Data(self, Qt.RightDockWidgetArea)
+        self.dwg_canvasLayout = DockWg_Canvas(
             self, Qt.LeftDockWidgetArea)
         self.dwg_canvasLayout._setCanvasLayout_Main()
         self.menutopbar = MyMenuBar(self)
@@ -72,26 +67,28 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(self.project.info["Name"])
         self.setWindowIcon(QIcon(ICON_DIR+"audiowave.png"))
         self.resize(1600, 900)
+        self.dwg_canvasLayout.set_canvas_mode(self.wg_canvas.mode)
 
   # Handle Functions
+
     def btn_processingDlg_handleClicked(self) -> None:
         """
-        This function connect with QPushButton component in ``dockwg_canvas_setting``.\n
-        When the button is clicked, execute ``OperationDialog`` and pop up a dialog window.
+        This function connect with QPushButton component in ``dockwg_canvas``.\n
+        When the button is clicked, execute ``Dlg_Operation`` and pop up a dialog window.
         """
-        dlg = OperationDialog(mainwindow=self)
+        dlg = Dlg_Operation(mainwindow=self)
         dlg.exec()
 
     def btn_axis_setting_handleClicked(self) -> None:
         """
         This function connect with QPushButton component ``btn_axis_setting``.\n
-        When the button is clicked, execute ``CanvasSetting_Dialog`` and pop up a dialog window.
+        When the button is clicked, execute ``Dlg_AxisSetting`` and pop up a dialog window.
 
         It is used for customizing which curve types ``CurveType`` would be drawn on a canvas.
         Each canvas has main axis and sub axis.\n
         After dialog window closed, update related component with new setting.
         """
-        dlg = CanvasSetting_Dialog(mainwindow=self)
+        dlg = Dlg_AxisSetting(mainwindow=self)
         if dlg.exec_():
             for _label_ in self.dwg_canvasLayout.lb_canvas:
                 _label_.set_text(
@@ -126,7 +123,7 @@ class MainWindow(QMainWindow):
         """
         files_to_del = []
         for _fileData_ in self.project.files:
-            if _fileData_.info["Name"] in filenames_to_del and _fileData_ not in files_to_return:
+            if _fileData_.info["Name"] in filenames_to_del and _fileData_ not in files_to_del:
                 files_to_del.append(_fileData_)
         self.project.delete_files(files_to_del)
         self.dwg_data.delete_files(filenames_to_del)
@@ -140,6 +137,21 @@ class MainWindow(QMainWindow):
         self.project.clear_files()
         self.dwg_data.delete_files(filenames_to_del)
 
+    def _update_ui_conf(self):
+        self.project.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
+        for mode, canvas_set in self.wg_canvas.status.items():
+            self.project.ui_conf["MyCanvas"]["status"][mode] = [
+                _c.id for _c in canvas_set]
+        for _c in self.wg_canvas.canvasPool:
+            self.project.ui_conf["MyCanvas"]["canvasPool"][str(_c.id)]["types"] = [
+                _t.value for _t in _c.ax_types]
+            self.project.ui_conf["MyCanvas"]["canvasPool"][str(
+                _c.id)]["parameter"] = _c.parameter
+
+    def _update_files(self):
+        wg_files = self.dwg_data.filepool.findChildren(QWidget, "Wg_File")
+        self.project.files = [wg.fileData for wg in wg_files]
+
     def save_file(self) -> None:
         """
         Save project to file.\n
@@ -151,7 +163,8 @@ class MainWindow(QMainWindow):
         if (self.project.info["Name"] == "Untitled"):
             self.save_file_as()
         else:
-            self.dwg_data.filepool.save_in_project()
+            self._update_ui_conf()
+            self._update_files()
             self.project.dump(location=self.project.get_path())
 
     def save_file_as(self) -> None:
@@ -168,7 +181,8 @@ class MainWindow(QMainWindow):
             self.project.info['Name'] = \
                 file_path[file_path.rfind('/')+1:file_path.rfind('.')]
             self.setWindowTitle(self.project.info["Name"])
-            self.dwg_data.filepool.save_in_project()
+            self._update_ui_conf()
+            self._update_files()
             self.project.dump(location=self.project.get_path())
         else:
             pass

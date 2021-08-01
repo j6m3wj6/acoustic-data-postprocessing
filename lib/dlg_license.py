@@ -1,59 +1,13 @@
-from PyQt5.QtWidgets import QCheckBox, QGridLayout, QHBoxLayout, QLineEdit, QPushButton, QLabel, QWidget, QDialog, QDialogButtonBox, \
-    QVBoxLayout, QFormLayout, QGroupBox
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QDialog, \
+    QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtCore import Qt
+from .functions import verify_license, add_months
 import datetime as dt
-
-import calendar
 import json
 import base64
 
 
-def add_months(sourcedate, months):
-    month = sourcedate.month - 1 + months
-    year = sourcedate.year + month // 12
-    month = month % 12 + 1
-    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
-    return dt.date(year, month, day)
-
-
-def verify_due_day(due_day_str):
-    print("verify_due_day: ", due_day_str)
-    try:
-        due_day = dt.datetime.strptime(due_day_str, "%Y/%m/%d %H:%M:%S")
-        if due_day < dt.datetime.now():
-            print("::: license is due at %s" % due_day)
-            return False
-        else:
-            print("::: license is not dued until ", due_day)
-            return True
-    except:
-        return False
-
-
-def verify_license(license):
-    print("verify_license: ", license)
-    try:
-        license = license.lower()
-        score = 0
-        check_digit = license[0]
-        check_digit_count = 0
-        chunks = license.split('-')
-        for chunk in chunks:
-            if len(chunk) != 4:
-                return False
-            for char in chunk:
-                if char == check_digit:
-                    check_digit_count += 1
-                score += ord(char)
-        if score == 1772 and check_digit_count == 5:
-            print("::: license (%s) is Valid" % license)
-            return True
-        return False
-    except:
-        return False
-
-
-class License_Confimation(QDialog):
+class Dlg_License(QDialog):
     def __init__(self, conf_path):
         super().__init__()
         self.initUI()

@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QLabel, QLineEdit, QRadioButton, QPushButton, QComboBox,\
+from PyQt5.QtWidgets import QLabel, QLineEdit, QRadioButton, QPushButton,\
     QHBoxLayout, QVBoxLayout, QSpacerItem, QGroupBox, QSizePolicy,\
-    QDialog, QDialogButtonBox, QColorDialog
+    QDialog, QDialogButtonBox
 from PyQt5.QtCore import Qt
 from .obj_data import *
 
 
-class OperationDialog(QDialog):
+class Dlg_Operation(QDialog):
     """
     A dialog for user to apply post-processing operation to curves.
     Support uniary operation: Shift and Align.
@@ -30,7 +30,7 @@ class OperationDialog(QDialog):
         self.le_offset = QLineEdit()
         rb_align = QRadioButton()
         rb_align.setObjectName("rb_align")
-        lb_align = QLabel("Align at ")
+        lb_align = QLabel("Normalize to")
         self.le_align_x = QLineEdit()
         self.le_align_y = QLineEdit()
         btn_reset = QPushButton("Reset")
@@ -47,11 +47,11 @@ class OperationDialog(QDialog):
         vbly_list.addWidget(QLabel("Curves"))
         vbly_list.addWidget(self.listWidget)
         hbly_offset = QHBoxLayout()
-        for _wg_ in [rb_offset, lb_offset, self.le_offset, QLabel("dB")]:
+        for _wg_ in [rb_offset, lb_offset, self.le_offset, QLabel("units")]:
             hbly_offset.addWidget(_wg_)
         hbly_align = QHBoxLayout()
         for _wg_ in [rb_align, lb_align, QLabel("X-Axis"), self.le_align_x, QLabel("Hz"),
-                     QLabel("Y-Axis"), self.le_align_y, QLabel("dB")]:
+                     QLabel("Y-Axis"), self.le_align_y, QLabel("units")]:
             hbly_align.addWidget(_wg_)
 
         gb_vbly = QVBoxLayout()

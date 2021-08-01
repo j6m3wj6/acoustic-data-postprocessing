@@ -1,17 +1,17 @@
 
 from typing import List
-from PyQt5.QtWidgets import QScrollArea, QWidget, QPushButton, QTabWidget, QDockWidget, QVBoxLayout
+from PyQt5.QtWidgets import QScrollArea, QWidget, QPushButton, QDockWidget, QVBoxLayout
 from PyQt5.QtCore import Qt
-from .dlg_import_files import ImportDialog
+from .dlg_import_files import Dlg_ImportFiles
 from .obj_data import FileData, Project
-from .wg_filepool import FilePool
+from .wg_filepool import Wg_FilePool
 
 
-class DockWidget_Data(QDockWidget):
+class DockWg_Data(QDockWidget):
     """
     :ivar MainWindow mainwindow: The MainWindow object that this DockWidget_Data object belongs.
 
-    :ivar FilePool filePool: 
+    :ivar Wg_FilePool filePool: 
           A QWidget component contains a list of imported file components.
           It contains functions of interaction between file components.
     """
@@ -29,7 +29,7 @@ class DockWidget_Data(QDockWidget):
       # Create Component
         btn_importDlg = QPushButton("Import")
         btn_save = QPushButton("Save")
-        self.filepool = FilePool(self.mainwindow)
+        self.filepool = Wg_FilePool(self.mainwindow)
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(self.filepool)
@@ -45,6 +45,12 @@ class DockWidget_Data(QDockWidget):
         btn_importDlg.clicked.connect(self.btn_importDlg_handleClicked)
         btn_save.clicked.connect(self.mainwindow.save_file)
       # Style and Setting
+        btn_importDlg.setStyleSheet("""
+            background-color:#ffe223;
+            border:1.5px solid #7d7d7d;
+            padding: 3px;
+            font-weight: bolder;
+        """)
         vbly.setContentsMargins(10, 0, 10, 10)
         self.setMinimumWidth(400)
 
@@ -76,7 +82,7 @@ class DockWidget_Data(QDockWidget):
     def btn_importDlg_handleClicked(self) -> None:
         """
         This function connect with **Import** button.\n 
-        When the button is clicked, execute ``ImportDialog`` and pop up a dialog window.
+        When the button is clicked, execute ``Dlg_ImportFiles`` and pop up a dialog window.
         """
-        dlg = ImportDialog(mainwindow=self.parent())
+        dlg = Dlg_ImportFiles(mainwindow=self.parent())
         dlg.exec()

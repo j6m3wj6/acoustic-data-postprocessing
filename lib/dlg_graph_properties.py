@@ -1,11 +1,10 @@
 from traceback import print_tb
-from PyQt5.QtWidgets import QWidget, QTabWidget,\
+from PyQt5.QtWidgets import QPushButton, QWidget, QTabWidget,\
     QComboBox, QLineEdit, QCheckBox, QLabel, \
     QDialog, QDialogButtonBox, QStyledItemDelegate,\
     QHBoxLayout, QVBoxLayout, QFormLayout, QAbstractItemView, QHeaderView
 from PyQt5.QtCore import QSize, Qt, QEvent
-from PyQt5.QtGui import QPixmap, QColor, QIcon
-from .ui_conf import ICON_DIR, LINEWIDTHS, COLORS
+from .ui_conf import LINESTYLES, LINEWIDTHS, COLORS
 from .wg_filepool import TB_CURVES_HEADER
 from textwrap import fill
 from .wg_selfdefined import Cbox_Color, Cbox_Linewidth
@@ -14,7 +13,6 @@ from .wg_selfdefined import Cbox_Color, Cbox_Linewidth
 class Delegate(QStyledItemDelegate):
     def __init__(self, tb):
         super().__init__()
-        print(self, tb)
         self.tb_curves = tb
 
     def eventFilter(self, source, event):
@@ -60,9 +58,13 @@ class Curve_Style_Page(QWidget):
         self.cbox_color = Cbox_Color()
         self.cbox_linewidth = Cbox_Linewidth()
 
-        self.tb_curves = self.filepool.tranfer_to_table()
+        self.tb_curves = self.filepool.transfer_to_table()
         self.le_legend = QLineEdit("")
         self.le_note = QLineEdit("")
+        self.btn_replacelabel = QPushButton("Repalce Label with Note")
+        self.btn_mergelabel = QPushButton("Merge Label with Note")
+        self.btn_reset = QPushButton("Reset")
+
       # Layout
         vbly_curves = QVBoxLayout()
         vbly_curves.addWidget(QLabel("Curves ————————"))
@@ -90,6 +92,9 @@ class Curve_Style_Page(QWidget):
         vbly_parameters.addLayout(hbly_note)
         vbly_parameters.addLayout(hbly_color)
         vbly_parameters.addLayout(hbly_linewidth)
+        vbly_parameters.addWidget(self.btn_replacelabel)
+        vbly_parameters.addWidget(self.btn_mergelabel)
+
         vbly_parameters.setAlignment(Qt.AlignTop)
 
         hbly = QHBoxLayout()
@@ -103,6 +108,10 @@ class Curve_Style_Page(QWidget):
             self.cbox_color_handleChange)
         self.cbox_linewidth.currentIndexChanged.connect(
             self.cbox_linewidth_handleChange)
+        self.btn_replacelabel.clicked.connect(
+            self.btn_replacelabel_handleClicked)
+        self.btn_mergelabel.clicked.connect(
+            self.btn_mergelabel_handleClicked)
         self.tb_curves.itemSelectionChanged.connect(
             self.tb_curves_handleSelect)
         self.tb_curves.cellChanged.connect(self.handle_cellChanged)
@@ -135,6 +144,9 @@ class Curve_Style_Page(QWidget):
         self.tb_curves.verticalHeader().setDefaultSectionSize(20)
         self.tb_curves.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tb_curves.setIconSize(QSize(65, 20))
+
+    def _get_selected_firstcolumn(self):
+        return self.tb_curves.selectedItems()[0::len(TB_CURVES_HEADER)-2]
 
     def _tbcbox_handle_changed(self, event):
         row = self.tb_curves.currentIndex().row()
@@ -179,8 +191,7 @@ class Curve_Style_Page(QWidget):
         # print("______")
 
     def tb_curves_handleSelect(self):
-        seleced_items = self.tb_curves.selectedItems()[
-            0::len(TB_CURVES_HEADER)]
+        seleced_items = self._get_selected_firstcolumn()
         if len(seleced_items) > 1:
             self.le_legend.setText("")
             self.le_note.setText("")
@@ -195,19 +206,24 @@ class Curve_Style_Page(QWidget):
                 filter(lambda x: x.line_props["visible"] == True, curveDatas))[0]
             color_index = COLORS.index(curveData.line.get_color())
             self.cbox_color.setCurrentIndex(color_index)
+            lw_count = len(LINEWIDTHS)
             linewidth_index = LINEWIDTHS.index(curveData.line.get_linewidth())
-            self.cbox_linewidth.setCurrentIndex(linewidth_index)
+            linestyle_index = LINESTYLES.index(curveData.line.get_linestyle())
+
+            self.cbox_linewidth.setCurrentIndex(
+                lw_count*linestyle_index + linewidth_index)
             self.le_legend.setText(curveData.label)
             self.le_note.setText(curveData.note)
 
     def le_legend_handleEdited(self, event):
-        for _item_ in self.tb_curves.selectedItems()[0::len(TB_CURVES_HEADER)]:
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
             for _testname_ in testnames:
                 curveData = wg_curve.get_curveData(_testname_)
+                curveData.label = event
                 if not curveData.line_props["visible"]:
                     continue
-                curveData.label = event
                 curveData.line.set_label(
                     fill(event, int(
                         self.canvas.parameter["General"]['Legend']['text-wrap'])))
@@ -218,13 +234,14 @@ class Curve_Style_Page(QWidget):
         self.canvas.replot()
 
     def le_note_handleEdited(self, event):
-        for _item_ in self.tb_curves.selectedItems()[0::len(TB_CURVES_HEADER)]:
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
             for _testname_ in testnames:
                 curveData = wg_curve.get_curveData(_testname_)
+                curveData.note = event
                 if not curveData.line_props["visible"]:
                     continue
-                curveData.note = event
                 wg_curve.set_curveData(curveData, _testname_)
             self.tb_curves.item(
                 _item_.row(), TB_CURVES_HEADER.index('Note')).setText(event)
@@ -234,7 +251,8 @@ class Curve_Style_Page(QWidget):
     def cbox_color_handleChange(self, event):
         if event == -1:
             return
-        for _item_ in self.tb_curves.selectedItems()[0::len(TB_CURVES_HEADER)]:
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
             for _testname_ in testnames:
                 curveData = wg_curve.get_curveData(_testname_)
@@ -253,19 +271,57 @@ class Curve_Style_Page(QWidget):
         # print("cbox_linewidth_handleChange", event)
         if event == -1:
             return
-        for _item_ in self.tb_curves.selectedItems()[0::len(TB_CURVES_HEADER)]:
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        ls_count = len(LINESTYLES)
+        lw_count = len(LINEWIDTHS)
+        for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
             for _testname_ in testnames:
                 curveData = wg_curve.get_curveData(_testname_)
-                curveData.line_props["linewidth"] = LINEWIDTHS[event]
+                curveData.line_props["linewidth"] = LINEWIDTHS[event % lw_count]
+                curveData.line_props["linestyle"] = LINESTYLES[int(
+                    event/lw_count)]
                 if not curveData.line_props["visible"]:
                     continue
-                curveData.line.set_linewidth(LINEWIDTHS[event])
+                curveData.line.set_linewidth(LINEWIDTHS[event % lw_count])
+                curveData.line.set_linestyle(LINESTYLES[int(event/lw_count)])
                 wg_curve.set_curveData(curveData, _testname_)
 
             self.tb_curves.cellWidget(_item_.row(), TB_CURVES_HEADER.index(
-                'LineWidth')).set_linewidth(LINEWIDTHS[event])
+                'LineWidth')).setCurrentIndex(event)
         self.canvas.replot()
+
+    def btn_replacelabel_handleClicked(self):
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        for _item_ in selected_firstcolumns:
+            wg_curve, testnames = _item_.data(Qt.UserRole)
+            for _testname_ in testnames:
+                curveData = wg_curve.get_curveData(_testname_)
+                curveData.label = curveData.note
+                if not curveData.line_props["visible"]:
+                    continue
+                curveData.line.set_label(
+                    fill(curveData.label, int(
+                        self.canvas.parameter["General"]['Legend']['text-wrap'])))
+                wg_curve.set_curveData(curveData, _testname_)
+            self.tb_curves.item(
+                _item_.row(), TB_CURVES_HEADER.index('Label')).setText(curveData.label)
+
+    def btn_mergelabel_handleClicked(self):
+        selected_firstcolumns = self._get_selected_firstcolumn()
+        for _item_ in selected_firstcolumns:
+            wg_curve, testnames = _item_.data(Qt.UserRole)
+            for _testname_ in testnames:
+                curveData = wg_curve.get_curveData(_testname_)
+                curveData.label = curveData.label+"_"+curveData.note
+                if not curveData.line_props["visible"]:
+                    continue
+                curveData.line.set_label(
+                    fill(curveData.label, int(
+                        self.canvas.parameter["General"]['Legend']['text-wrap'])))
+                wg_curve.set_curveData(curveData, _testname_)
+            self.tb_curves.item(
+                _item_.row(), TB_CURVES_HEADER.index('Label')).setText(curveData.label)
 
     def _apply_parameters(self):
         self.le_legend_handleEdited(self.le_legend.text())
@@ -273,7 +329,7 @@ class Curve_Style_Page(QWidget):
         self.cbox_color_handleChange(self.cbox_color.currentIndex())
 
 
-class GraphProperties_Dialog(QDialog):
+class Dlg_GraphProperties(QDialog):
     """
     A dialog for user to customize setting for current focusing canvas. 
 
@@ -417,6 +473,7 @@ class GraphProperties_Dialog(QDialog):
                 max-width: 125px;
             }
         """)
+
       # Connect Functions
         self.cbox_canvas.currentIndexChanged.connect(
             self.cbox_canvas_handleChange)

@@ -1,17 +1,18 @@
 # -*- coding:utf-8 -*-
-import ctypes
-from lib.license_confrimation import License_Confimation, verify_due_day, verify_license
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from lib.mainwindow import MainWindow
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl, QFileInfo
+from lib.mainwindow import MainWindow
+from lib.dlg_license import Dlg_License
+from lib.functions import verify_due_day, verify_license
 import sys
 import os
+import ctypes
 import traceback
 import json
 import base64
 
-AP_yetilarge_path = "C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl"
+
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 
 
@@ -90,10 +91,8 @@ def check_license():
         print("App Execute!!\n")
         return True
     else:
-        dlg = License_Confimation(conf_path="./conf.json")
+        dlg = Dlg_License(conf_path="./conf.json")
         return dlg.exec_()
-
-# {"license": "9N9M-KTVT-F49J-S989-URA4", "license_due_day": "dswe/ex/cx sd:we:xn"}
 
 
 def main():
@@ -123,7 +122,7 @@ def main():
             background-color: white;
         }
         QLabel#warning_massage{
-            background-color: "#e80000";
+            background-color: #e80000;
             padding: 4px;
             color: "white";
         }

@@ -76,17 +76,26 @@ class Project():
         """Clear all the files in this Project instance."""
         self.files = []
 
-    @classmethod
-    def _check_attr(self, pj):
-        if pj.__dict__.keys() is not Project().__dict__.keys():
-            print("Not the same", )
-            print("\tpj.__dict__.keys(): ", pj.__dict__.keys())
-            print("\tProject.__dict__.keys(): ", Project().__dict__.keys())
-            li1 = pj.__dict__.keys()
-            li2 = Project().__dict__.keys()
-
-            print("Difference:", list(set(li1) - set(li2)) +
-                  list(set(li2) - set(li1)))
+    # @classmethod
+    # def __setstate__(self, state):
+    #     if state.keys() is not Project().__dict__.keys():
+    #         li_state = state.keys()
+    #         li_class = Project().__dict__.keys()
+    #         for _dif_ in list(set(li_state) - set(li_class)):
+    #             del state[_dif_]
+    #         initial_state = {
+    #             "info": {
+    #                 "Name": "Untitle",
+    #                 "File Location": sys.path[0],
+    #                 'Create Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+    #                 'Last Saved Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
+    #             },
+    #             'files': [],
+    #             'ui_conf': UI_CONF
+    #         }
+    #         for _dif_ in list(set(li_class) - set(li_state)):
+    #             state[_dif_] = initial_state[_dif_]
+    #     self.__dict__.update(state)
 
     @ classmethod
     def load_project(cls, location: Optional[str] = None) -> None:
@@ -115,7 +124,6 @@ class Project():
                     unpickled_project.info["File Location"] = location[0:location.rfind(
                         '/')]
                 unpickled_project.print()
-                # Project._check_attr(unpickled_project)
                 print("____________finish obj_data.Project.load_project()")
                 fh.close()
                 return unpickled_project
@@ -167,22 +175,11 @@ class Project():
         print("____keys: ", self.__dict__.keys())
         print("Name: %s \nFile location: %s" %
               (self.info["Name"], self.get_path()))
-        # for _f in self.files:
-        #     _f.print()
+        print(self.ui_conf)
+        for _f in self.files:
+            _f.print()
         print("============================\n")
         # return msg
-
-#### Undo #####
-    def update_ui_conf(self):
-        self.ui_conf["MyCanvas"]["mode"] = self.wg_canvas.mode
-        for mode, canvas_set in self.wg_canvas.status.items():
-            self.ui_conf["MyCanvas"]["status"][mode] = [
-                _c.id for _c in canvas_set]
-        for _c in self.wg_canvas.canvasPool:
-            self.ui_conf["MyCanvas"]["canvasPool"][str(_c.id)]["types"] = [
-                _t.value for _t in _c.ax_types]
-            self.ui_conf["MyCanvas"]["canvasPool"][str(
-                _c.id)]["parameter"] = _c.parameter
 
 
 class FileData():
@@ -205,7 +202,6 @@ class FileData():
             'Import Time': import_time,
             'Last Modified Time': dt.datetime.today().strftime("%Y/%m/%d %H:%M:%S"),
         }
-#### Undo #####
         self.testnames = []
         self.valid_testnames = []
         self.measurements = {}
@@ -223,27 +219,13 @@ class FileData():
         """
         self.measurements[str(m_idx)] = measurement
 
-#### Undo #####
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-        print(state)
-        # Add baz back since it doesn't exist in the pickle
-        # if "valid_testnames" not in self.__dict__.keys():
-        #     self.valid_testnames = self.testnames
-
     def print(self):
         """Print the infomation of this FileData instance."""
         msg = "------------"
         msg += ("\n\tName: %s \n\tSource: %s \n\tfile_path: %s" %
                 (self.info["Name"], self.info["Source"], self.info["File Path"]))
         msg += ("\n\tImport time: %s" % str(self.get_import_time()))
-        msg += "\n\tSequence:"
-        # for _k, _v in self.sequence.items():
-        #     msg += ("\n\t  Key: %s" % _k)
-        #     msg += ("\n\t  Curves: ")
-        #     for _c in _v:
-        #         msg += (f"\n\t\t%s, %s, %s" %
-        #                 (_c.type.value, _c.label, _c.note))
+
         for _m in self.measurements.values():
             msg += _m.print()
         msg += ("\n-----------------------------")
@@ -303,8 +285,9 @@ class Channel:
         """Print the infomation."""
         msg = f"Channel____id={self.id}\n"
         msg += "  Sequence:\n"
-        for test, curve in self.sequence.items():
-            msg += f"\t{test}: {curve}\n"
+        for _k, _v in self.sequence.items():
+            msg += ("  :::%s %s, %s, %s\n" %
+                    (_k, _v.type.value, _v.label, _v.note))
         if (console):
             print(msg)
         return msg
@@ -341,6 +324,7 @@ class CurveData:
             "visible": False,
             "color": "",
             "linewidth": LINEWIDTH_DEFAULT,
+            "linestyle": '-',
         }
 
   # Get and Set Function
@@ -375,11 +359,13 @@ class CurveData:
                 color = COLORS[linecount % 10]
         if self.line_props["linewidth"]:
             linewidth = self.line_props["linewidth"]
+        if self.line_props["linestyle"]:
+            linestyle = self.line_props["linestyle"]
 
         ydata = [d+self.shifted for d in self.ydata]
         self.line, = ax.plot(self.xdata, ydata,
                              label=self.get_legend(legend_wrap), color=color,
-                             linewidth=linewidth, picker=True)
+                             linewidth=linewidth, linestyle=linestyle, picker=True)
         self.line.set_zorder(order)
         return self.line
 

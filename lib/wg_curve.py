@@ -1,4 +1,4 @@
-from lib.dlg_load_files import determineTypeByTestName
+from lib.functions import determineTypeByTestName
 import sys
 from PyQt5.QtWidgets import QLabel, QWidget, QCheckBox, \
     QGridLayout, QStyle, QStyleOption
@@ -134,39 +134,10 @@ class Wg_Curve(QWidget):
         self.wg_file.handle_checked(
             checkState, self.m_idx, self.ch_idx, self.get_curveOrder(), link, testname)
 
-    def copy_params_from_canvas(self):
+    def sync_curveData(self):
         for testname in self.wg_file.fileData.valid_testnames:
             curveData = self.get_curveData(testname)
             self.wg_file.fileData.measurements[self.m_idx].channel[
                 self.ch_idx].sequence[testname] = curveData
         self.update_info()
 
-
-# class BasicContainer(QMainWindow):
-#     def __init__(self):
-#         super().__init__()
-#         wg = QWidget()
-#         hbly = QHBoxLayout()
-#         textwg = QTextEdit()
-#         textwg.setText(AP_DATA.print())
-
-#         vbly = QVBoxLayout()
-#         wg_file = Wg_File(fileData=AP_DATA)
-#         vbly.addWidget(wg_file)
-
-#         hbly.addWidget(textwg)
-#         hbly.addLayout(vbly)
-#         wg.setLayout(hbly)
-#         self.setCentralWidget(wg)
-#         self.resize(600, 300)
-#         vbly.setAlignment(Qt.AlignTop)
-
-#         print(wg_file.findChildren(QWidget, "Wg_Curve"))
-
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-
-#     main = BasicContainer()
-#     main.show()
-#     sys.exit(app.exec_())

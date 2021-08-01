@@ -167,11 +167,11 @@
 <span class="kn">from</span> <span class="nn">.wg_menubar</span> <span class="kn">import</span> <span class="n">MyMenuBar</span>
 <span class="kn">from</span> <span class="nn">.dockwg_data</span> <span class="kn">import</span> <span class="n">DockWidget_Data</span>
 <span class="kn">from</span> <span class="nn">.dlg_operation</span> <span class="kn">import</span> <span class="n">OperationDialog</span>
-<span class="kn">from</span> <span class="nn">.dlg_canvas_setting</span> <span class="kn">import</span> <span class="n">CanvasSetting_Dialog</span>
+<span class="kn">from</span> <span class="nn">.dlg_canvas_setting</span> <span class="kn">import</span> <span class="n">Dlg_AxisSetting</span>
 <span class="kn">from</span> <span class="nn">.wg_canvas</span> <span class="kn">import</span> <span class="n">MyCanvas</span>
 <span class="kn">from</span> <span class="nn">.dockwg_canvas_layout</span> <span class="kn">import</span> <span class="n">DockWidget_CanvasLayout</span>
 <span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="n">Project</span><span class="p">,</span> <span class="n">FileData</span>
-<span class="kn">from</span> <span class="nn">lib.dlg_load_files</span> <span class="kn">import</span> <span class="n">KLIPPEL_DATA</span><span class="p">,</span> <span class="n">AP_DATA</span><span class="p">,</span> <span class="n">LEAP_DATA</span>
+<span class="kn">from</span> <span class="nn">lib.functions</span> <span class="kn">import</span> <span class="n">KLIPPEL_DATA</span><span class="p">,</span> <span class="n">AP_DATA</span><span class="p">,</span> <span class="n">LEAP_DATA</span>
 <span class="kn">from</span> <span class="nn">.ui_conf</span> <span class="kn">import</span> <span class="n">ICON_DIR</span>
 
 
@@ -245,13 +245,13 @@
 <div class="viewcode-block" id="MainWindow.btn_axis_setting_handleClicked"><a class="viewcode-back" href="../../library.html#lib.mainwindow.MainWindow.btn_axis_setting_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_axis_setting_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function connect with QPushButton component ``btn_axis_setting``.\n</span>
-<span class="sd">        When the button is clicked, execute ``CanvasSetting_Dialog`` and pop up a dialog window.</span>
+<span class="sd">        When the button is clicked, execute ``Dlg_AxisSetting`` and pop up a dialog window.</span>
 
 <span class="sd">        It is used for customizing which curve types ``CurveType`` would be drawn on a canvas.</span>
 <span class="sd">        Each canvas has main axis and sub axis.\n</span>
 <span class="sd">        After dialog window closed, update related component with new setting.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dlg</span> <span class="o">=</span> <span class="n">CanvasSetting_Dialog</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">Dlg_AxisSetting</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">_label_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dwg_canvasLayout</span><span class="o">.</span><span class="n">lb_canvas</span><span class="p">:</span>
                 <span class="n">_label_</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span>
@@ -311,7 +311,7 @@
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Untitled&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_file_as</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">save_in_project</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">sync_fileData</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">get_path</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="MainWindow.save_file_as"><a class="viewcode-back" href="../../library.html#lib.mainwindow.MainWindow.save_file_as">[docs]</a>    <span class="k">def</span> <span class="nf">save_file_as</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -328,7 +328,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span> <span class="o">=</span> \
                 <span class="n">file_path</span><span class="p">[</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">save_in_project</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">sync_fileData</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">get_path</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span></div></div>
