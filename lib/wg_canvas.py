@@ -41,7 +41,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.fig, _ = plt.subplots(constrained_layout=True)
         super(MyCanvasItem, self).__init__(self.fig)
         self.id = id
-        self.parameter = params
+        self.parameter = params.copy()
         self.parameter["Title"] = f"%s | %s" % (types[0].value, types[1].value)
 
         self.wg_canvas = parent
@@ -53,6 +53,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.ax_main.set_zorder(2)
         self.ax_main.patch.set_visible(False)
         self.grid_status = [True, False]
+        self.update_axis_info()
 
         self.apply_style()
 
@@ -69,7 +70,6 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.fig.canvas.mpl_connect('button_press_event', self.handle_click)
 
       # Default Setting
-        self.update_axis_info()
 
         self.ax_main.format_coord = lambda x, y: ""
         self.ax_main.set_ylim(auto=False)
@@ -99,7 +99,6 @@ class MyCanvasItem(FigureCanvasQTAgg):
             self.ax_types[0])
         self.parameter["Axis"]["Sub_Y-Axis"]['unit'] = determineUnitByType(
             self.ax_types[1])
-        self.apply_style()
 
     def clear_lines(self, ax_id: int) -> None:
         """
@@ -115,6 +114,8 @@ class MyCanvasItem(FigureCanvasQTAgg):
 
     def apply_style(self) -> None:
         '''Apply ``parameters`` to this MyCanvasItem instance.'''
+        print("apply_style", self.id,
+              self.parameter["Axis"]["Y-Axis"]['label'])
         param_gen = self.parameter["General"]
         self.ax_main.set_title(param_gen["Title"])
         for _idx_, _type_ in enumerate(self.ax_types):
@@ -194,7 +195,6 @@ class MyCanvasItem(FigureCanvasQTAgg):
         return f"%s | %s" % (self.ax_types[0].value, self.ax_types[1].value)
 
     def set_grid_status(self, status=None):
-
         if status:
             self.grid_status = status
         self.ax_main.grid(self.grid_status[0], axis='y', which='both')
@@ -407,10 +407,12 @@ class MyCanvas(QWidget):
         ui_conf = mainwindow.project.ui_conf["MyCanvas"]
         self.canvasPool = []
         self.status = {}
+        print(mainwindow.project.ui_conf["MyCanvas"])
         for _key_, _value_ in ui_conf["canvasPool"].items():
             id, types, parameter = _value_.values()
             self.canvasPool.append(MyCanvasItem(parent=self, id=id, types=[
                 CurveType(types[0]), CurveType(types[1])], params=parameter))
+        print(mainwindow.project.ui_conf["MyCanvas"])
         for mode, canvas_idx in ui_conf["status"].items():
             canvas_set = []
             for _i in canvas_idx:
@@ -419,8 +421,7 @@ class MyCanvas(QWidget):
 
         self.initUI()
         self.mode = ui_conf["mode"]
-        self.focusing_canvas = self.canvasPool[0]
-        self.focusing_canvas.apply_style()
+        self.focusing_canvas = self.status[self.mode][0]
 
     def initUI(self) -> None:
         """Initial User Interface."""
@@ -437,12 +438,6 @@ class MyCanvas(QWidget):
 
         # Layout Styling
         self.vbly.setSpacing(0)
-
-    def _add_canvas(self, types_: List[CurveType]) -> int:
-        id = self.canvasPool.count()
-        new_canvas = MyCanvasItem(parent=self, id=id, types=types_)
-        self.canvasPool.append(new_canvas)
-        return id
 
     def replot(self) -> None:
         '''

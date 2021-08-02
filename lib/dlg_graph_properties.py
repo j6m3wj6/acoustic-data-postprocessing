@@ -424,7 +424,8 @@ class Dlg_GraphProperties(QDialog):
 
     def initUI(self):
         """Initial User Interface."""
-
+        print("DLG init", self.wg_canvas.focusing_canvas.id,
+              self.wg_canvas.focusing_canvas.parameter)
       # Create Components
         self.cbox_canvas = QComboBox(self)
         for _act_canvas_ in self.wg_canvas.status[self.wg_canvas.mode]:
@@ -549,11 +550,12 @@ class Dlg_GraphProperties(QDialog):
         """
         Apply the parameters of dialog that modified by user to current focusing canvas.
         """
-        # print("_apply_parameters")
-        # print("Before update", self.wg_canvas.focusing_canvas.parameter)
+        print("\n_apply_parameters")
+        print("Before update", self.wg_canvas.focusing_canvas.parameter)
         self._update_parameters(
             self.parameter, self.wg_canvas.focusing_canvas.parameter)
-        # print("After update", self.wg_canvas.focusing_canvas.parameter)
+        print("After update", self.wg_canvas.focusing_canvas.parameter)
+        print("_____\n\n")
         self.page_curves._apply_parameters()
         self.wg_canvas.focusing_canvas.apply_style()
         # self._load_parameters(

@@ -47,10 +47,13 @@ class MainWindow(QMainWindow):
     def initUI(self) -> None:
         """ Initial mainwindow's user interface base on data in attribute ``project``. """
       # Create Component
+
         self.wg_canvas = MyCanvas(self)
+
         self.dwg_data = DockWg_Data(self, Qt.RightDockWidgetArea)
         self.dwg_canvasLayout = DockWg_Canvas(
             self, Qt.LeftDockWidgetArea)
+
         self.dwg_canvasLayout._setCanvasLayout_Main()
         self.menutopbar = MyMenuBar(self)
       # Layout

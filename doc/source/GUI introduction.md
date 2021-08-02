@@ -80,7 +80,7 @@ Up and Down
 
 ## C. Toolbar
 包含一列tool bar與畫布區域，有兩種不同的排版模式。
-<img src="./_images/07_toolbar.png" />
+<img src="./_images/07_toolbar.png" w100/>
 
 ### C-1. Focusing Canvas
 Toolbar上的功能只能針對一個特定畫布使用，故一個視窗只有一個目標畫布(Focusing Canvas)，以黑色邊框標示，也可從Toolbar左邊看目前作用的畫布是哪一個，在畫布上雙鍵點擊滑鼠左鍵可以切換目標畫布，如下動圖所示。
