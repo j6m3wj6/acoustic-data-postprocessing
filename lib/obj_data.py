@@ -22,11 +22,16 @@ class Extended_Enum(Enum):
 class CurveType(Extended_Enum):
     '''Common acoustic test data types.'''
     NoType = 'None'
-    SPL = 'SPL'
+    SPL = 'Sound Pressure Level'
     IMP = 'Impedance'
     PHS = 'Phase'
-    THD = 'THD'
+    THD = 'THD Ratio'
+    THDL = 'THD Level'
     EXC = 'Excursion'
+    LD = 'Level and Distortion'
+    DPL = 'Distortion Product Level'
+    DPR = 'Distortion Product Ratio'
+    RBPR = 'Rub & Buzz Peak Ratio'
     ALL = 'All'
 
 

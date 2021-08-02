@@ -37,7 +37,7 @@ class Dlg_AxisSetting(QDialog):
         widget = QWidget()
         layout = QFormLayout()
 
-        for _c in self.wg_canvas.canvasPool[:-1]:
+        for _c in self.wg_canvas.canvasPool:
             canvas_id = _c.id
             type_list = CurveType.list()
             type_list.remove("All")
@@ -126,9 +126,11 @@ class Dlg_AxisSetting(QDialog):
                 canvas_origin.ax_types[ax_id_origin] = type_to_transfer
                 self._set_type_checkstate(type_to_transfer, Qt.Unchecked)
                 canvas_origin.replot()
+                canvas_origin.update_axis_info()
 
         self._set_type_checkstate(type_to_set, Qt.Unchecked)
         canvas.replot()
+        canvas.update_axis_info()
 
         for idx, _c in enumerate(self.wg_canvas.canvasPool):
             self.mainwindow.project.ui_conf["MyCanvas"]["canvasPool"][str(idx)]["types"] = [
@@ -153,7 +155,7 @@ class Dlg_AxisSetting(QDialog):
             wg_file.changetab_test()
 
     def _load_form_parameter(self):
-        for idx, _c in enumerate(self.wg_canvas.canvasPool[:-1]):
+        for idx, _c in enumerate(self.wg_canvas.canvasPool):
             cbox_ax0 = self.form_parameter["Canvas"][idx]["ax0"]
             cbox_ax0.setCurrentText(_c.ax_types[0].value)
 

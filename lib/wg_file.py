@@ -275,7 +275,7 @@ class Wg_File(QWidget):
                 line = curveData.create_line2D(
                     canvas, ax_id, curveOrder, legend_wrap)
                 curveData.line_props["visible"] = True
-        canvas.fig.axes[1].set_visible(bool(canvas.fig.axes[1].lines))
+        canvas.fig.axes[1].set_visible(len(canvas.fig.axes[1].lines) is not 2)
         canvas.replot()
         # print("  :::%s, order=%s" %
         #       (curveData.print(console=False), curveOrder), bool(checkState))

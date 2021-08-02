@@ -109,11 +109,12 @@ class MyToolBar(NavigationToolbar2QT):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.setIconSize(QSize(24, 24))
         self.lb_canvas.setStyleSheet("""
-            min-width: 110px;
+            max-width: 320px;
+            padding: 2 4px;
             border: 1.5px solid #0D3B66;
             border-radius: 4px;
         """)
-        self.lb_canvas.setAlignment(Qt.AlignCenter)
+        # self.lb_canvas.setAlignment(Qt.AlignCenter)
 
       # Connect Functions
         self.ax_sub_toolbtns

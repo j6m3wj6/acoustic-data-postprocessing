@@ -7,7 +7,7 @@ from matplotlib import ticker
 from .wg_toolbar import MyToolBar
 from .obj_data import CurveType
 from .wg_selfdefined import Draggable_lines
-from .functions import swapPositions
+from .functions import determineUnitByType, swapPositions
 from .ui_conf import FIGURE_CONF, LINEWIDTH_DEFAULT
 from typing import Dict, List, Tuple, Optional
 from textwrap import fill
@@ -69,6 +69,8 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.fig.canvas.mpl_connect('button_press_event', self.handle_click)
 
       # Default Setting
+        self.update_axis_info()
+
         self.ax_main.format_coord = lambda x, y: ""
         self.ax_main.set_ylim(auto=False)
         self.ax_main.grid(linewidth='0.75', linestyle='-', color='black')
@@ -88,6 +90,16 @@ class MyCanvasItem(FigureCanvasQTAgg):
 
         self.fig.set_constrained_layout_pads(w_pad=10/72., h_pad=10/72.,
                                              hspace=0.5, wspace=0.5)
+
+    def update_axis_info(self):
+        self.parameter["Axis"]["Y-Axis"]['label'] = self.ax_types[0].value
+        self.parameter["Axis"]["Sub_Y-Axis"]['label'] = self.ax_types[1].value
+
+        self.parameter["Axis"]["Y-Axis"]['unit'] = determineUnitByType(
+            self.ax_types[0])
+        self.parameter["Axis"]["Sub_Y-Axis"]['unit'] = determineUnitByType(
+            self.ax_types[1])
+        self.apply_style()
 
     def clear_lines(self, ax_id: int) -> None:
         """
@@ -133,9 +145,15 @@ class MyCanvasItem(FigureCanvasQTAgg):
                                 int(param_gen['Legend']['text-wrap'])))
 
         param_axis = self.parameter["Axis"]
-        self.ax_main.set_xlabel(param_axis["X-Axis"]['label'])
-        self.ax_main.set_ylabel(param_axis["Y-Axis"]['label'])
-        self.ax_sub.set_xlabel(param_axis["X-Axis"]['label'])
+        self.ax_main.set_xlabel("%s [%s]" % (
+            param_axis["X-Axis"]['label'], param_axis["X-Axis"]['unit']))
+        self.ax_main.set_ylabel("%s [%s]" % (
+            param_axis["Y-Axis"]['label'], param_axis["Y-Axis"]['unit']))
+        self.ax_sub.set_xlabel("%s [%s]" % (
+            param_axis["X-Axis"]['label'], param_axis["X-Axis"]['unit']))
+        self.ax_sub.set_ylabel("%s [%s]" % (
+            param_axis["Sub_Y-Axis"]['label'], param_axis["Sub_Y-Axis"]['unit']))
+
         self.ax_main.set_ylim(
             [float(Quantity(param_axis["Y-Axis"]['min'])), float(Quantity(param_axis["Y-Axis"]['max']))])
         self.ax_sub.set_ylim(
@@ -148,6 +166,11 @@ class MyCanvasItem(FigureCanvasQTAgg):
             else:
                 _ax_.set_xlim([int(param_axis["X-Axis"]['min']),
                                int(param_axis["X-Axis"]['max'])])
+        if self.ax_main.lines and self.ax_sub.lines:
+            self.ax_main.set_xscale(param_axis["X-Axis"]['scale'])
+            self.ax_sub.set_xscale(param_axis["X-Axis"]['scale'])
+            self.ax_main.set_yscale(param_axis["Y-Axis"]['scale'])
+            self.ax_sub.set_yscale(param_axis["Sub_Y-Axis"]['scale'])
 
         self.replot()
 
@@ -192,7 +215,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
             if self.parameter["Axis"]["Sub_Y-Axis"]['auto-scale'] == True:
                 self.autoscale(1)
 
-            pad_h = .07
+            pad_h = .12
             self._toggle_legend(self.ax_sub, pad_h)
 
         self.ax_main.plot()
@@ -281,6 +304,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
             ax.legend(handles, labels, bbox_to_anchor=(1+pad_h, leg_bottom, 1, .5),
                       loc=loc, borderaxespad=0)
             legend_visible = self.parameter["General"]["Legend"]["visible"]
+            print(ax.get_title(), legend_visible)
             ax.get_legend().set_visible(legend_visible)
         else:
             leg = ax.legend([])

@@ -53,25 +53,20 @@ class MyApp(QMainWindow):
 
     def show_document(self) -> None:
         """
-        Show the document window. 
+        Show the document window.
         All mainwindow object in this app share the same document window.
         """
         self.document.show()
 
 
-def check_license():
-    """
-    Check the license.
-    If the license doesn't exit or already expired, execute license comfirmation dialog.
-    Otherwise, return True.
-    """
+def load_conf():
     try:
         with open('./conf.txt') as f:
             code = f.readlines()[0]
             decode = base64.b64decode(code).decode("utf-8")
             conf = json.loads(decode)
     except Exception as e:
-        conf = {"license": "", "license_due_day": ""}
+        conf = {"license": "", "license_due_day": "", "license_used": []}
         conf_str = json.dumps(conf)
         encode = base64.b64encode(conf_str.encode("utf-8"))
         with open("./conf.txt", "wb+") as file:
@@ -81,17 +76,33 @@ def check_license():
         conf["license"] = ""
     if "license_due_day" not in conf.keys():
         conf["license_due_day"] = ""
-    license_isvalid = verify_license(conf["license"])
+    if "license_used" not in conf.keys():
+        conf["license_used"] = []
 
+    return conf
+
+
+def check_license(conf):
+    """
+    Check the license.
+    If the license doesn't exit or already expired, execute license comfirmation dialog.
+    Otherwise, return True.
+    """
+    license_isvalid = verify_license(conf["license"])
     license_due_day = conf["license_due_day"]
     due_day_isvalid = verify_due_day(license_due_day)
+    dlg_info = "Welcome to SAE PlotTool!\nPlease enter the license to execute the app."
 
     if license_isvalid and due_day_isvalid:
         print("App Execute!!\n")
         return True
-    else:
-        dlg = Dlg_License(conf_path="./conf.json")
-        return dlg.exec_()
+    elif license_isvalid and not due_day_isvalid:
+        dlg_info = "Oops! Original License was expired at %s.\n Please enter a new license." % license_due_day
+        conf["license_used"].append(conf["license"])
+
+    conf["license"] = ""
+    dlg = Dlg_License(dlg_info=dlg_info, license_used=conf["license_used"])
+    return dlg.exec_()
 
 
 def main():
@@ -126,7 +137,8 @@ def main():
             color: "white";
         }
     """)
-    if check_license():
+    conf = load_conf()
+    if check_license(conf):
         try:
             MyApp()
             sys.exit(app.exec_())

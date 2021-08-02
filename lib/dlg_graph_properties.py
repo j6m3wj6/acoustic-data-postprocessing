@@ -373,7 +373,7 @@ class Dlg_GraphProperties(QDialog):
                     "max": QLineEdit(),
                     "label": QLineEdit(),
                     "unit": QLineEdit(),
-                    # "scale": self._create_cbox_scale()
+                    "scale": self._create_cbox_scale()
                 },
                 "Sub_Y-Axis": {
                     "auto-scale": QCheckBox(),
@@ -381,7 +381,7 @@ class Dlg_GraphProperties(QDialog):
                     "max": QLineEdit(),
                     "label": QLineEdit(),
                     "unit": QLineEdit(),
-                    # "scale": self._create_cbox_scale()
+                    "scale": self._create_cbox_scale()
                 }
             },
         }
@@ -521,9 +521,10 @@ class Dlg_GraphProperties(QDialog):
                 elif isinstance(_param_v_, QCheckBox):
                     if _info_v_:
                         _param_v_.setCheckState(Qt.Checked)
-
                     else:
                         _param_v_.setCheckState(Qt.Unchecked)
+                elif isinstance(_param_v_, QComboBox):
+                    _param_v_.setCurrentText(_info_v_)
                 else:
                     pass
 
@@ -555,8 +556,8 @@ class Dlg_GraphProperties(QDialog):
         # print("After update", self.wg_canvas.focusing_canvas.parameter)
         self.page_curves._apply_parameters()
         self.wg_canvas.focusing_canvas.apply_style()
-        self._load_parameters(
-            self.parameter, self.wg_canvas.focusing_canvas.parameter)
+        # self._load_parameters(
+        #     self.parameter, self.wg_canvas.focusing_canvas.parameter)
 
     def _btn_ok_handleClicked(self):
         # print("_btn_ok_handleClicked")

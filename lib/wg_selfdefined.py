@@ -123,9 +123,11 @@ class Lb_Draggable(QLabel):
             border-radius: 10px;
             padding: 5px;
             min-height: 50px;
+            max-width: 300px;
         """)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.setAlignment(Qt.AlignCenter)
+        self.setWordWrap(True)
 
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:

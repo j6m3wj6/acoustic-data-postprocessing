@@ -40,7 +40,7 @@ FIGURE_CONF = {
             "max": 100,
             "label": "",
             "unit": "dBSPL",
-            "scale": "log"
+            "scale": "linear"
         },
         "Sub_Y-Axis": {
             "auto-scale": True,
@@ -48,7 +48,7 @@ FIGURE_CONF = {
             "max": 100,
             "label": "",
             "unit": "dBSPL",
-            "scale": "log"
+            "scale": "linear"
         }
     }
 }
@@ -66,7 +66,7 @@ UI_CONF = {
         "canvasPool": {
             "0": {
                 "id": 0,
-                "types": ["SPL", "THD"],
+                "types": ["Sound Pressure Level", "THD Ratio"],
                 "parameter": FIGURE_CONF
             },
             "1": {
@@ -76,14 +76,20 @@ UI_CONF = {
             },
             "2": {
                 "id": 2,
-                "types": ["Excursion", "None"],
+                "types": ["THD Level", "Level and Distortion"],
                 "parameter": FIGURE_CONF
             },
             "3": {
                 "id": 3,
-                "types": ["None", "None"],
+                "types": ["Distortion Product Level", "Distortion Product Ratio"],
+                "parameter": FIGURE_CONF
+            },
+            "4": {
+                "id": 4,
+                "types": ["Rub & Buzz Peak Ratio", "None"],
                 "parameter": FIGURE_CONF
             }
+
         }
     }
 }

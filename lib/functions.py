@@ -52,7 +52,7 @@ def verify_license(license):
                 if char == check_digit:
                     check_digit_count += 1
                 score += ord(char)
-        if score == 1772 and check_digit_count == 5:
+        if score == 1523 and check_digit_count == 4:
             print("::: license (%s) is Valid" % license)
             return True
         return False
@@ -237,8 +237,9 @@ def load_KLIPPEL_fileData(path):
 
             for i in range(int(len(data.columns)/2)):
                 measurementData = Measurement(channel_count=1, id=i+1)
-                val = pd.Series(data.iloc[:, i*2+1], name='y', dtype=float)
+                val = pd.Series(data.iloc[:, i*2+1], name='y')
                 freq = data.iloc[:, i*2]
+
                 freq = [float(f.replace(',', '').strip()) for f in freq]
                 freq = pd.Series(freq, name='x', dtype=float)
                 # 'Frequency [Hz]', 'Sound Pessure Level [dB]  / [2.83V 1m]'
@@ -300,15 +301,44 @@ def load_COMSOL_fileData(path):
     return filedata
 
 
+def determineUnitByType(type):
+    if type in [CurveType.THD]:
+        return "%"
+    elif type in [CurveType.SPL]:
+        return "dBSPL"
+    elif type in [CurveType.IMP]:
+        return "Ohm"
+    elif type in [CurveType.PHS]:
+        return "Deg"
+    else:
+        return "dB"
+
+
 def determineTypeByTestName(test_name):
     if ("Phase" in test_name):
         return CurveType.PHS
     elif ("Impedance" in test_name):
         return CurveType.IMP
-    elif ("SPL" in test_name or "CEA" in test_name or 'RMS' in test_name):
+
+    elif ('RMS' in test_name):
         return CurveType.SPL
+    elif ("THD Ratio" in test_name):
+        return CurveType.THD
+    elif ("THD Level" in test_name):
+        return CurveType.THDL
+    elif ("Level and Distortion" in test_name):
+        return CurveType.LD
+    elif ("Distortion Product Level" in test_name):
+        return CurveType.DPL
+    elif ("Distortion Product Ratio" in test_name):
+        return CurveType.DPR
+    elif ("Rub and Buzz Peak Ratio" in test_name):
+        return CurveType.RBPR
     elif ("THD" in test_name):
         return CurveType.THD
+
+    elif ("SPL" in test_name or "CEA" in test_name or 'Level' in test_name):
+        return CurveType.SPL
     else:
         return CurveType.NoType
 

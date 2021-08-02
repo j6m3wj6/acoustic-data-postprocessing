@@ -20,7 +20,7 @@ class DockWg_Canvas(QDockWidget):
         btn_MainwithThreeSmallWindows = QPushButton('Main + 3')
         # btn_MainwithScrollArea = QPushButton('Main + Scroll')
         self.lb_canvas = []
-        for c in self.mainwindow.wg_canvas.canvasPool[:-1]:
+        for c in self.mainwindow.wg_canvas.canvasPool[:]:
             self.lb_canvas.append(Lb_Draggable(c.get_name(), c.id))
         btn_axis_setting = QPushButton("Axis Setting")
         btn_processing = QPushButton("Post-Processing")
@@ -28,7 +28,7 @@ class DockWg_Canvas(QDockWidget):
       # Layout
         vbly = QVBoxLayout()
         vbly.addWidget(QLabel("Setting ————————"))
-        btnGroup = [btn_Main, btn_UpAndDown]
+        btnGroup = [btn_Main, btn_UpAndDown, btn_Quater]
         for btn in btnGroup:
             vbly.addWidget(btn)
         vbly.addWidget(btn_axis_setting)
