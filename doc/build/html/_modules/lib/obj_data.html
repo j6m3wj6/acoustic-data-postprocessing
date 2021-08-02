@@ -90,7 +90,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">Data Object Module API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../library.html">Library Module API</a></li>
 </ul>
 
@@ -169,17 +168,17 @@
 <span class="kn">import</span> <span class="nn">traceback</span>
 
 
-<div class="viewcode-block" id="Extended_Enum"><a class="viewcode-back" href="../../data.html#lib.obj_data.Extended_Enum">[docs]</a><span class="k">class</span> <span class="nc">Extended_Enum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<div class="viewcode-block" id="Extended_Enum.list"><a class="viewcode-back" href="../../data.html#lib.obj_data.Extended_Enum.list">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Extended_Enum"><a class="viewcode-back" href="../../library.html#lib.obj_data.Extended_Enum">[docs]</a><span class="k">class</span> <span class="nc">Extended_Enum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="Extended_Enum.list"><a class="viewcode-back" href="../../library.html#lib.obj_data.Extended_Enum.list">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">cls</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Extended_Enum.index"><a class="viewcode-back" href="../../data.html#lib.obj_data.Extended_Enum.index">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Extended_Enum.index"><a class="viewcode-back" href="../../library.html#lib.obj_data.Extended_Enum.index">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">_type</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">_type</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="CurveType"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveType">[docs]</a><span class="k">class</span> <span class="nc">CurveType</span><span class="p">(</span><span class="n">Extended_Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="CurveType"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveType">[docs]</a><span class="k">class</span> <span class="nc">CurveType</span><span class="p">(</span><span class="n">Extended_Enum</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Common acoustic test data types.&#39;&#39;&#39;</span>
     <span class="n">NoType</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
     <span class="n">SPL</span> <span class="o">=</span> <span class="s1">&#39;SPL&#39;</span>
@@ -190,7 +189,7 @@
     <span class="n">ALL</span> <span class="o">=</span> <span class="s1">&#39;All&#39;</span></div>
 
 
-<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">():</span>
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The top level of data structure.</span>
 <span class="sd">    It contains general infomation and configuration of the project.</span>
@@ -211,11 +210,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span> <span class="o">=</span> <span class="n">UI_CONF</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;::: initial location: &quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="Project.get_path"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.get_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.get_path"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.get_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return absolute path of this project file location in user&#39;s computer.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;File Location&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span></div>
 
-<div class="viewcode-block" id="Project.append_file"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.append_file"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Append a file to this Project instance.</span>
 
@@ -223,7 +222,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.delete_files"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.delete_files"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete specific files from this Project instance.</span>
 
@@ -232,23 +231,32 @@
         <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">_f</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.clear_files"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.clear_files">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.clear_files"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.clear_files">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Clear all the files in this Project instance.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_check_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pj</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">pj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Project</span><span class="p">()</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not the same&quot;</span><span class="p">,</span> <span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">pj.__dict__.keys(): &quot;</span><span class="p">,</span> <span class="n">pj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Project.__dict__.keys(): &quot;</span><span class="p">,</span> <span class="n">Project</span><span class="p">()</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="n">li1</span> <span class="o">=</span> <span class="n">pj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-            <span class="n">li2</span> <span class="o">=</span> <span class="n">Project</span><span class="p">()</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="c1"># @classmethod</span>
+    <span class="c1"># def __setstate__(self, state):</span>
+    <span class="c1">#     if state.keys() is not Project().__dict__.keys():</span>
+    <span class="c1">#         li_state = state.keys()</span>
+    <span class="c1">#         li_class = Project().__dict__.keys()</span>
+    <span class="c1">#         for _dif_ in list(set(li_state) - set(li_class)):</span>
+    <span class="c1">#             del state[_dif_]</span>
+    <span class="c1">#         initial_state = {</span>
+    <span class="c1">#             &quot;info&quot;: {</span>
+    <span class="c1">#                 &quot;Name&quot;: &quot;Untitle&quot;,</span>
+    <span class="c1">#                 &quot;File Location&quot;: sys.path[0],</span>
+    <span class="c1">#                 &#39;Create Time&#39;: dt.datetime.today().strftime(&quot;%Y/%m/%d %H:%M:%S&quot;),</span>
+    <span class="c1">#                 &#39;Last Saved Time&#39;: dt.datetime.today().strftime(&quot;%Y/%m/%d %H:%M:%S&quot;),</span>
+    <span class="c1">#             },</span>
+    <span class="c1">#             &#39;files&#39;: [],</span>
+    <span class="c1">#             &#39;ui_conf&#39;: UI_CONF</span>
+    <span class="c1">#         }</span>
+    <span class="c1">#         for _dif_ in list(set(li_class) - set(li_state)):</span>
+    <span class="c1">#             state[_dif_] = initial_state[_dif_]</span>
+    <span class="c1">#     self.__dict__.update(state)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Difference:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">li1</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">li2</span><span class="p">))</span> <span class="o">+</span>
-                  <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">li2</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">li1</span><span class="p">)))</span>
-
-<div class="viewcode-block" id="Project.load_project"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.load_project">[docs]</a>    <span class="o">@</span> <span class="nb">classmethod</span>
+<div class="viewcode-block" id="Project.load_project"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.load_project">[docs]</a>    <span class="o">@</span> <span class="nb">classmethod</span>
     <span class="k">def</span> <span class="nf">load_project</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve project&#39;s data from a computer file on specific location.</span>
@@ -275,14 +283,13 @@
                     <span class="n">unpickled_project</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;File Location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">location</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span>
                         <span class="s1">&#39;/&#39;</span><span class="p">)]</span>
                 <span class="n">unpickled_project</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-                <span class="c1"># Project._check_attr(unpickled_project)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;____________finish obj_data.Project.load_project()&quot;</span><span class="p">)</span>
                 <span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">unpickled_project</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Project</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Project.dump"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.dump"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save project&#39;s data to computer file on specific location.</span>
 
@@ -314,7 +321,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">####################################&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.print"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.print"><a class="viewcode-back" href="../../library.html#lib.obj_data.Project.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Print the infomation of this Project instance.&quot;&quot;&quot;</span>
         <span class="c1"># msg = &quot;&quot;</span>
         <span class="c1"># msg += &quot;\nProject: =================&quot;</span>
@@ -327,25 +334,14 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;____keys: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Name: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">File location: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_path</span><span class="p">()))</span>
-        <span class="c1"># for _f in self.files:</span>
-        <span class="c1">#     _f.print()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;============================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="n">_f</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;============================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
         <span class="c1"># return msg</span>
 
-<span class="c1">#### Undo #####</span>
-<div class="viewcode-block" id="Project.update_ui_conf"><a class="viewcode-back" href="../../data.html#lib.obj_data.Project.update_ui_conf">[docs]</a>    <span class="k">def</span> <span class="nf">update_ui_conf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span><span class="p">[</span><span class="s2">&quot;MyCanvas&quot;</span><span class="p">][</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">mode</span>
-        <span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">canvas_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span><span class="p">[</span><span class="s2">&quot;MyCanvas&quot;</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">][</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">_c</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">canvas_set</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">canvasPool</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span><span class="p">[</span><span class="s2">&quot;MyCanvas&quot;</span><span class="p">][</span><span class="s2">&quot;canvasPool&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">_c</span><span class="o">.</span><span class="n">id</span><span class="p">)][</span><span class="s2">&quot;types&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">_t</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">_c</span><span class="o">.</span><span class="n">ax_types</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui_conf</span><span class="p">[</span><span class="s2">&quot;MyCanvas&quot;</span><span class="p">][</span><span class="s2">&quot;canvasPool&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span>
-                <span class="n">_c</span><span class="o">.</span><span class="n">id</span><span class="p">)][</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_c</span><span class="o">.</span><span class="n">parameter</span></div></div>
 
-
-<div class="viewcode-block" id="FileData"><a class="viewcode-back" href="../../data.html#lib.obj_data.FileData">[docs]</a><span class="k">class</span> <span class="nc">FileData</span><span class="p">():</span>
+<div class="viewcode-block" id="FileData"><a class="viewcode-back" href="../../library.html#lib.obj_data.FileData">[docs]</a><span class="k">class</span> <span class="nc">FileData</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The 2nd level of data structure.</span>
 <span class="sd">    It contains general infomation of an imported files.</span>
@@ -365,16 +361,15 @@
             <span class="s1">&#39;Import Time&#39;</span><span class="p">:</span> <span class="n">import_time</span><span class="p">,</span>
             <span class="s1">&#39;Last Modified Time&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span>
         <span class="p">}</span>
-<span class="c1">#### Undo #####</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">testnames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valid_testnames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="FileData.get_import_time"><a class="viewcode-back" href="../../data.html#lib.obj_data.FileData.get_import_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_import_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="FileData.get_import_time"><a class="viewcode-back" href="../../library.html#lib.obj_data.FileData.get_import_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_import_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Return imported time of this FileData instance.&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Import Time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FileData.append_measurement"><a class="viewcode-back" href="../../data.html#lib.obj_data.FileData.append_measurement">[docs]</a>    <span class="k">def</span> <span class="nf">append_measurement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">measurement</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="FileData.append_measurement"><a class="viewcode-back" href="../../library.html#lib.obj_data.FileData.append_measurement">[docs]</a>    <span class="k">def</span> <span class="nf">append_measurement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">measurement</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Append a measurement to this FileData instance.</span>
 
@@ -383,27 +378,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">m_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">measurement</span></div>
 
-<span class="c1">#### Undo #####</span>
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="c1"># Add baz back since it doesn&#39;t exist in the pickle</span>
-        <span class="c1"># if &quot;valid_testnames&quot; not in self.__dict__.keys():</span>
-        <span class="c1">#     self.valid_testnames = self.testnames</span>
-
-<div class="viewcode-block" id="FileData.print"><a class="viewcode-back" href="../../data.html#lib.obj_data.FileData.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FileData.print"><a class="viewcode-back" href="../../library.html#lib.obj_data.FileData.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print the infomation of this FileData instance.&quot;&quot;&quot;</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;------------&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Name: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\t</span><span class="s2">Source: </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n\t</span><span class="s2">file_path: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Source&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;File Path&quot;</span><span class="p">]))</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Import time: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_import_time</span><span class="p">()))</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Sequence:&quot;</span>
-        <span class="c1"># for _k, _v in self.sequence.items():</span>
-        <span class="c1">#     msg += (&quot;\n\t  Key: %s&quot; % _k)</span>
-        <span class="c1">#     msg += (&quot;\n\t  Curves: &quot;)</span>
-        <span class="c1">#     for _c in _v:</span>
-        <span class="c1">#         msg += (f&quot;\n\t\t%s, %s, %s&quot; %</span>
-        <span class="c1">#                 (_c.type.value, _c.label, _c.note))</span>
+
         <span class="k">for</span> <span class="n">_m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="n">_m</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------------------&quot;</span><span class="p">)</span>
@@ -411,7 +392,7 @@
         <span class="k">return</span> <span class="n">msg</span></div></div>
 
 
-<div class="viewcode-block" id="Measurement"><a class="viewcode-back" href="../../data.html#lib.obj_data.Measurement">[docs]</a><span class="k">class</span> <span class="nc">Measurement</span><span class="p">:</span>
+<div class="viewcode-block" id="Measurement"><a class="viewcode-back" href="../../library.html#lib.obj_data.Measurement">[docs]</a><span class="k">class</span> <span class="nc">Measurement</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The 3rd level of data structure.</span>
 
@@ -424,7 +405,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_channels</span><span class="p">(</span><span class="n">channel_count</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Measurement.init_channels"><a class="viewcode-back" href="../../data.html#lib.obj_data.Measurement.init_channels">[docs]</a>    <span class="k">def</span> <span class="nf">init_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Measurement.init_channels"><a class="viewcode-back" href="../../library.html#lib.obj_data.Measurement.init_channels">[docs]</a>    <span class="k">def</span> <span class="nf">init_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create given numbers of Channel instances for this Measurement instance.</span>
 
@@ -433,7 +414,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Measurement.print"><a class="viewcode-back" href="../../data.html#lib.obj_data.Measurement.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Measurement.print"><a class="viewcode-back" href="../../library.html#lib.obj_data.Measurement.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print the infomation.&quot;&quot;&quot;</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Measurement____id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -445,7 +426,7 @@
         <span class="k">return</span> <span class="n">msg</span></div></div>
 
 
-<div class="viewcode-block" id="Channel"><a class="viewcode-back" href="../../data.html#lib.obj_data.Channel">[docs]</a><span class="k">class</span> <span class="nc">Channel</span><span class="p">:</span>
+<div class="viewcode-block" id="Channel"><a class="viewcode-back" href="../../library.html#lib.obj_data.Channel">[docs]</a><span class="k">class</span> <span class="nc">Channel</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The 4th level of data structure.</span>
 
@@ -459,18 +440,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="Channel.print"><a class="viewcode-back" href="../../data.html#lib.obj_data.Channel.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Channel.print"><a class="viewcode-back" href="../../library.html#lib.obj_data.Channel.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Print the infomation.&quot;&quot;&quot;</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Channel____id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;  Sequence:</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">for</span> <span class="n">test</span><span class="p">,</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">test</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">curve</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">_k</span><span class="p">,</span> <span class="n">_v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;  :::</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">_k</span><span class="p">,</span> <span class="n">_v</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">_v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">_v</span><span class="o">.</span><span class="n">note</span><span class="p">))</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">console</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">msg</span></div></div>
 
 
-<div class="viewcode-block" id="CurveData"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData">[docs]</a><span class="k">class</span> <span class="nc">CurveData</span><span class="p">:</span>
+<div class="viewcode-block" id="CurveData"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData">[docs]</a><span class="k">class</span> <span class="nc">CurveData</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The bottom (5th) level of data structure.</span>
 
@@ -501,10 +483,11 @@
             <span class="s2">&quot;visible&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
             <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="n">LINEWIDTH_DEFAULT</span><span class="p">,</span>
+            <span class="s2">&quot;linestyle&quot;</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
         <span class="p">}</span>
 
   <span class="c1"># Get and Set Function</span>
-<div class="viewcode-block" id="CurveData.get_legend"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData.get_legend">[docs]</a>    <span class="k">def</span> <span class="nf">get_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="CurveData.get_legend"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData.get_legend">[docs]</a>    <span class="k">def</span> <span class="nf">get_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the legend wrapped with a given characters long.</span>
 
@@ -512,7 +495,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CurveData.create_line2D"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData.create_line2D">[docs]</a>    <span class="k">def</span> <span class="nf">create_line2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">,</span> <span class="n">ax_id</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">LINEWIDTH_DEFAULT</span><span class="p">):</span>
+<div class="viewcode-block" id="CurveData.create_line2D"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData.create_line2D">[docs]</a>    <span class="k">def</span> <span class="nf">create_line2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">,</span> <span class="n">ax_id</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">LINEWIDTH_DEFAULT</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot a curve on given canvas&#39;s axis with specific order, text-wrap and color.</span>
 
@@ -535,16 +518,18 @@
                 <span class="n">color</span> <span class="o">=</span> <span class="n">COLORS</span><span class="p">[</span><span class="n">linecount</span> <span class="o">%</span> <span class="mi">10</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">]:</span>
             <span class="n">linewidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;linestyle&quot;</span><span class="p">]:</span>
+            <span class="n">linestyle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;linestyle&quot;</span><span class="p">]</span>
 
         <span class="n">ydata</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">shifted</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ydata</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span>
                              <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_legend</span><span class="p">(</span><span class="n">legend_wrap</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                             <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">picker</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                             <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span> <span class="n">picker</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span></div>
 
   <span class="c1"># Unary Post-processing</span>
-<div class="viewcode-block" id="CurveData.shift"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData.shift">[docs]</a>    <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="CurveData.shift"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData.shift">[docs]</a>    <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shift ydata with given offset, which is always compared with the original data.</span>
 <span class="sd">        That is, if the given offset is zero, it would be the original curve.</span>
@@ -556,7 +541,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">new_ydata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shifted</span> <span class="o">+=</span> <span class="p">(</span><span class="n">offset</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">shifted</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CurveData.align"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData.align">[docs]</a>    <span class="k">def</span> <span class="nf">align</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targetDB</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+<div class="viewcode-block" id="CurveData.align"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData.align">[docs]</a>    <span class="k">def</span> <span class="nf">align</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targetDB</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shift the curve to align given magnitude at given frequency.</span>
 
@@ -579,7 +564,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="CurveData.print"><a class="viewcode-back" href="../../data.html#lib.obj_data.CurveData.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="CurveData.print"><a class="viewcode-back" href="../../library.html#lib.obj_data.CurveData.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Print the infomation.&quot;&quot;&quot;</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%s, %s, %s, line = </span><span class="si">{</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">note</span><span class="p">))</span>

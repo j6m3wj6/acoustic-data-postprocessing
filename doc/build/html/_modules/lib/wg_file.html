@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.wg_file &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data%20Source.html">SAE聲學測試軟體</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.wg_file</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.wg_file</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lib.dlg_advance_selector</span> <span class="kn">import</span> <span class="n">Dlg_AdvancedSelector</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">indexOf</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>\
+    <span class="n">QGroupBox</span><span class="p">,</span> <span class="n">QScrollArea</span><span class="p">,</span> <span class="n">QButtonGroup</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> \
+    <span class="n">QToolButton</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">,</span> <span class="n">QSizePolicy</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QIcon</span>
+<span class="kn">from</span> <span class="nn">.ui_conf</span> <span class="kn">import</span> <span class="n">ICON_DIR</span>
+<span class="kn">from</span> <span class="nn">.wg_curve</span> <span class="kn">import</span> <span class="n">Wg_Curve</span>
+<span class="kn">from</span> <span class="nn">.wg_selfdefined</span> <span class="kn">import</span> <span class="n">Toolbtn_Link</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+
+
+<div class="viewcode-block" id="Wg_File"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File">[docs]</a><span class="k">class</span> <span class="nc">Wg_File</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fileData</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span> <span class="o">=</span> <span class="n">filepool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span> <span class="o">=</span> <span class="n">filepool</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span> <span class="o">=</span> <span class="n">fileData</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixedHeight</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reload_checkstate</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Wg_File.initUI"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initial User Interface.&quot;&quot;&quot;</span>
+      <span class="c1"># Create Components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_filename</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_filename</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;lb_filename&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btngp_tests</span> <span class="o">=</span> <span class="n">QButtonGroup</span><span class="p">()</span>
+        <span class="n">wg_btns</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">wg_btns</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;wg_btns&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly_tests</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">wg_btns</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">testname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">):</span>
+            <span class="n">display_test</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
+                <span class="n">testname</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">btn_test</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">display_test</span><span class="p">)</span>
+            <span class="n">btn_test</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;btn_test&quot;</span><span class="p">)</span>
+            <span class="n">btn_test</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+            <span class="n">btn_test</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changetab_test</span><span class="p">)</span>
+            <span class="n">btn_test</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vbly_tests</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_test</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btngp_tests</span><span class="o">.</span><span class="n">addButton</span><span class="p">(</span><span class="n">btn_test</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">btn_test</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">vbly_data</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="c1"># self.toolbtn_checkall.setText(&quot;Check All&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Check All&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextBesideIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">ICON_DIR</span><span class="o">+</span><span class="s2">&quot;checkall.png&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="c1"># self.toolbtn_uncheckall.setText(&quot;Uncheck All&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Uncheck All&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextBesideIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">ICON_DIR</span><span class="o">+</span><span class="s2">&quot;uncheckall.png&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="c1"># self.toolbtn_advanced.setText(&quot;Selector&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Selector&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonTextBesideIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">ICON_DIR</span><span class="o">+</span><span class="s2">&quot;selector.png&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">advance_selector</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_link</span> <span class="o">=</span> <span class="n">Toolbtn_Link</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">()</span>
+        <span class="n">hbly_checked</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_advanced</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span>
+                                         <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">))</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_link</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">hbly_checked</span><span class="p">)</span>
+
+        <span class="n">scroll</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="n">wg_curves</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">wg_curves</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;wg_curves&quot;</span><span class="p">)</span>
+        <span class="n">vbly_curves</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">wg_curves</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">ch_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">channel</span><span class="p">)):</span>
+                <span class="n">wg_curve</span> <span class="o">=</span> <span class="n">Wg_Curve</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">ch_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_testname</span><span class="p">())</span>
+                <span class="n">vbly_curves</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">wg_curve</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="n">wg_curves</span><span class="p">)</span>
+
+      <span class="c1"># Layout</span>
+        <span class="n">vbly_data</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="p">)</span>
+        <span class="n">vbly_data</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">scroll</span><span class="p">)</span>
+
+        <span class="n">hbly</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">wg_btns</span><span class="p">)</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbly_data</span><span class="p">)</span>
+
+        <span class="n">vbly</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lb_filename</span><span class="p">)</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbly</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbly</span><span class="p">)</span>
+      <span class="c1"># Style and Setting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly_tests</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly_tests</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly_tests</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">vbly_curves</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="n">vbly_curves</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">vbly_curves</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">hbly_checked</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># hbly_checked.setAlignment(Qt.AlignLeft)</span>
+
+        <span class="n">hbly</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">scroll</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOn</span><span class="p">)</span>
+        <span class="c1"># scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            QWidget#Wg_File {</span>
+<span class="s2">                min-height: 300px;</span>
+<span class="s2">                max-height: 800px;</span>
+<span class="s2">                border: 2px solid #808080</span>
+<span class="s2">            }</span>
+<span class="s2">            QLabel#lb_filename {</span>
+<span class="s2">                font-size: 14px;</span>
+<span class="s2">                font-weight: bold;</span>
+<span class="s2">            }</span>
+<span class="s2">            QLabel#lb_label {</span>
+<span class="s2">                font-size: 12px;</span>
+<span class="s2">            }</span>
+<span class="s2">            QLabel#lb_note {</span>
+<span class="s2">                color: #808080</span>
+<span class="s2">            }</span>
+<span class="s2">            QWidget#wg_btns {</span>
+<span class="s2">                max-width: 100px;</span>
+<span class="s2">            }</span>
+<span class="s2">            QPushButton {</span>
+<span class="s2">                Text-align: left;</span>
+<span class="s2">                padding: 6px 6px;</span>
+<span class="s2">                width: 80px;</span>
+<span class="s2">            }</span>
+<span class="s2">            QPushButton::checked {</span>
+<span class="s2">                background-color: white;</span>
+<span class="s2">            }</span>
+<span class="s2">            </span>
+<span class="s2">            QToolButton {</span>
+<span class="s2">                border: transparent</span>
+<span class="s2">            }</span>
+<span class="s2">            </span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+      <span class="c1"># Connect Functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_checkall</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">checkState</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_all</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">checkState</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_uncheckall</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">event</span><span class="p">,</span> <span class="n">checkState</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">toggle_all</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">checkState</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_link</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toggle_link</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_File.paintEvent"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pe</span><span class="p">):</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">QStyleOption</span><span class="p">()</span>
+        <span class="n">o</span><span class="o">.</span><span class="n">initFrom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_File.toggle_link"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.toggle_link">[docs]</a>    <span class="k">def</span> <span class="nf">toggle_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># print(&quot;!!! wg_file.toggle_link !!!&quot;, self.toolbtn_link.isChecked())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_link</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbtn_link</span><span class="o">.</span><span class="n">toggle_style</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span></div>
+
+    <span class="c1"># def is_valid(self, testname):</span>
+    <span class="c1">#     btn_tests = self.wg_file.findChildren(QPushButton, &quot;btn_test&quot;)</span>
+    <span class="c1">#     for btn in btn_tests:</span>
+    <span class="c1">#         if btn.isEnable() and btn.text() == testname:</span>
+    <span class="c1">#             return True</span>
+    <span class="c1">#     return False</span>
+
+<div class="viewcode-block" id="Wg_File.reload_checkstate"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.reload_checkstate">[docs]</a>    <span class="k">def</span> <span class="nf">reload_checkstate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">testname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">update_canvas</span><span class="p">(</span><span class="n">curveData</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">,</span>
+                                       <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveOrder</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changetab_test</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Wg_File.changetab_test"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.changetab_test">[docs]</a>    <span class="k">def</span> <span class="nf">changetab_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wg</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+            <span class="n">wg</span><span class="o">.</span><span class="n">update_info</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Wg_File.get_visible_curveData"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.get_visible_curveData">[docs]</a>    <span class="k">def</span> <span class="nf">get_visible_curveData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">visible_curveData</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+            <span class="n">visible_curveData</span><span class="p">[</span><span class="n">testname</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]:</span>
+                    <span class="n">visible_curveData</span><span class="p">[</span><span class="n">testname</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curveData</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">visible_curveData</span></div>
+
+<div class="viewcode-block" id="Wg_File.get_checkedItems"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.get_checkedItems">[docs]</a>    <span class="k">def</span> <span class="nf">get_checkedItems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">testname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mergeAll</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mergeAll</span><span class="p">:</span>
+            <span class="n">checked_items</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+                    <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">wg_curve</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checked_items</span><span class="p">:</span>
+                        <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wg_curve</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">testname</span><span class="p">:</span>
+            <span class="n">testname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_testname</span><span class="p">()</span>
+            <span class="n">checked_items</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]:</span>
+                    <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wg_curve</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">checked_items</span></div>
+
+<div class="viewcode-block" id="Wg_File.get_testname"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.get_testname">[docs]</a>    <span class="k">def</span> <span class="nf">get_testname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">btngp_tests</span><span class="o">.</span><span class="n">checkedButton</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_File.toggle_all"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.toggle_all">[docs]</a>    <span class="k">def</span> <span class="nf">toggle_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkState</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">testname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">set_and_handle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">wg_file.toggle_all&quot;</span><span class="p">,</span> <span class="n">checkState</span><span class="p">,</span> <span class="n">testname</span><span class="p">)</span>
+        <span class="n">wg_curves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_Curve&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wg</span> <span class="ow">in</span> <span class="n">wg_curves</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wg</span><span class="o">.</span><span class="n">checkbox</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">checkState</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">set_and_handle</span><span class="p">:</span>
+                    <span class="n">wg</span><span class="o">.</span><span class="n">set_and_handle_checkState</span><span class="p">(</span><span class="n">checkState</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">testname</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">wg</span><span class="o">.</span><span class="n">handle_checked</span><span class="p">(</span><span class="n">checkState</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">testname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_File.handle_checked"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.handle_checked">[docs]</a>    <span class="k">def</span> <span class="nf">handle_checked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkState</span><span class="p">,</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">ch_idx</span><span class="p">,</span> <span class="n">curveOrder</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">testname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">measurements</span><span class="p">[</span><span class="n">m_idx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">link</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">testname</span><span class="p">:</span>
+            <span class="n">testname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_testname</span><span class="p">()</span>
+        <span class="c1"># print(&quot;wg_file.handle_checked, checkState %s, self.link %s, link %s, current tab %s, testname %s&quot;</span>
+        <span class="c1">#       % (checkState, self.link, link, self.btngp_tests.checkedButton().text(), testname))</span>
+        <span class="c1"># measurement.print()</span>
+        <span class="k">if</span> <span class="n">link</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+                <span class="c1"># print(_t)</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="n">ch_idx</span><span class="p">]</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">_t</span><span class="p">]</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">testnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">_t</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_canvas</span><span class="p">(</span>
+                    <span class="n">curveData</span><span class="p">,</span> <span class="n">checkState</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">curveOrder</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curveData</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="n">ch_idx</span><span class="p">]</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">testname</span><span class="p">]</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">testnames</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_canvas</span><span class="p">(</span>
+                <span class="n">curveData</span><span class="p">,</span> <span class="n">checkState</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">curveOrder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_File.update_canvas"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.update_canvas">[docs]</a>    <span class="k">def</span> <span class="nf">update_canvas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curveData</span><span class="p">,</span> <span class="n">checkState</span><span class="p">,</span> <span class="n">curveOrder</span><span class="p">):</span>
+        <span class="n">canvas</span><span class="p">,</span> <span class="n">ax_id</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">get_canvas</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span> <span class="ow">and</span> <span class="n">checkState</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">:</span>
+            <span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;_nolegend_&#39;</span><span class="p">)</span>
+            <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ax</span> <span class="ow">and</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">checkState</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
+                <span class="n">legend_wrap</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="n">canvas</span><span class="o">.</span><span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;General&quot;</span><span class="p">][</span><span class="s1">&#39;Legend&#39;</span><span class="p">][</span><span class="s1">&#39;text-wrap&#39;</span><span class="p">])</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">curveData</span><span class="o">.</span><span class="n">create_line2D</span><span class="p">(</span>
+                    <span class="n">canvas</span><span class="p">,</span> <span class="n">ax_id</span><span class="p">,</span> <span class="n">curveOrder</span><span class="p">,</span> <span class="n">legend_wrap</span><span class="p">)</span>
+                <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lines</span><span class="p">))</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+        <span class="c1"># print(&quot;  :::%s, order=%s&quot; %</span>
+        <span class="c1">#       (curveData.print(console=False), curveOrder), bool(checkState))</span>
+        <span class="k">return</span> <span class="n">curveData</span></div>
+
+<div class="viewcode-block" id="Wg_File.advance_selector"><a class="viewcode-back" href="../../library.html#lib.wg_file.Wg_File.advance_selector">[docs]</a>    <span class="k">def</span> <span class="nf">advance_selector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">Dlg_AdvancedSelector</span><span class="p">(</span><span class="n">wg_file</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;advance_selector&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

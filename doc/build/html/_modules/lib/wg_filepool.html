@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.wg_filepool &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data%20Source.html">SAE聲學測試軟體</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.wg_filepool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.wg_filepool</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lib.ui_conf</span> <span class="kn">import</span> <span class="n">LINESTYLES</span><span class="p">,</span> <span class="n">LINEWIDTHS</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> \
+    <span class="n">QListWidget</span><span class="p">,</span> <span class="n">QListWidgetItem</span><span class="p">,</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">,</span> \
+    <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QAbstractItemView</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">.functions</span> <span class="kn">import</span> <span class="n">determineTypeByTestName</span>
+<span class="kn">from</span> <span class="nn">.wg_selfdefined</span> <span class="kn">import</span> <span class="n">Cbox_Color</span><span class="p">,</span> <span class="n">Cbox_Linewidth</span>
+<span class="kn">from</span> <span class="nn">.wg_file</span> <span class="kn">import</span> <span class="n">Wg_File</span>
+
+<span class="n">TB_CURVES_HEADER</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">,</span> <span class="s1">&#39;Note&#39;</span><span class="p">,</span> <span class="s1">&#39;Data testname&#39;</span><span class="p">,</span> <span class="s1">&#39;Color&#39;</span><span class="p">,</span> <span class="s1">&#39;LineWidth&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Wg_FilePool"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool">[docs]</a><span class="k">class</span> <span class="nc">Wg_FilePool</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainwindow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">mainwindow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;Wg_FilePool&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Wg_FilePool.initUI"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initial User Interface.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vbly</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_FilePool.append_file"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileData</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Wg_File instance carrying given data and add it to this Wg_FilePool instance.</span>
+
+<span class="sd">        :param FileData fileData: A FileData object generated from the imported file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wg_file</span> <span class="o">=</span> <span class="n">Wg_File</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileData</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">wg_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wg_FilePool.delete_files"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removing Wg_File instances with given filenames from this Wg_FilePool instance.</span>
+
+<span class="sd">        :param List[str] filenames: A list of filenames user intends to delete.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span>
+        <span class="n">wg_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+        <span class="n">wg_files_to_del</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wg_file</span> <span class="ow">in</span> <span class="n">wg_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+                <span class="n">wg_files_to_del</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wg_file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wg_files_to_del&quot;</span><span class="p">,</span> <span class="n">wg_files_to_del</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wg_del</span> <span class="ow">in</span> <span class="n">wg_files_to_del</span><span class="p">:</span>
+            <span class="n">wg_del</span><span class="o">.</span><span class="n">toggle_all</span><span class="p">(</span><span class="n">checkState</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vbly</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">wg_del</span><span class="p">)</span>
+            <span class="n">wg_del</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_valid_curveData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wg_curve</span><span class="p">,</span> <span class="n">valid_testnames</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Among currently valid tests, return the first curveData of given Wg_Curve whose line is visible. </span>
+
+<span class="sd">        :param Wg_Curve wg_curve: </span>
+<span class="sd">                A given Wg_Curve instance, which represents a certain channel of a measurement. \n</span>
+<span class="sd">                It can retrieve different curve data according to different testname.</span>
+<span class="sd">        :param List[str] valid_testnames: A list of test names that is valid at the run time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="n">valid_testnames</span><span class="p">:</span>
+            <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span> <span class="ow">and</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">curveData</span>
+
+    <span class="k">def</span> <span class="nf">_create_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curveData</span><span class="p">,</span> <span class="n">testname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create and return items of one row for the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label_item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">note_item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">note</span><span class="p">)</span>
+        <span class="n">testname_item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+
+        <span class="n">cbox_color</span> <span class="o">=</span> <span class="n">Cbox_Color</span><span class="p">()</span>
+        <span class="n">cbox_color</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_color</span><span class="p">())</span>
+        <span class="n">cbox_color</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;cbox_color&quot;</span><span class="p">)</span>
+        <span class="n">cbox_linewidth</span> <span class="o">=</span> <span class="n">Cbox_Linewidth</span><span class="p">()</span>
+        <span class="n">lw_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">LINEWIDTHS</span><span class="p">)</span>
+        <span class="n">linewidth_index</span> <span class="o">=</span> <span class="n">LINEWIDTHS</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_linewidth</span><span class="p">())</span>
+        <span class="n">linestyle_index</span> <span class="o">=</span> <span class="n">LINESTYLES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">get_linestyle</span><span class="p">())</span>
+
+        <span class="n">cbox_linewidth</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span>
+            <span class="n">lw_count</span><span class="o">*</span><span class="n">linestyle_index</span> <span class="o">+</span> <span class="n">linewidth_index</span><span class="p">)</span>
+        <span class="n">cbox_linewidth</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;cbox_linewidth&quot;</span><span class="p">)</span>
+
+        <span class="n">testname_item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">testname_item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">^</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEditable</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">label_item</span><span class="p">,</span> <span class="n">note_item</span><span class="p">,</span> <span class="n">testname_item</span><span class="p">,</span> <span class="n">cbox_color</span><span class="p">,</span> <span class="n">cbox_linewidth</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Wg_FilePool.transfer_to_table"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.transfer_to_table">[docs]</a>    <span class="k">def</span> <span class="nf">transfer_to_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QTableWidget</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a table for graph properties&#39; dialog.</span>
+
+<span class="sd">        It contains curves under certain conditions, </span>
+<span class="sd">        such as focusing canvas, valid tests, and link status of each Wg-File instances.</span>
+
+<span class="sd">        Columns includes: Label, Note, Data testname, Color, LineWidth.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># print(&quot;\ntransfer_to_table&quot;)</span>
+        <span class="n">wg_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+        <span class="n">focusing_canvas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">focusing_canvas</span>
+        <span class="n">tb_curves</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">()</span>
+        <span class="n">tb_curves</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TB_CURVES_HEADER</span><span class="p">))</span>
+        <span class="n">tb_curves</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">TB_CURVES_HEADER</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">wg_file</span> <span class="ow">in</span> <span class="n">wg_files</span><span class="p">:</span>
+            <span class="c1"># visible_curveData = wg_file.get_checkedItems(mergeAll=True)</span>
+            <span class="n">checked_wg_curves</span> <span class="o">=</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">get_checkedItems</span><span class="p">(</span><span class="n">mergeAll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">link</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">tb_curves</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">test_item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%s [Link]&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]))</span>
+                <span class="n">test_item</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">lightGray</span><span class="p">)</span>
+                <span class="n">test_item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoItemFlags</span><span class="p">)</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_item</span><span class="p">)</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setSpan</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">TB_CURVES_HEADER</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">checked_wg_curves</span><span class="p">:</span>
+                    <span class="n">curveData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_valid_curveData</span><span class="p">(</span>
+                        <span class="n">wg_curve</span><span class="p">,</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">)</span>
+                    <span class="n">row_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_row</span><span class="p">(</span>
+                        <span class="n">curveData</span><span class="p">,</span> <span class="n">testname</span><span class="o">=</span><span class="s2">&quot;(Link)&quot;</span><span class="p">)</span>
+                    <span class="n">label_item</span> <span class="o">=</span> <span class="n">row_items</span><span class="p">[</span><span class="n">TB_CURVES_HEADER</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)]</span>
+                    <span class="n">label_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
+                        <span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="p">(</span><span class="n">wg_curve</span><span class="p">,</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">testnames</span><span class="p">))</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">tb_curves</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+                    <span class="n">tb_curves</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_items</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">):</span>
+                            <span class="n">tb_curves</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">):</span>
+                            <span class="n">tb_curves</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">tb_curves</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">test_item</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%s [Unlink]&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]))</span>
+                <span class="n">test_item</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">lightGray</span><span class="p">)</span>
+                <span class="n">test_item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoItemFlags</span><span class="p">)</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_item</span><span class="p">)</span>
+                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setSpan</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">TB_CURVES_HEADER</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">determineTypeByTestName</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">focusing_canvas</span><span class="o">.</span><span class="n">ax_types</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">checked_wg_curves</span><span class="p">:</span>
+                        <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line_props</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]:</span>
+                            <span class="k">continue</span>
+                        <span class="n">row_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_row</span><span class="p">(</span><span class="n">curveData</span><span class="p">,</span>  <span class="n">testname</span><span class="p">)</span>
+                        <span class="n">label_item</span> <span class="o">=</span> <span class="n">row_items</span><span class="p">[</span><span class="n">TB_CURVES_HEADER</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
+                            <span class="s1">&#39;Label&#39;</span><span class="p">)]</span>
+                        <span class="n">label_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
+                            <span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="p">(</span><span class="n">wg_curve</span><span class="p">,</span> <span class="p">[</span><span class="n">testname</span><span class="p">]))</span>
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">tb_curves</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+                        <span class="n">tb_curves</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row_items</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">):</span>
+                                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">):</span>
+                                <span class="n">tb_curves</span><span class="o">.</span><span class="n">setCellWidget</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tb_curves</span></div>
+
+<div class="viewcode-block" id="Wg_FilePool.transfer_to_list"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.transfer_to_list">[docs]</a>    <span class="k">def</span> <span class="nf">transfer_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QListWidget</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list for post processing dialog.</span>
+
+<span class="sd">        It contains curves is visible on the focusing canvas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listWidget</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+        <span class="n">listWidget</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">ExtendedSelection</span><span class="p">)</span>
+        <span class="n">focusing_canvas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">focusing_canvas</span>
+        <span class="n">wg_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wg_file</span> <span class="ow">in</span> <span class="n">wg_files</span><span class="p">:</span>
+            <span class="n">file_item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+            <span class="n">file_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">])</span>
+            <span class="n">file_item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoItemFlags</span><span class="p">)</span>
+            <span class="n">file_item</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">lightGray</span><span class="p">)</span>
+            <span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">file_item</span><span class="p">)</span>
+
+            <span class="c1"># checked_wg_curves = wg_file.get_visible_curveData()</span>
+
+            <span class="n">checked_wg_curves</span> <span class="o">=</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">get_checkedItems</span><span class="p">(</span><span class="n">mergeAll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">testname</span> <span class="ow">in</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">fileData</span><span class="o">.</span><span class="n">valid_testnames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">determineTypeByTestName</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">focusing_canvas</span><span class="o">.</span><span class="n">ax_types</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">checked_wg_curves</span><span class="p">:</span>
+                    <span class="n">curveData</span> <span class="o">=</span> <span class="n">wg_curve</span><span class="o">.</span><span class="n">get_curveData</span><span class="p">(</span><span class="n">testname</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">curveData</span><span class="o">.</span><span class="n">line</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">curve_item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+                    <span class="n">curve_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="n">curveData</span><span class="p">)</span>
+                    <span class="n">curve_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:20}</span><span class="s2"> | </span><span class="si">{1:20}</span><span class="s2"> | </span><span class="si">{2:20}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">curveData</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">curveData</span><span class="o">.</span><span class="n">note</span><span class="p">,</span> <span class="n">testname</span><span class="p">))</span>
+                    <span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">curve_item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">listWidget</span></div>
+
+<div class="viewcode-block" id="Wg_FilePool.sync_curveData"><a class="viewcode-back" href="../../library.html#lib.wg_filepool.Wg_FilePool.sync_curveData">[docs]</a>    <span class="k">def</span> <span class="nf">sync_curveData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wg_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="s2">&quot;Wg_File&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">wg_file</span> <span class="ow">in</span> <span class="n">wg_files</span><span class="p">:</span>
+            <span class="n">checked_wg_curves</span> <span class="o">=</span> <span class="n">wg_file</span><span class="o">.</span><span class="n">get_checkedItems</span><span class="p">(</span><span class="n">mergeAll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">wg_curve</span> <span class="ow">in</span> <span class="n">checked_wg_curves</span><span class="p">:</span>
+                <span class="n">wg_curve</span><span class="o">.</span><span class="n">sync_curveData</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

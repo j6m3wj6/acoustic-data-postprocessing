@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.dlg_import_files &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data%20Source.html">SAE聲學測試軟體</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.dlg_import_files</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.dlg_import_files</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span>\
+    <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> \
+    <span class="n">QDialog</span><span class="p">,</span> <span class="n">QDialogButtonBox</span><span class="p">,</span>\
+    <span class="n">QAbstractItemView</span><span class="p">,</span> <span class="n">QHeaderView</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">.functions</span> <span class="kn">import</span> <span class="n">load_file</span>
+
+
+<div class="viewcode-block" id="Dlg_ImportFiles"><a class="viewcode-back" href="../../library.html#lib.dlg_import_files.Dlg_ImportFiles">[docs]</a><span class="k">class</span> <span class="nc">Dlg_ImportFiles</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A dialog for user to import or delete files.</span>
+<span class="sd">    There are four file sources</span>
+
+<span class="sd">    :ivar MainWindow mainwindow: The MainWindow instance this dialog belongs to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainwindow</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">mainwindow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tb_files_reload_status</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Dlg_ImportFiles.initUI"><a class="viewcode-back" href="../../library.html#lib.dlg_import_files.Dlg_ImportFiles.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initail User Interface.&quot;&quot;&quot;</span>
+      <span class="c1"># Create Component</span>
+        <span class="n">file_sources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AP&#39;</span><span class="p">,</span> <span class="s1">&#39;KLIPPEL&#39;</span><span class="p">,</span> <span class="s1">&#39;LEAP&#39;</span><span class="p">,</span> <span class="s1">&#39;COMSOL&#39;</span><span class="p">]</span>
+        <span class="n">btns_import</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_source_</span> <span class="ow">in</span> <span class="n">file_sources</span><span class="p">:</span>
+            <span class="n">btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">_source_</span><span class="p">)</span>
+            <span class="n">btns_import</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btn_import_handleClicked</span><span class="p">)</span>
+
+        <span class="n">btn_deleteFile</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Delete&#39;</span><span class="p">)</span>
+        <span class="n">btn_clearFile</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Clear&#39;</span><span class="p">)</span>
+        <span class="n">btn_exportFile</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Export&#39;</span><span class="p">)</span>
+        <span class="c1"># Table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;    Source    &#39;</span><span class="p">,</span> <span class="s1">&#39;    FileName    &#39;</span><span class="p">,</span> <span class="s1">&#39;    DateTime    &#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;warning_massage&quot;</span><span class="p">)</span>
+
+        <span class="n">dlg_btnBox</span> <span class="o">=</span> <span class="n">QDialogButtonBox</span><span class="p">()</span>
+        <span class="n">dlg_btnBox</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">dlg_btnBox</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="n">dlg_btnBox</span><span class="o">.</span><span class="n">accepted</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">)</span>
+      <span class="c1"># Layout</span>
+        <span class="n">vbly_left</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_btn_</span> <span class="ow">in</span> <span class="n">btns_import</span><span class="p">:</span>
+            <span class="n">vbly_left</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">_btn_</span><span class="p">)</span>
+        <span class="n">vbly_right</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_deleteFile</span><span class="p">)</span>
+        <span class="n">vbly_right</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_clearFile</span><span class="p">)</span>
+
+        <span class="n">hbly_main</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hbly_main</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbly_left</span><span class="p">)</span>
+        <span class="n">hbly_main</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="p">)</span>
+        <span class="n">hbly_main</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbly_right</span><span class="p">)</span>
+
+        <span class="n">vbly_main</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly_main</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbly_main</span><span class="p">)</span>
+        <span class="n">vbly_main</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="p">)</span>
+        <span class="n">vbly_main</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">dlg_btnBox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbly_main</span><span class="p">)</span>
+      <span class="c1"># Connect Functions</span>
+        <span class="n">btn_deleteFile</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_files</span><span class="p">)</span>
+        <span class="n">btn_clearFile</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clear_files</span><span class="p">)</span>
+      <span class="c1"># Style and Setting</span>
+        <span class="n">headerview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+        <span class="n">headerview</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">resizeColumnsToContents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            QTableView::item {</span>
+<span class="s2">                padding-left: 50px;</span>
+<span class="s2">                padding-right: 50px;</span>
+<span class="s2">            }</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Import Files&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dlg_ImportFiles.delete_files"><a class="viewcode-back" href="../../library.html#lib.dlg_import_files.Dlg_ImportFiles.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete files that user select from the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filenames_to_del</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_f</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]]</span>
+
+        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">_f</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">removeRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">filenames_to_del</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dlg_ImportFiles.clear_files"><a class="viewcode-back" href="../../library.html#lib.dlg_import_files.Dlg_ImportFiles.clear_files">[docs]</a>    <span class="k">def</span> <span class="nf">clear_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all files of the project and clear the table simultanenously.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">clear_files</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">removeRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_btn_import_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Dlg_ImportFiles.import_file"><a class="viewcode-back" href="../../library.html#lib.dlg_import_files.Dlg_ImportFiles.import_file">[docs]</a>    <span class="k">def</span> <span class="nf">import_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Import file from given source.</span>
+
+<span class="sd">        :param str source: Indicate what application is the file exported from.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file_existed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">_file_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">_file_</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File already exists&quot;</span><span class="p">)</span>
+                    <span class="n">file_existed</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">file_existed</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                    <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                    <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                    <span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">get_import_time</span><span class="p">()))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not support this file!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR: Not support this file! </span><span class="se">\n</span><span class="s2"> Only accept files from AP, KLIPPEL, LEAP and COMSOL. </span><span class="se">\n</span><span class="s2"> And Please use the import button respectively. &quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_tb_files_reload_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_file_</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">_file_</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Source&quot;</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">_file_</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_files</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">_file_</span><span class="o">.</span><span class="n">get_import_time</span><span class="p">()))</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

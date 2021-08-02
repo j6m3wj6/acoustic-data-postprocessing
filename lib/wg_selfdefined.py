@@ -13,7 +13,7 @@ class Draggable_lines:
         if ax == canvas.ax_main:
             xcoord = 4000
             ycoord = (ax.get_ylim()[0]*1 + ax.get_ylim()[1]*2)/3
-            self.text = ax.text(0, 1, 'x = {:6.2f}, y = {:6.2f}'.format(
+            self.text = ax.text(0, 1.01, 'x = {:6.2f}, y = {:6.2f}'.format(
                 xcoord, ycoord), transform=ax.transAxes, ha='left', color='#0002fd')
             self.vline = ax.axvline(x=xcoord, picker=5, color="#0002fd")
             self.hline = ax.axhline(y=ycoord, picker=5, color="#0002fd")

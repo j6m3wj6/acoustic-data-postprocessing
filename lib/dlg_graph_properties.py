@@ -102,16 +102,16 @@ class Curve_Style_Page(QWidget):
         hbly.addLayout(vbly_parameters, 3)
         self.setLayout(hbly)
       # Connect Functions
-        self.le_legend.textEdited.connect(self.le_legend_handleEdited)
-        self.le_note.textEdited.connect(self.le_note_handleEdited)
+        self.le_legend.textEdited.connect(self._legend_handleEdited)
+        self.le_note.textEdited.connect(self._note_handleEdited)
         self.cbox_color.currentIndexChanged.connect(
-            self.cbox_color_handleChange)
+            self._color_handleChange)
         self.cbox_linewidth.currentIndexChanged.connect(
-            self.cbox_linewidth_handleChange)
+            self._linewidth_handleChange)
         self.btn_replacelabel.clicked.connect(
-            self.btn_replacelabel_handleClicked)
+            self._replacelabel_handleClicked)
         self.btn_mergelabel.clicked.connect(
-            self.btn_mergelabel_handleClicked)
+            self._mergelabel_handleClicked)
         self.tb_curves.itemSelectionChanged.connect(
             self.tb_curves_handleSelect)
         self.tb_curves.cellChanged.connect(self.handle_cellChanged)
@@ -215,7 +215,7 @@ class Curve_Style_Page(QWidget):
             self.le_legend.setText(curveData.label)
             self.le_note.setText(curveData.note)
 
-    def le_legend_handleEdited(self, event):
+    def _legend_handleEdited(self, event):
         selected_firstcolumns = self._get_selected_firstcolumn()
         for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
@@ -233,7 +233,7 @@ class Curve_Style_Page(QWidget):
 
         self.canvas.replot()
 
-    def le_note_handleEdited(self, event):
+    def _note_handleEdited(self, event):
         selected_firstcolumns = self._get_selected_firstcolumn()
         for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
@@ -248,7 +248,7 @@ class Curve_Style_Page(QWidget):
 
         # self.canvas.replot()
 
-    def cbox_color_handleChange(self, event):
+    def _color_handleChange(self, event):
         if event == -1:
             return
         selected_firstcolumns = self._get_selected_firstcolumn()
@@ -267,8 +267,8 @@ class Curve_Style_Page(QWidget):
 
         self.canvas.replot()
 
-    def cbox_linewidth_handleChange(self, event):
-        # print("cbox_linewidth_handleChange", event)
+    def _linewidth_handleChange(self, event):
+        # print("_linewidth_handleChange", event)
         if event == -1:
             return
         selected_firstcolumns = self._get_selected_firstcolumn()
@@ -291,7 +291,7 @@ class Curve_Style_Page(QWidget):
                 'LineWidth')).setCurrentIndex(event)
         self.canvas.replot()
 
-    def btn_replacelabel_handleClicked(self):
+    def _replacelabel_handleClicked(self):
         selected_firstcolumns = self._get_selected_firstcolumn()
         for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
@@ -307,7 +307,7 @@ class Curve_Style_Page(QWidget):
             self.tb_curves.item(
                 _item_.row(), TB_CURVES_HEADER.index('Label')).setText(curveData.label)
 
-    def btn_mergelabel_handleClicked(self):
+    def _mergelabel_handleClicked(self):
         selected_firstcolumns = self._get_selected_firstcolumn()
         for _item_ in selected_firstcolumns:
             wg_curve, testnames = _item_.data(Qt.UserRole)
@@ -324,9 +324,10 @@ class Curve_Style_Page(QWidget):
                 _item_.row(), TB_CURVES_HEADER.index('Label')).setText(curveData.label)
 
     def _apply_parameters(self):
-        self.le_legend_handleEdited(self.le_legend.text())
-        self.cbox_linewidth_handleChange(self.cbox_linewidth.currentIndex())
-        self.cbox_color_handleChange(self.cbox_color.currentIndex())
+        self._legend_handleEdited(self.le_legend.text())
+        self._note_handleEdited(self.le_note.text())
+        self._linewidth_handleChange(self.cbox_linewidth.currentIndex())
+        self._color_handleChange(self.cbox_color.currentIndex())
 
 
 class Dlg_GraphProperties(QDialog):

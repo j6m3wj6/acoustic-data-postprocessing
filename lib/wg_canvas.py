@@ -33,6 +33,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
             Use for highlighting a specific coordinate.
 
     :ivar List[CurveType] ax_types: A list that contains 2 element, both main and sub axis' data type.
+    :ivar List[Bool] grid_status: A list records current visibility status of both main and sub axis' grid.
     '''
 
     def __init__(self, parent=None, id: int = None, types: List[CurveType] = [], params: Dict = FIGURE_CONF) -> None:
@@ -135,19 +136,10 @@ class MyCanvasItem(FigureCanvasQTAgg):
         self.ax_main.set_xlabel(param_axis["X-Axis"]['label'])
         self.ax_main.set_ylabel(param_axis["Y-Axis"]['label'])
         self.ax_sub.set_xlabel(param_axis["X-Axis"]['label'])
-        # if (param_axis["Y-Axis"]['auto-scale']):
-        #     self.ax_main.set_ylim(auto=True)
-        # else:
         self.ax_main.set_ylim(
             [float(Quantity(param_axis["Y-Axis"]['min'])), float(Quantity(param_axis["Y-Axis"]['max']))])
-        # self.ax_main.set_ymargin(1)
-
-        # if (param_axis["Sub_Y-Axis"]['auto-scale']):
-        #     self.ax_sub.set_ylim(auto=True)
-        # else:
         self.ax_sub.set_ylim(
             [float(Quantity(param_axis["Sub_Y-Axis"]['min'])), float(Quantity(param_axis["Sub_Y-Axis"]['max']))])
-        # self.ax_sub.set_ymargin(1)
 
         for _ax_ in self.fig.axes:
             _ax_.set_xscale(param_axis["X-Axis"]['scale'])
@@ -179,6 +171,7 @@ class MyCanvasItem(FigureCanvasQTAgg):
         return f"%s | %s" % (self.ax_types[0].value, self.ax_types[1].value)
 
     def set_grid_status(self, status=None):
+
         if status:
             self.grid_status = status
         self.ax_main.grid(self.grid_status[0], axis='y', which='both')
@@ -323,14 +316,13 @@ class MyCanvasItem(FigureCanvasQTAgg):
         yrange = self.ax_main.get_ylim()[1] - self.ax_main.get_ylim()[0]
         sub_yrange = self.ax_sub.get_ylim()[1] - self.ax_sub.get_ylim()[0]
         picker = 0.005
-
-        if math.log(abs(x - xycoord[0])) < 3 or abs(main_y - xycoord[1]) < yrange*picker:
+        if math.log(abs(x - xycoord[0])+1) < 3 or abs(main_y - xycoord[1]) < yrange*picker:
             self.draggable_lines[0].follower = self.mpl_connect(
                 "motion_notify_event", self.draggable_lines[0].followmouse)
             self.draggable_lines[0].releaser = self.mpl_connect(
                 "button_press_event", self.draggable_lines[0].releaseonclick)
 
-        elif math.log(abs(x - sub_xycoord[0])) < 3 or abs(sub_y - sub_xycoord[1]) < sub_yrange*picker:
+        elif math.log(abs(x - sub_xycoord[0])+1) < 3 or abs(sub_y - sub_xycoord[1]) < sub_yrange*picker:
             self.draggable_lines[1].follower = self.mpl_connect(
                 "motion_notify_event", self.draggable_lines[1].sub_followmouse)
             self.draggable_lines[1].releaser = self.mpl_connect(

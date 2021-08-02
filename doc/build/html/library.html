@@ -41,7 +41,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Data Object Module API" href="data.html" /> 
+    <link rel="prev" title="App Module API" href="app.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,11 +91,35 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">Data Object Module API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Library Module API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-lib.mainwindow">mainwindow.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lib.dockwg_data">dockwg_data.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lib.dockwg_canvas_layout">dockwg_canvas_layout.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-object">Data Object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.obj_data">obj_data.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#main-window-and-dialog">Main Window and Dialog</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.mainwindow">mainwindow.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dlg_advance_selector">dlg_advance_selector.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dlg_axis_setting">dlg_axis_setting.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dlg_graph_properties">dlg_graph_properties.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dlg_import_files">dlg_import_files.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dlg_operation">dlg_operation.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dockwidget-components">DockWidget Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dockwg-canvas-layout-py">dockwg_canvas_layout.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.dockwg_data">dockwg_data.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ui-components">UI Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_canvas">wg_canvas.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_curve">wg_curve.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_file">wg_file.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_filepool">wg_filepool.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_menubar">wg_menubar.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_toolbar">wg_toolbar.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-lib.wg_selfdefined">wg_selfdefined.py</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -189,8 +213,345 @@
 </style>
 <div class="section" id="library-module-api">
 <h1>Library Module API<a class="headerlink" href="#library-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data-object">
+<h2>Data Object<a class="headerlink" href="#data-object" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-lib.obj_data">
+<span id="obj-data-py"></span><h3>obj_data.py<a class="headerlink" href="#module-lib.obj_data" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Extended_Enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum.list">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum.list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Extended_Enum.index">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Extended_Enum.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Extended_Enum.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lib.obj_data.Extended_Enum" title="lib.obj_data.Extended_Enum"><code class="xref py py-class docutils literal notranslate"><span class="pre">lib.obj_data.Extended_Enum</span></code></a></p>
+<p>Common acoustic test data types.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.NoType">
+<span class="sig-name descname"><span class="pre">NoType</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'None'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.NoType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.SPL">
+<span class="sig-name descname"><span class="pre">SPL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'SPL'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.SPL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.IMP">
+<span class="sig-name descname"><span class="pre">IMP</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Impedance'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.IMP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.PHS">
+<span class="sig-name descname"><span class="pre">PHS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Phase'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.PHS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.THD">
+<span class="sig-name descname"><span class="pre">THD</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'THD'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.THD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.EXC">
+<span class="sig-name descname"><span class="pre">EXC</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Excursion'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.EXC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lib.obj_data.CurveType.ALL">
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'All'</span></em><a class="headerlink" href="#lib.obj_data.CurveType.ALL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Project">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Untitled'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The top level of data structure.
+It contains general infomation and configuration of the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>info</strong> (<em>dict</em>) – general infomation including name, file location, create time, last saved time.</p></li>
+<li><p><strong>files</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a><em>)</em>) – files imported in this project.</p></li>
+<li><p><strong>ui_cong</strong> (<em>dict</em>) – user interface configuration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.get_path">
+<span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.get_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.get_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return absolute path of this project file location in user’s computer.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.append_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a file to this Project instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – Given FileData instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete specific files from this Project instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>files</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a><em>)</em>) – A list of FileData instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.clear_files">
+<span class="sig-name descname"><span class="pre">clear_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.clear_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.clear_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all the files in this Project instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.load_project">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.load_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.load_project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve project’s data from a computer file on specific location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The absolute path of a computer file(/.pkl).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.dump">
+<span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save project’s data to computer file on specific location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The absolute path of a folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Project.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Project.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Project.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation of this Project instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.FileData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">FileData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">import_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 2nd level of data structure.
+It contains general infomation of an imported files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>info</strong> (<em>Dict</em>) – general infomation including name, source, file path, create time, last modified time.</p></li>
+<li><p><strong>testnames</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – a list of all testnames.</p></li>
+<li><p><strong>valid_testnames</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – a list of testnames that is visible and operatable in app, which is customized by user.</p></li>
+<li><p><strong>measurements</strong> (<em>Dict</em>) – user interface configuration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.get_import_time">
+<span class="sig-name descname"><span class="pre">get_import_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.get_import_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.get_import_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return imported time of this FileData instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.append_measurement">
+<span class="sig-name descname"><span class="pre">append_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.append_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.append_measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a measurement to this FileData instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m_idx</strong> (<em>int</em>) – Index of the measurement.</p></li>
+<li><p><strong>measurement</strong> (<a class="reference internal" href="#lib.obj_data.Measurement" title="lib.obj_data.Measurement"><em>Measurement</em></a>) – Given Measurement instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.FileData.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#FileData.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.FileData.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation of this FileData instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 3rd level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – index of this measurement.</p></li>
+<li><p><strong>channel</strong> (<em>List</em><em>(</em><a class="reference internal" href="#lib.obj_data.Channel" title="lib.obj_data.Channel"><em>Channel</em></a><em>)</em>) – a list of Channel instances in this Measurement instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement.init_channels">
+<span class="sig-name descname"><span class="pre">init_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement.init_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement.init_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create given numbers of Channel instances for this Measurement instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> (<em>int</em>) – Total numbers of channels.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Measurement.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Measurement.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Measurement.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.Channel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">Channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The 4th level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>measurement_obj</strong> (<a class="reference internal" href="#lib.obj_data.Measurement" title="lib.obj_data.Measurement"><em>Measurement</em></a>) – The Measurement instance this Channel instance belongs to.</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – Channel’s id.</p></li>
+<li><p><strong>sequence</strong> (<em>Dict</em>) – A dictionary of testname and its corresponding CurveData instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.Channel.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#Channel.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.Channel.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.obj_data.</span></span><span class="sig-name descname"><span class="pre">CurveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xdata</span></em>, <em class="sig-param"><span class="pre">ydata</span></em>, <em class="sig-param"><span class="pre">channel_obj</span></em>, <em class="sig-param"><span class="pre">label='Curve'</span></em>, <em class="sig-param"><span class="pre">note=''</span></em>, <em class="sig-param"><span class="pre">_type=&lt;CurveType.NoType:</span> <span class="pre">'None'&gt;</span></em>, <em class="sig-param"><span class="pre">units=[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The bottom (5th) level of data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel_obj</strong> (<a class="reference internal" href="#lib.obj_data.Channel" title="lib.obj_data.Channel"><em>Channel</em></a>) – The Channel instance this CurveData instance belongs to.</p></li>
+<li><p><strong>xdata</strong> (<em>List</em><em>(</em><em>float</em><em>)</em>) – Curve’s data of x-axis.</p></li>
+<li><p><strong>ydata</strong> (<em>List</em><em>(</em><em>float</em><em>)</em>) – Curve’s data of y-axis.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Curve’s label.</p></li>
+<li><p><strong>note</strong> (<em>str</em>) – Curve’s note.</p></li>
+<li><p><strong>_type</strong> (<a class="reference internal" href="#lib.obj_data.CurveType" title="lib.obj_data.CurveType"><em>CurveType</em></a>) – Curve’s data category.</p></li>
+<li><p><strong>units</strong> (<em>List</em><em>(</em><em>str</em><em>)</em>) – Units of xdata and ydata.</p></li>
+<li><p><strong>shifted</strong> (<em>float</em>) – Recorded offset value.</p></li>
+<li><p><strong>line</strong> (<em>matplotlib.lines.Line2D</em>) – Matplolib Line2D object created by this CurveData instance.</p></li>
+<li><p><strong>line_props</strong> (<em>Dict</em>) – style properties of <code class="docutils literal notranslate"><span class="pre">line</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.get_legend">
+<span class="sig-name descname"><span class="pre">get_legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legend_wrap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.get_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.get_legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the legend wrapped with a given characters long.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>legend_wrap</strong> (<em>int</em>) – A given number .</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.create_line2D">
+<span class="sig-name descname"><span class="pre">create_line2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_wrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.create_line2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.create_line2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a curve on given canvas’s axis with specific order, text-wrap and color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>canvas</strong> (<em>matplotlib.figure</em>) – Given matplot figure.</p></li>
+<li><p><strong>ax_id</strong> (<em>int</em>) – Id of axis.</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Figure would plot each curve by this order.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Curve’s color.</p></li>
+<li><p><strong>linewidth</strong> (<em>float</em>) – Curve’s linewidth.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.shift">
+<span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift ydata with given offset, which is always compared with the original data.
+That is, if the given offset is zero, it would be the original curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>offset</strong> (<em>float</em>) – Given offset.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.align">
+<span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetDB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.align"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift the curve to align given magnitude at given frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targetDB</strong> (<em>float</em>) – The target y-magnitude to align.</p></li>
+<li><p><strong>freq</strong> (<em>float</em>) – The target x-magnitude to align.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.obj_data.CurveData.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/obj_data.html#CurveData.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.obj_data.CurveData.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the infomation.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="main-window-and-dialog">
+<h2>Main Window and Dialog<a class="headerlink" href="#main-window-and-dialog" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="module-lib.mainwindow">
-<span id="mainwindow-py"></span><h2>mainwindow.py<a class="headerlink" href="#module-lib.mainwindow" title="Permalink to this headline">¶</a></h2>
+<span id="mainwindow-py"></span><h3>mainwindow.py<a class="headerlink" href="#module-lib.mainwindow" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.mainwindow.</span></span><span class="sig-name descname"><span class="pre">MainWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow" title="Permalink to this definition">¶</a></dt>
@@ -199,17 +560,17 @@
 <dt class="field-odd">Variables</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>app</strong> (<a class="reference internal" href="app.html#app.MyApp" title="app.MyApp"><em>MyApp</em></a>) – Object MyApp.</p></li>
-<li><p><strong>project</strong> (<a class="reference internal" href="data.html#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – <p>A Mainwindow object contains only one Project object.</p>
+<li><p><strong>project</strong> (<a class="reference internal" href="#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – <p>A Mainwindow object contains only one Project object.</p>
 <p>It is the data base.</p>
 </p></li>
-<li><p><strong>menutopbar</strong> (<em>MyMenuBar</em>) – </p></li>
-<li><p><strong>wg_canvas</strong> (<em>MyCanvas</em>) – <p>A self-defined QWidget component placed on the center of the mainwindow.</p>
+<li><p><strong>menutopbar</strong> (<a class="reference internal" href="#lib.wg_menubar.MyMenuBar" title="lib.wg_menubar.MyMenuBar"><em>MyMenuBar</em></a>) – </p></li>
+<li><p><strong>wg_canvas</strong> (<a class="reference internal" href="#lib.wg_canvas.MyCanvas" title="lib.wg_canvas.MyCanvas"><em>MyCanvas</em></a>) – <p>A self-defined QWidget component placed on the center of the mainwindow.</p>
 <p>It contains most of the ploting functions.</p>
 </p></li>
-<li><p><strong>dwg_data</strong> (<a class="reference internal" href="#lib.dockwg_data.DockWidget_Data" title="lib.dockwg_data.DockWidget_Data"><em>DockWidget_Data</em></a>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
+<li><p><strong>dwg_data</strong> (<em>DockWidget_Data</em>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
 <p>It contains a list of imported files and several functions interacting with the canvases in <code class="docutils literal notranslate"><span class="pre">wg_canvas</span></code>.</p>
 </p></li>
-<li><p><strong>dwg_canvasLayout</strong> (<a class="reference internal" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout" title="lib.dockwg_canvas_layout.DockWidget_CanvasLayout"><em>DockWidget_CanvasLayout</em></a>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
+<li><p><strong>dwg_canvasLayout</strong> (<em>DockWidget_CanvasLayout</em>) – <p>A self-defined QDockWidget placed on the left area by default.</p>
 <p>It contains functions of switching canvas layout mode, customizing canvas setting and post-processing.</p>
 </p></li>
 </ul>
@@ -226,8 +587,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="lib.mainwindow.MainWindow.btn_processingDlg_handleClicked">
 <span class="sig-name descname"><span class="pre">btn_processingDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/mainwindow.html#MainWindow.btn_processingDlg_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.mainwindow.MainWindow.btn_processingDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connect with QPushButton component in <code class="docutils literal notranslate"><span class="pre">dockwg_canvas_setting</span></code>.</p>
-<p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">OperationDialog</span></code> and pop up a dialog window.</p>
+<dd><p>This function connect with QPushButton component in <code class="docutils literal notranslate"><span class="pre">dockwg_canvas</span></code>.</p>
+<p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">Dlg_Operation</span></code> and pop up a dialog window.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -251,7 +612,7 @@ Each canvas has main axis and sub axis.</p>
 and also to the list in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -263,7 +624,7 @@ and also to the list in DockWidget component <code class="docutils literal notra
 and also the data on the list in DockWidget component <code class="docutils literal notranslate"><span class="pre">dwg_data</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object user intends to delete.</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object user intends to delete.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,43 +659,273 @@ User can determain a new name and where to save.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-lib.dockwg_data">
-<span id="dockwg-data-py"></span><h2>dockwg_data.py<a class="headerlink" href="#module-lib.dockwg_data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-lib.dlg_advance_selector">
+<span id="dlg-advance-selector-py"></span><h3>dlg_advance_selector.py<a class="headerlink" href="#module-lib.dlg_advance_selector" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_data.</span></span><span class="sig-name descname"><span class="pre">DockWidget_Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dlg_advance_selector.Dlg_AdvancedSelector">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_advance_selector.</span></span><span class="sig-name descname"><span class="pre">Dlg_AdvancedSelector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wg_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_advance_selector.html#Dlg_AdvancedSelector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_advance_selector.Dlg_AdvancedSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>A dialog assists user to customize each Wg_File properties.
+With given number n, user can also check or uncheck every n-th Wg_Curve instance of the list beginning and ending at given index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>wg_file</strong> (<a class="reference internal" href="#lib.wg_file.Wg_File" title="lib.wg_file.Wg_File"><em>Wg_File</em></a>) – The Wg_File instance that this dialog applys to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_advance_selector.Dlg_AdvancedSelector.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_advance_selector.html#Dlg_AdvancedSelector.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_advance_selector.Dlg_AdvancedSelector.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dlg_axis_setting">
+<span id="dlg-axis-setting-py"></span><h3>dlg_axis_setting.py<a class="headerlink" href="#module-lib.dlg_axis_setting" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_axis_setting.Dlg_AxisSetting">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_axis_setting.</span></span><span class="sig-name descname"><span class="pre">Dlg_AxisSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_axis_setting.html#Dlg_AxisSetting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_axis_setting.Dlg_AxisSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The mainwindow object that triggers this dialog window.</p></li>
+<li><p><strong>form_parameter</strong> (<em>dict</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_axis_setting.Dlg_AxisSetting.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_axis_setting.html#Dlg_AxisSetting.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_axis_setting.Dlg_AxisSetting.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial dialog’s user interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_axis_setting.Dlg_AxisSetting.cb_axis_handleTextChanged">
+<span class="sig-name descname"><span class="pre">cb_axis_handleTextChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_axis_setting.html#Dlg_AxisSetting.cb_axis_handleTextChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_axis_setting.Dlg_AxisSetting.cb_axis_handleTextChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function connect with all QComboBox components of the form in the dialog.
+It will be triggered when any comboBox’s option is changed.</p>
+<p>Actually, it is not allowed to have same options on different comboBoxes 
+except ‘None’ option. Every two options would automatically switch their positions 
+if one of those is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> (<em>str</em>) – Current option text which is a CurveType name</p></li>
+<li><p><strong>canvas_id</strong> (<em>int</em>) – The index of the canvas that need to modify its axis’ CurveType</p></li>
+<li><p><strong>ax_id</strong> (<em>int</em>) – The axis index that need to modify its CurveType. 
+0 is main axis, 1 is sub axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dlg_graph_properties">
+<span id="dlg-graph-properties-py"></span><h3>dlg_graph_properties.py<a class="headerlink" href="#module-lib.dlg_graph_properties" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Delegate">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_graph_properties.</span></span><span class="sig-name descname"><span class="pre">Delegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Delegate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Delegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QStyledItemDelegate</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Delegate.eventFilter">
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Delegate.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Delegate.eventFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_graph_properties.</span></span><span class="sig-name descname"><span class="pre">Curve_Style_Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.handle_cellChanged">
+<span class="sig-name descname"><span class="pre">handle_cellChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.handle_cellChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.handle_cellChanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Curve_Style_Page.tb_curves_handleSelect">
+<span class="sig-name descname"><span class="pre">tb_curves_handleSelect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Curve_Style_Page.tb_curves_handleSelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Curve_Style_Page.tb_curves_handleSelect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Dlg_GraphProperties">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_graph_properties.</span></span><span class="sig-name descname"><span class="pre">Dlg_GraphProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Dlg_GraphProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Dlg_GraphProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>A dialog for user to customize setting for current focusing canvas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepool</strong> (<em>QWidget</em>) – A widget component contains a list of Wg_File instances with all imported data.</p></li>
+<li><p><strong>canvas</strong> (<em>QWidget</em>) – The main canvas area of the window.</p></li>
+<li><p><strong>parameter</strong> (<em>Dict</em>) – A dictionary with the same key structure with general configuration <code class="docutils literal notranslate"><span class="pre">FIGURE_CONF</span></code>, 
+but stores PyQt components as values instead.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Dlg_GraphProperties.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Dlg_GraphProperties.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Dlg_GraphProperties.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_graph_properties.Dlg_GraphProperties.cbox_canvas_handleChange">
+<span class="sig-name descname"><span class="pre">cbox_canvas_handleChange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_graph_properties.html#Dlg_GraphProperties.cbox_canvas_handleChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_graph_properties.Dlg_GraphProperties.cbox_canvas_handleChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change current focusing canvas that this dialog target on.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dlg_import_files">
+<span id="dlg-import-files-py"></span><h3>dlg_import_files.py<a class="headerlink" href="#module-lib.dlg_import_files" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_import_files.Dlg_ImportFiles">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_import_files.</span></span><span class="sig-name descname"><span class="pre">Dlg_ImportFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_import_files.html#Dlg_ImportFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_import_files.Dlg_ImportFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>A dialog for user to import or delete files.
+There are four file sources</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The MainWindow instance this dialog belongs to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_import_files.Dlg_ImportFiles.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_import_files.html#Dlg_ImportFiles.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_import_files.Dlg_ImportFiles.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initail User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_import_files.Dlg_ImportFiles.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_import_files.html#Dlg_ImportFiles.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_import_files.Dlg_ImportFiles.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete files that user select from the table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_import_files.Dlg_ImportFiles.clear_files">
+<span class="sig-name descname"><span class="pre">clear_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_import_files.html#Dlg_ImportFiles.clear_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_import_files.Dlg_ImportFiles.clear_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all files of the project and clear the table simultanenously.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_import_files.Dlg_ImportFiles.import_file">
+<span class="sig-name descname"><span class="pre">import_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_import_files.html#Dlg_ImportFiles.import_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_import_files.Dlg_ImportFiles.import_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import file from given source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>str</em>) – Indicate what application is the file exported from.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.dlg_operation">
+<span id="dlg-operation-py"></span><h3>dlg_operation.py<a class="headerlink" href="#module-lib.dlg_operation" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dlg_operation.Dlg_Operation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dlg_operation.</span></span><span class="sig-name descname"><span class="pre">Dlg_Operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_operation.html#Dlg_Operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_operation.Dlg_Operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>A dialog for user to apply post-processing operation to curves.
+Support uniary operation: Shift and Align.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The MainWindow instance this dialog belongs to.</p></li>
+<li><p><strong>canvas</strong> (<a class="reference internal" href="#lib.wg_canvas.MyCanvasItem" title="lib.wg_canvas.MyCanvasItem"><em>MyCanvasItem</em></a>) – Current focusing canvas of the <code class="docutils literal notranslate"><span class="pre">mainwindow</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_operation.Dlg_Operation.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_operation.html#Dlg_Operation.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_operation.Dlg_Operation.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_operation.Dlg_Operation.curve_offset">
+<span class="sig-name descname"><span class="pre">curve_offset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_operation.html#Dlg_Operation.curve_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_operation.Dlg_Operation.curve_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shift those urves user select by given magnitude (y-axis).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_operation.Dlg_Operation.curve_align">
+<span class="sig-name descname"><span class="pre">curve_align</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_operation.html#Dlg_Operation.curve_align"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_operation.Dlg_Operation.curve_align" title="Permalink to this definition">¶</a></dt>
+<dd><p>Align those urves user select to a given maginitude (y-axis) at given frequency (x-axis).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.dlg_operation.Dlg_Operation.curve_reset">
+<span class="sig-name descname"><span class="pre">curve_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dlg_operation.html#Dlg_Operation.curve_reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dlg_operation.Dlg_Operation.curve_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all curves’ offset and reset to their original data.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="dockwidget-components">
+<h2>DockWidget Components<a class="headerlink" href="#dockwidget-components" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dockwg-canvas-layout-py">
+<h3>dockwg_canvas_layout.py<a class="headerlink" href="#dockwg-canvas-layout-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-lib.dockwg_data">
+<span id="dockwg-data-py"></span><h3>dockwg_data.py<a class="headerlink" href="#module-lib.dockwg_data" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_data.</span></span><span class="sig-name descname"><span class="pre">DockWg_Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDockWidget</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Variables</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The MainWindow object that this DockWidget_Data object belongs.</p></li>
-<li><p><strong>filePool</strong> (<em>FilePool</em>) – A QWidget component contains a list of imported file components.
+<li><p><strong>filePool</strong> (<a class="reference internal" href="#lib.wg_filepool.Wg_FilePool" title="lib.wg_filepool.Wg_FilePool"><em>Wg_FilePool</em></a>) – A QWidget component contains a list of imported file components.
 It contains functions of interaction between file components.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.initUI">
-<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.initUI" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data.initUI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initial User Interface.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.append_file">
-<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.append_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data.append_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a new imported file to component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fileData</strong> (<a class="reference internal" href="data.html#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
+<dd class="field-odd"><p><strong>fileData</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.delete_files">
-<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.delete_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data.delete_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removing files from component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -344,19 +935,19 @@ It contains functions of interaction between file components.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.load_project">
-<span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.load_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.load_project" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data.load_project">
+<span class="sig-name descname"><span class="pre">load_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data.load_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data.load_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve files from a specific project and append them to component <code class="docutils literal notranslate"><span class="pre">filepool</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>project</strong> (<a class="reference internal" href="data.html#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – A Project object.</p>
+<dd class="field-odd"><p><strong>project</strong> (<a class="reference internal" href="#lib.obj_data.Project" title="lib.obj_data.Project"><em>Project</em></a>) – A Project object.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">
-<span class="sig-name descname"><span class="pre">btn_importDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWidget_Data.btn_importDlg_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.dockwg_data.DockWg_Data.btn_importDlg_handleClicked">
+<span class="sig-name descname"><span class="pre">btn_importDlg_handleClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_data.html#DockWg_Data.btn_importDlg_handleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_data.DockWg_Data.btn_importDlg_handleClicked" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function connect with <strong>Import</strong> button.</p>
 <p>When the button is clicked, execute <code class="docutils literal notranslate"><span class="pre">Dlg_ImportFiles</span></code> and pop up a dialog window.</p>
 <dl class="field-list simple">
@@ -366,26 +957,573 @@ It contains functions of interaction between file components.</p></li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-lib.dockwg_canvas_layout">
-<span id="dockwg-canvas-layout-py"></span><h2>dockwg_canvas_layout.py<a class="headerlink" href="#module-lib.dockwg_canvas_layout" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="ui-components">
+<h2>UI Components<a class="headerlink" href="#ui-components" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-lib.wg_canvas">
+<span id="wg-canvas-py"></span><h3>wg_canvas.py<a class="headerlink" href="#module-lib.wg_canvas" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_canvas_layout.</span></span><span class="sig-name descname"><span class="pre">Draggable_Label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_canvas.</span></span><span class="sig-name descname"><span class="pre">MyCanvasItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'Axis':</span> <span class="pre">{'Sub_Y-Axis':</span> <span class="pre">{'auto-scale':</span> <span class="pre">True,</span> <span class="pre">'label':</span> <span class="pre">'',</span> <span class="pre">'max':</span> <span class="pre">100,</span> <span class="pre">'min':</span> <span class="pre">0,</span> <span class="pre">'scale':</span> <span class="pre">'log',</span> <span class="pre">'unit':</span> <span class="pre">'dBSPL'},</span> <span class="pre">'X-Axis':</span> <span class="pre">{'auto-scale':</span> <span class="pre">False,</span> <span class="pre">'label':</span> <span class="pre">'Frequency',</span> <span class="pre">'max':</span> <span class="pre">20000,</span> <span class="pre">'min':</span> <span class="pre">20,</span> <span class="pre">'scale':</span> <span class="pre">'log',</span> <span class="pre">'unit':</span> <span class="pre">'Hz'},</span> <span class="pre">'Y-Axis':</span> <span class="pre">{'auto-scale':</span> <span class="pre">True,</span> <span class="pre">'label':</span> <span class="pre">'',</span> <span class="pre">'max':</span> <span class="pre">100,</span> <span class="pre">'min':</span> <span class="pre">0,</span> <span class="pre">'scale':</span> <span class="pre">'log',</span> <span class="pre">'unit':</span> <span class="pre">'dBSPL'}},</span> <span class="pre">'General':</span> <span class="pre">{'Legend':</span> <span class="pre">{'text-wrap':</span> <span class="pre">25,</span> <span class="pre">'visible':</span> <span class="pre">True},</span> <span class="pre">'Margin':</span> <span class="pre">{'left-right':</span> <span class="pre">10,</span> <span class="pre">'top-bottom':</span> <span class="pre">10},</span> <span class="pre">'Title':</span> <span class="pre">''}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.backends.backend_qt5agg.FigureCanvasQTAgg</span></code></p>
+<p>Self-defined Matplot Figure object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – Canvas titel, use axis CurveType by default</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – Canvas id</p></li>
+<li><p><strong>parameter</strong> (<em>dict</em>) – Canvas setting parameter</p></li>
+<li><p><strong>wg_canvas</strong> (<a class="reference internal" href="#lib.wg_canvas.MyCanvas" title="lib.wg_canvas.MyCanvas"><em>MyCanvas</em></a>) – Its parent, a QWidget that contains canvas layout and toolbar.</p></li>
+<li><p><strong>fig</strong> (<em>matplotlib.pyplot.figure</em>) – </p></li>
+<li><p><strong>ax_main</strong> (<em>matplotlib.pyplot.Axes</em>) – main y-axis on fig</p></li>
+<li><p><strong>ax_sub</strong> (<em>matplotlib.pyplot.Axes</em>) – sub y-axis on fig, share the same x-axis with main ax_main</p></li>
+<li><p><strong>draggable_lines</strong> (<a class="reference internal" href="#lib.wg_selfdefined.Draggable_lines" title="lib.wg_selfdefined.Draggable_lines"><em>Draggable_lines</em></a>) – A set of horizontal and vertical lines that can be drag by mouse movement.
+Use for highlighting a specific coordinate.</p></li>
+<li><p><strong>ax_types</strong> (<em>List</em><em>[</em><a class="reference internal" href="#lib.obj_data.CurveType" title="lib.obj_data.CurveType"><em>CurveType</em></a><em>]</em>) – A list that contains 2 element, both main and sub axis’ data type.</p></li>
+<li><p><strong>grid_status</strong> (<em>List</em><em>[</em><em>Bool</em><em>]</em>) – A list records current visibility status of both main and sub axis’ grid.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.clear_lines">
+<span class="sig-name descname"><span class="pre">clear_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.clear_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.clear_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all the line on the given y-axis, while avoid deleting the draggable lines,
+which is the frist two line in <code class="docutils literal notranslate"><span class="pre">ax_main</span></code> (axis’ id = 0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax_idx</strong> (<em>int</em>) – Either 0 or 1. It is used as the index for accessing specific axis on the figure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.apply_style">
+<span class="sig-name descname"><span class="pre">apply_style</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.apply_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.apply_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply <code class="docutils literal notranslate"><span class="pre">parameters</span></code> to this MyCanvasItem instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.get_ax">
+<span class="sig-name descname"><span class="pre">get_ax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curveType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.get_ax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.get_ax" title="Permalink to this definition">¶</a></dt>
+<dd><p>If canvas has any axis’s type in line with the input parameter <code class="docutils literal notranslate"><span class="pre">curveType</span></code>,
+return axis id and axis instance. Otherwise, return (-1, None).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>curveType</strong> (<a class="reference internal" href="#lib.obj_data.CurveType" title="lib.obj_data.CurveType"><em>CurveType</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string contains its axis types.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.set_grid_status">
+<span class="sig-name descname"><span class="pre">set_grid_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.set_grid_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.set_grid_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.toggle_ax_grid">
+<span class="sig-name descname"><span class="pre">toggle_ax_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.toggle_ax_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.toggle_ax_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.replot">
+<span class="sig-name descname"><span class="pre">replot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.replot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.replot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replot the canvas.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.update_title">
+<span class="sig-name descname"><span class="pre">update_title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.update_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.update_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update canvas’s title.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.autoscale">
+<span class="sig-name descname"><span class="pre">autoscale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.autoscale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.autoscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Autoscale given y-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax_idx</strong> (<em>int</em>) – Either 0 or 1. It is used as the index for accessing specific axis on the figure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.handleDoubleClicked">
+<span class="sig-name descname"><span class="pre">handleDoubleClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.handleDoubleClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.handleDoubleClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>If User double clicked on this canvas, change this canvas to be the focusing canvas.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.toggle_focus_style">
+<span class="sig-name descname"><span class="pre">toggle_focus_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">focus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.toggle_focus_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.toggle_focus_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only one focusing canvas instance in an application.
+Focusing canvas instance  have a highlight border.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>focus</strong> (<em>bool</em>) – given focus status to toggle and modify this MyCanvasItem instance’s displaying style.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.handle_click">
+<span class="sig-name descname"><span class="pre">handle_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.handle_click"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.handle_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.dragEnterEvent">
+<span class="sig-name descname"><span class="pre">dragEnterEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.dragEnterEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggered when User drag the canvas label in left dockwidget on this canvas instance.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.dropEvent">
+<span class="sig-name descname"><span class="pre">dropEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.dropEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggered when User drop the canvas label in left dockwidget on this canvas instance.
+Modifying canvas layout according to user’s options.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvasItem.reset_linewidth">
+<span class="sig-name descname"><span class="pre">reset_linewidth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvasItem.reset_linewidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvasItem.reset_linewidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set linewidth of all curves on the canvas to default value.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_canvas.</span></span><span class="sig-name descname"><span class="pre">MyCanvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Self-defined QWidget containing a toolbar and multiple <code class="docutils literal notranslate"><span class="pre">MyCanvasItem</span></code>.
+The layout inside it can adjust by user at the run time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainwindow</strong> (<a class="reference internal" href="#lib.mainwindow.MainWindow" title="lib.mainwindow.MainWindow"><em>MainWindow</em></a>) – The MainWindow instance that this MyCanvas instance belongs to.</p></li>
+<li><p><strong>canvasPool</strong> (<em>List</em><em>[</em><a class="reference internal" href="#lib.wg_canvas.MyCanvasItem" title="lib.wg_canvas.MyCanvasItem"><em>MyCanvasItem</em></a><em>]</em>) – A list of <code class="docutils literal notranslate"><span class="pre">MyCanvasItem</span></code>.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – <p>current canvas layout mode.</p>
+<p>Support mode <em>main</em>, <em>up and down</em> for ver_0.2.0.</p>
+</p></li>
+<li><p><strong>status</strong> (<em>Dict</em>) – Store the mode and its canvas arrangement as a dictionary.</p></li>
+<li><p><strong>toolbar</strong> (<a class="reference internal" href="#lib.wg_toolbar.MyToolBar" title="lib.wg_toolbar.MyToolBar"><em>MyToolBar</em></a>) – A MyToolBar instance.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas.replot">
+<span class="sig-name descname"><span class="pre">replot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas.replot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas.replot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replot all the canvas instances in the list <code class="docutils literal notranslate"><span class="pre">canvasPool</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas.change_focusing_canvas">
+<span class="sig-name descname"><span class="pre">change_focusing_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">focusing_canvas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas.change_focusing_canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas.change_focusing_canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change current focusing canvas, only one at a time.
+Modify the displaying style and also change <code class="docutils literal notranslate"><span class="pre">toolbar</span></code>’s target canvas.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas.set_mode">
+<span class="sig-name descname"><span class="pre">set_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas.set_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas.set_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set canvas layout mode.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_canvas.MyCanvas.get_canvas">
+<span class="sig-name descname"><span class="pre">get_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_canvas.html#MyCanvas.get_canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_canvas.MyCanvas.get_canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a MyCanvasItem with given id or given axis’ CurveType.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_curve">
+<span id="wg-curve-py"></span><h3>wg_curve.py<a class="headerlink" href="#module-lib.wg_curve" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_curve.</span></span><span class="sig-name descname"><span class="pre">Wg_Curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wg_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.set_curveData">
+<span class="sig-name descname"><span class="pre">set_curveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curveData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.set_curveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.set_curveData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.get_measurement">
+<span class="sig-name descname"><span class="pre">get_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.get_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.get_measurement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.get_curveData">
+<span class="sig-name descname"><span class="pre">get_curveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.get_curveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.get_curveData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.get_curveDatas">
+<span class="sig-name descname"><span class="pre">get_curveDatas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.get_curveDatas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.get_curveDatas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.get_curveOrder">
+<span class="sig-name descname"><span class="pre">get_curveOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.get_curveOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.get_curveOrder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.update_info">
+<span class="sig-name descname"><span class="pre">update_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.update_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.update_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.paintEvent">
+<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.set_and_handle_checkState">
+<span class="sig-name descname"><span class="pre">set_and_handle_checkState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.set_and_handle_checkState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.set_and_handle_checkState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.handle_clicked">
+<span class="sig-name descname"><span class="pre">handle_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.handle_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.handle_clicked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.handle_checked">
+<span class="sig-name descname"><span class="pre">handle_checked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkState</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.handle_checked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.handle_checked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_curve.Wg_Curve.sync_curveData">
+<span class="sig-name descname"><span class="pre">sync_curveData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_curve.html#Wg_Curve.sync_curveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_curve.Wg_Curve.sync_curveData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_file">
+<span id="wg-file-py"></span><h3>wg_file.py<a class="headerlink" href="#module-lib.wg_file" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_file.</span></span><span class="sig-name descname"><span class="pre">Wg_File</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.paintEvent">
+<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.toggle_link">
+<span class="sig-name descname"><span class="pre">toggle_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.toggle_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.toggle_link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.reload_checkstate">
+<span class="sig-name descname"><span class="pre">reload_checkstate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.reload_checkstate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.reload_checkstate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.changetab_test">
+<span class="sig-name descname"><span class="pre">changetab_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.changetab_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.changetab_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.get_visible_curveData">
+<span class="sig-name descname"><span class="pre">get_visible_curveData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.get_visible_curveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.get_visible_curveData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.get_checkedItems">
+<span class="sig-name descname"><span class="pre">get_checkedItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mergeAll</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.get_checkedItems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.get_checkedItems" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.get_testname">
+<span class="sig-name descname"><span class="pre">get_testname</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.get_testname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.get_testname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.toggle_all">
+<span class="sig-name descname"><span class="pre">toggle_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkState</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_and_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.toggle_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.toggle_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.handle_checked">
+<span class="sig-name descname"><span class="pre">handle_checked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curveOrder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.handle_checked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.handle_checked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.update_canvas">
+<span class="sig-name descname"><span class="pre">update_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curveData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curveOrder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.update_canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.update_canvas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_file.Wg_File.advance_selector">
+<span class="sig-name descname"><span class="pre">advance_selector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_file.html#Wg_File.advance_selector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_file.Wg_File.advance_selector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_filepool">
+<span id="wg-filepool-py"></span><h3>wg_filepool.py<a class="headerlink" href="#module-lib.wg_filepool" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_filepool.</span></span><span class="sig-name descname"><span class="pre">Wg_FilePool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial User Interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.append_file">
+<span class="sig-name descname"><span class="pre">append_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.append_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.append_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Wg_File instance carrying given data and add it to this Wg_FilePool instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileData</strong> (<a class="reference internal" href="#lib.obj_data.FileData" title="lib.obj_data.FileData"><em>FileData</em></a>) – A FileData object generated from the imported file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.delete_files">
+<span class="sig-name descname"><span class="pre">delete_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.delete_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removing Wg_File instances with given filenames from this Wg_FilePool instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of filenames user intends to delete.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.transfer_to_table">
+<span class="sig-name descname"><span class="pre">transfer_to_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.transfer_to_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.transfer_to_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a table for graph properties’ dialog.</p>
+<p>It contains curves under certain conditions, 
+such as focusing canvas, valid tests, and link status of each Wg-File instances.</p>
+<p>Columns includes: Label, Note, Data testname, Color, LineWidth.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.transfer_to_list">
+<span class="sig-name descname"><span class="pre">transfer_to_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.transfer_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.transfer_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list for post processing dialog.</p>
+<p>It contains curves is visible on the focusing canvas.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_filepool.Wg_FilePool.sync_curveData">
+<span class="sig-name descname"><span class="pre">sync_curveData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_filepool.html#Wg_FilePool.sync_curveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_filepool.Wg_FilePool.sync_curveData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_menubar">
+<span id="wg-menubar-py"></span><h3>wg_menubar.py<a class="headerlink" href="#module-lib.wg_menubar" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_menubar.MyMenuBar">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_menubar.</span></span><span class="sig-name descname"><span class="pre">MyMenuBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_menubar.html#MyMenuBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_menubar.MyMenuBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMenuBar</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_menubar.MyMenuBar.new_file">
+<span class="sig-name descname"><span class="pre">new_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_menubar.html#MyMenuBar.new_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_menubar.MyMenuBar.new_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_menubar.MyMenuBar.open_file">
+<span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_menubar.html#MyMenuBar.open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_menubar.MyMenuBar.open_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_menubar.MyMenuBar.save_file">
+<span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_menubar.html#MyMenuBar.save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_menubar.MyMenuBar.save_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_menubar.MyMenuBar.save_file_as">
+<span class="sig-name descname"><span class="pre">save_file_as</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_menubar.html#MyMenuBar.save_file_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_menubar.MyMenuBar.save_file_as" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_toolbar">
+<span id="wg-toolbar-py"></span><h3>wg_toolbar.py<a class="headerlink" href="#module-lib.wg_toolbar" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_toolbar.</span></span><span class="sig-name descname"><span class="pre">MyToolBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.backends.backend_qt5.NavigationToolbar2QT</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toolitems</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.initUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.toggle_grid">
+<span class="sig-name descname"><span class="pre">toggle_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toggle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.toggle_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.toggle_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.toggle_crosslines">
+<span class="sig-name descname"><span class="pre">toggle_crosslines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toggle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.toggle_crosslines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.toggle_crosslines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.edit_parameter">
+<span class="sig-name descname"><span class="pre">edit_parameter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.edit_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.edit_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.autoscale_yaxis">
+<span class="sig-name descname"><span class="pre">autoscale_yaxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.autoscale_yaxis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.autoscale_yaxis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_toolbar.MyToolBar.update_focus_canvas">
+<span class="sig-name descname"><span class="pre">update_focus_canvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_toolbar.html#MyToolBar.update_focus_canvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_toolbar.MyToolBar.update_focus_canvas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lib.wg_selfdefined">
+<span id="wg-selfdefined-py"></span><h3>wg_selfdefined.py<a class="headerlink" href="#module-lib.wg_selfdefined" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_selfdefined.</span></span><span class="sig-name descname"><span class="pre">Draggable_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">canvas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.clickonline">
+<span class="sig-name descname"><span class="pre">clickonline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.clickonline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.clickonline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.followmouse">
+<span class="sig-name descname"><span class="pre">followmouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.followmouse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.followmouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.releaseonclick">
+<span class="sig-name descname"><span class="pre">releaseonclick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.releaseonclick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.releaseonclick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.sub_followmouse">
+<span class="sig-name descname"><span class="pre">sub_followmouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.sub_followmouse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.sub_followmouse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.sub_releaseonclick">
+<span class="sig-name descname"><span class="pre">sub_releaseonclick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.sub_releaseonclick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.sub_releaseonclick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.set_visible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Draggable_lines.get_coords">
+<span class="sig-name descname"><span class="pre">get_coords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Draggable_lines.get_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Draggable_lines.get_coords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Cbox_Color">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_selfdefined.</span></span><span class="sig-name descname"><span class="pre">Cbox_Color</span></span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Cbox_Color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Cbox_Color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QComboBox</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Cbox_Color.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Cbox_Color.set_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Cbox_Color.set_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Cbox_Linewidth">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_selfdefined.</span></span><span class="sig-name descname"><span class="pre">Cbox_Linewidth</span></span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Cbox_Linewidth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Cbox_Linewidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QComboBox</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Lb_Draggable">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_selfdefined.</span></span><span class="sig-name descname"><span class="pre">Lb_Draggable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Lb_Draggable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Lb_Draggable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QLabel</span></code></p>
 <p>Self-defined Qlabel that use to represent app’s canvas components on <code class="docutils literal notranslate"><span class="pre">DockWidget_CanvasLayout</span></code>.
 User can drag this label onto the canvas component, which could change the arrangement in the layout.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent">
-<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Lb_Draggable.mouseMoveEvent">
+<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Lb_Draggable.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Lb_Draggable.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.Draggable_Label.set_text">
-<span class="sig-name descname"><span class="pre">set_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#Draggable_Label.set_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.Draggable_Label.set_text" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Lb_Draggable.set_text">
+<span class="sig-name descname"><span class="pre">set_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Lb_Draggable.set_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Lb_Draggable.set_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the displayed text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -397,33 +1535,17 @@ User can drag this label onto the canvas component, which could change the arran
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.dockwg_canvas_layout.</span></span><span class="sig-name descname"><span class="pre">DockWidget_CanvasLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mainwindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDockWidget</span></code></p>
-<dl class="field-list simple">
-</dl>
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Toolbtn_Link">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">lib.wg_selfdefined.</span></span><span class="sig-name descname"><span class="pre">Toolbtn_Link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Toolbtn_Link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Toolbtn_Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QToolButton</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI">
-<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initial User Interface.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode">
-<span class="sig-name descname"><span class="pre">set_canvas_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/dockwg_canvas_layout.html#DockWidget_CanvasLayout.set_canvas_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set canvas layout mode, Main/UpAndDown/Quater/MainwithThreeSmall.</p>
-<p>&gt;&gt; <em>Quater/MainwithThreeSmall are not availibale for ver_0.2.0</em></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>mode</strong> (<em>str</em>) – The canvas layout mode user intends to set.</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="lib.wg_selfdefined.Toolbtn_Link.toggle_style">
+<span class="sig-name descname"><span class="pre">toggle_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib/wg_selfdefined.html#Toolbtn_Link.toggle_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.wg_selfdefined.Toolbtn_Link.toggle_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
+</div>
 </div>
 </div>
 
@@ -433,7 +1555,7 @@ User can drag this label onto the canvas component, which could change the arran
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="data.html" class="btn btn-neutral float-left" title="Data Object Module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="app.html" class="btn btn-neutral float-left" title="App Module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

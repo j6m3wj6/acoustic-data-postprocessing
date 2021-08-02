@@ -159,18 +159,18 @@
   <h1>Source code for lib.dockwg_data</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QScrollArea</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">,</span> <span class="n">QVBoxLayout</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QScrollArea</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QDockWidget</span><span class="p">,</span> <span class="n">QVBoxLayout</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.dlg_import_files</span> <span class="kn">import</span> <span class="n">Dlg_ImportFiles</span>
 <span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="n">FileData</span><span class="p">,</span> <span class="n">Project</span>
-<span class="kn">from</span> <span class="nn">.wg_filepool</span> <span class="kn">import</span> <span class="n">FilePool</span>
+<span class="kn">from</span> <span class="nn">.wg_filepool</span> <span class="kn">import</span> <span class="n">Wg_FilePool</span>
 
 
-<div class="viewcode-block" id="DockWidget_Data"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data">[docs]</a><span class="k">class</span> <span class="nc">DockWidget_Data</span><span class="p">(</span><span class="n">QDockWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="DockWg_Data"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data">[docs]</a><span class="k">class</span> <span class="nc">DockWg_Data</span><span class="p">(</span><span class="n">QDockWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :ivar MainWindow mainwindow: The MainWindow object that this DockWidget_Data object belongs.</span>
 
-<span class="sd">    :ivar FilePool filePool: </span>
+<span class="sd">    :ivar Wg_FilePool filePool: </span>
 <span class="sd">          A QWidget component contains a list of imported file components.</span>
 <span class="sd">          It contains functions of interaction between file components.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -183,12 +183,12 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">load_project</span><span class="p">(</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DockWidget_Data.initUI"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DockWg_Data.initUI"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initial User Interface.&quot;&quot;&quot;</span>
       <span class="c1"># Create Component</span>
         <span class="n">btn_importDlg</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Import&quot;</span><span class="p">)</span>
         <span class="n">btn_save</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Save&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span> <span class="o">=</span> <span class="n">FilePool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span> <span class="o">=</span> <span class="n">Wg_FilePool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="p">)</span>
         <span class="n">scroll</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
         <span class="n">scroll</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">scroll</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepool</span><span class="p">)</span>
@@ -204,10 +204,16 @@
         <span class="n">btn_importDlg</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_importDlg_handleClicked</span><span class="p">)</span>
         <span class="n">btn_save</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">save_file</span><span class="p">)</span>
       <span class="c1"># Style and Setting</span>
+        <span class="n">btn_importDlg</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            background-color:#ffe223;</span>
+<span class="s2">            border:1.5px solid #7d7d7d;</span>
+<span class="s2">            padding: 3px;</span>
+<span class="s2">            font-weight: bolder;</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
         <span class="n">vbly</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DockWidget_Data.append_file"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileData</span><span class="p">:</span> <span class="n">FileData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DockWg_Data.append_file"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileData</span><span class="p">:</span> <span class="n">FileData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Append a new imported file to component ``filepool``.</span>
 
@@ -215,7 +221,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">fileData</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DockWidget_Data.delete_files"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DockWg_Data.delete_files"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data.delete_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removing files from component ``filepool``.</span>
 
@@ -223,7 +229,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DockWidget_Data.load_project"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.load_project">[docs]</a>    <span class="k">def</span> <span class="nf">load_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DockWg_Data.load_project"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data.load_project">[docs]</a>    <span class="k">def</span> <span class="nf">load_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="n">Project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve files from a specific project and append them to component ``filepool``.</span>
 
@@ -232,7 +238,7 @@
         <span class="k">for</span> <span class="n">_fileData_</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="n">_fileData_</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DockWidget_Data.btn_importDlg_handleClicked"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_importDlg_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DockWg_Data.btn_importDlg_handleClicked"><a class="viewcode-back" href="../../library.html#lib.dockwg_data.DockWg_Data.btn_importDlg_handleClicked">[docs]</a>    <span class="k">def</span> <span class="nf">btn_importDlg_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function connect with **Import** button.\n </span>
 <span class="sd">        When the button is clicked, execute ``Dlg_ImportFiles`` and pop up a dialog window.</span>

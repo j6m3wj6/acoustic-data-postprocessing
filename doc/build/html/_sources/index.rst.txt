@@ -13,6 +13,5 @@ Welcome to SAE_PlotTool's documentation!
    GUI introduction
    Data Source
    app
-   data
    library
 

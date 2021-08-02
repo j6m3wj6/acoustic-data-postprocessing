@@ -42,7 +42,18 @@ class MyToolBar(NavigationToolbar2QT):
         toolbtn.setIcon(QIcon(ICON_DIR+f"{icon_name}.png"))
         toolbtn.setCheckable(True)
         toolbtn.setStyleSheet("""
-            border: transparent
+            QToolButton {
+                border: transparent;
+                padding: 2px;
+            }
+            QToolButton::checked {
+                background-color: #b4b4b4;
+                opacity:1;
+            }
+            QToolButton::hover {
+                background-color: #9accff;
+                opacity: 0.2;
+            }
         """)
         return toolbtn
 
@@ -96,7 +107,6 @@ class MyToolBar(NavigationToolbar2QT):
 
       # Style and Setting
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-
         self.setIconSize(QSize(24, 24))
         self.lb_canvas.setStyleSheet("""
             min-width: 110px;

@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lib.dlg_operation &mdash; SAE_PlotTool 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/dist/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SAE_PlotTool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../GUI%20introduction.html">GUI Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data%20Source.html">SAE聲學測試軟體</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Library Module API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SAE_PlotTool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lib.dlg_operation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lib.dlg_operation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QRadioButton</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span>\
+    <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QSpacerItem</span><span class="p">,</span> <span class="n">QGroupBox</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span>\
+    <span class="n">QDialog</span><span class="p">,</span> <span class="n">QDialogButtonBox</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">.obj_data</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="Dlg_Operation"><a class="viewcode-back" href="../../library.html#lib.dlg_operation.Dlg_Operation">[docs]</a><span class="k">class</span> <span class="nc">Dlg_Operation</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A dialog for user to apply post-processing operation to curves.</span>
+<span class="sd">    Support uniary operation: Shift and Align.</span>
+
+<span class="sd">    :ivar MainWindow mainwindow: The MainWindow instance this dialog belongs to.</span>
+<span class="sd">    :ivar MyCanvasItem canvas: Current focusing canvas of the ``mainwindow``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainwindow</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span> <span class="o">=</span> <span class="n">mainwindow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">mainwindow</span><span class="o">.</span><span class="n">wg_canvas</span><span class="o">.</span><span class="n">focusing_canvas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initUI</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Dlg_Operation.initUI"><a class="viewcode-back" href="../../library.html#lib.dlg_operation.Dlg_Operation.initUI">[docs]</a>    <span class="k">def</span> <span class="nf">initUI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initial User Interface.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainwindow</span><span class="o">.</span><span class="n">dwg_data</span><span class="o">.</span><span class="n">filepool</span><span class="o">.</span><span class="n">transfer_to_list</span><span class="p">()</span>
+
+        <span class="n">rb_offset</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">()</span>
+        <span class="n">rb_offset</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;rb_offset&quot;</span><span class="p">)</span>
+        <span class="n">lb_offset</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Magnitude Offset&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_offset</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">rb_align</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">()</span>
+        <span class="n">rb_align</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;rb_align&quot;</span><span class="p">)</span>
+        <span class="n">lb_align</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Normalize to&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_align_x</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_align_y</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">btn_reset</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Reset&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;warning_massage&quot;</span><span class="p">)</span>
+
+        <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">QDialogButtonBox</span><span class="p">()</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span>
+            <span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Cancel</span> <span class="o">|</span> <span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Apply</span><span class="p">)</span>
+      <span class="c1"># Layout</span>
+        <span class="n">vbly_list</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly_list</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Curves&quot;</span><span class="p">))</span>
+        <span class="n">vbly_list</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="p">)</span>
+        <span class="n">hbly_offset</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_wg_</span> <span class="ow">in</span> <span class="p">[</span><span class="n">rb_offset</span><span class="p">,</span> <span class="n">lb_offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_offset</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)]:</span>
+            <span class="n">hbly_offset</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">_wg_</span><span class="p">)</span>
+        <span class="n">hbly_align</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_wg_</span> <span class="ow">in</span> <span class="p">[</span><span class="n">rb_align</span><span class="p">,</span> <span class="n">lb_align</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;X-Axis&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_align_x</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Hz&quot;</span><span class="p">),</span>
+                     <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Y-Axis&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_align_y</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)]:</span>
+            <span class="n">hbly_align</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">_wg_</span><span class="p">)</span>
+
+        <span class="n">gb_vbly</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbly_offset</span><span class="p">)</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbly_align</span><span class="p">)</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_reset</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span>
+                                    <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">))</span>
+        <span class="n">gb_vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gb_opperation</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Unary Operation&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gb_opperation</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">gb_vbly</span><span class="p">)</span>
+
+        <span class="n">hbly</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbly_list</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">hbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gb_opperation</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">vbly</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbly</span><span class="p">)</span>
+        <span class="n">vbly</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">buttonBox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vbly</span><span class="p">)</span>
+      <span class="c1"># Function Connecting</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">accepted</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btn_ok_handleClicked</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">rejected</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reject</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Apply</span><span class="p">)</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operation</span><span class="p">)</span>
+        <span class="n">lb_offset</span><span class="o">.</span><span class="n">mousePressEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">rb_offset</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">lb_align</span><span class="o">.</span><span class="n">mousePressEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">rb_align</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">btn_reset</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curve_reset</span><span class="p">)</span>
+      <span class="c1"># Style and Setting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Post-Processing Operation&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_btn_ok_handleClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">rbuttons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gb_opperation</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QRadioButton</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_rb_</span> <span class="ow">in</span> <span class="n">rbuttons</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_rb_</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="n">operation</span> <span class="o">=</span> <span class="n">_rb_</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">operation</span>
+
+    <span class="k">def</span> <span class="nf">_apply_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Route the operation radio button user chooses to the corresponding operation function.</span>
+<span class="sd">        If user doesn&#39;t choose an operation radio button, show the error message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">callback</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;rb_offset&quot;</span><span class="p">:</span> <span class="s2">&quot;curve_offset&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rb_align&quot;</span><span class="p">:</span> <span class="s2">&quot;curve_align&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">operation</span><span class="p">:</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">[</span><span class="n">operation</span><span class="p">])()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> Please select one operation.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Dlg_Operation.curve_offset"><a class="viewcode-back" href="../../library.html#lib.dlg_operation.Dlg_Operation.curve_offset">[docs]</a>    <span class="k">def</span> <span class="nf">curve_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shift those urves user select by given magnitude (y-axis).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">selectedItems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+            <span class="n">selectedItems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_offset</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> Please select at least one curve.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> Maginatude (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">le_offset</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="si">}</span><span class="s2">) is not a number,</span><span class="se">\n</span><span class="s2"> please input a valid number.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selectedItems</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">)</span>
+                <span class="n">curveData</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Dlg_Operation.curve_align"><a class="viewcode-back" href="../../library.html#lib.dlg_operation.Dlg_Operation.curve_align">[docs]</a>    <span class="k">def</span> <span class="nf">curve_align</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Align those urves user select to a given maginitude (y-axis) at given frequency (x-axis).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">selectedItems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+            <span class="n">selectedItems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">align_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_align_y</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="n">align_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_align_x</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> Please select at least one curve.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> X-Axis (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">le_align_x</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="si">}</span><span class="s2">) or Y-Axis (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">le_align_y</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="si">}</span><span class="s2">) is not a number,</span><span class="se">\n</span><span class="s2"> please input a valid number.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selectedItems</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">)</span>
+                <span class="n">curveData</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">align_y</span><span class="p">,</span> <span class="n">align_x</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Dlg_Operation.curve_reset"><a class="viewcode-back" href="../../library.html#lib.dlg_operation.Dlg_Operation.curve_reset">[docs]</a>    <span class="k">def</span> <span class="nf">curve_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove all curves&#39; offset and reset to their original data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">selectedItems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+            <span class="n">selectedItems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ERROR:</span><span class="se">\n</span><span class="s2"> Please select at least one curve.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning_massage</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selectedItems</span><span class="p">:</span>
+                <span class="n">curveData</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">)</span>
+                <span class="n">curveData</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Tong Wang.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

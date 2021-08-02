@@ -90,7 +90,6 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="app.html">App Module API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">Data Object Module API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="library.html">Library Module API</a></li>
 </ul>
 
@@ -168,22 +167,28 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveData.align">align() (lib.obj_data.CurveData method)</a>
+      <li><a href="library.html#lib.wg_file.Wg_File.advance_selector">advance_selector() (lib.wg_file.Wg_File method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveType.ALL">ALL (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.obj_data.CurveData.align">align() (lib.obj_data.CurveData method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.CurveType.ALL">ALL (lib.obj_data.CurveType attribute)</a>
 </li>
       <li>
     app
@@ -192,17 +197,25 @@
         <li><a href="app.html#module-app">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.append_file">append_file() (lib.dockwg_data.DockWidget_Data method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWg_Data.append_file">append_file() (lib.dockwg_data.DockWg_Data method)</a>
 
       <ul>
         <li><a href="library.html#lib.mainwindow.MainWindow.append_file">(lib.mainwindow.MainWindow method)</a>
 </li>
-        <li><a href="data.html#lib.obj_data.Project.append_file">(lib.obj_data.Project method)</a>
+        <li><a href="library.html#lib.obj_data.Project.append_file">(lib.obj_data.Project method)</a>
+</li>
+        <li><a href="library.html#lib.wg_filepool.Wg_FilePool.append_file">(lib.wg_filepool.Wg_FilePool method)</a>
 </li>
       </ul></li>
-      <li><a href="data.html#lib.obj_data.FileData.append_measurement">append_measurement() (lib.obj_data.FileData method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.obj_data.FileData.append_measurement">append_measurement() (lib.obj_data.FileData method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.apply_style">apply_style() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.autoscale">autoscale() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar.autoscale_yaxis">autoscale_yaxis() (lib.wg_toolbar.MyToolBar method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -214,7 +227,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.btn_importDlg_handleClicked">btn_importDlg_handleClicked() (lib.dockwg_data.DockWidget_Data method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWg_Data.btn_importDlg_handleClicked">btn_importDlg_handleClicked() (lib.dockwg_data.DockWg_Data method)</a>
 </li>
       <li><a href="library.html#lib.mainwindow.MainWindow.btn_processingDlg_handleClicked">btn_processingDlg_handleClicked() (lib.mainwindow.MainWindow method)</a>
 </li>
@@ -224,27 +237,53 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.Channel">Channel (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.dlg_axis_setting.Dlg_AxisSetting.cb_axis_handleTextChanged">cb_axis_handleTextChanged() (lib.dlg_axis_setting.Dlg_AxisSetting method)</a>
+</li>
+      <li><a href="library.html#lib.dlg_graph_properties.Dlg_GraphProperties.cbox_canvas_handleChange">cbox_canvas_handleChange() (lib.dlg_graph_properties.Dlg_GraphProperties method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Cbox_Color">Cbox_Color (class in lib.wg_selfdefined)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Cbox_Linewidth">Cbox_Linewidth (class in lib.wg_selfdefined)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvas.change_focusing_canvas">change_focusing_canvas() (lib.wg_canvas.MyCanvas method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.changetab_test">changetab_test() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.Channel">Channel (class in lib.obj_data)</a>
 </li>
       <li><a href="app.html#app.check_license">check_license() (in module app)</a>
 </li>
-      <li><a href="library.html#lib.mainwindow.MainWindow.clear_files">clear_files() (lib.mainwindow.MainWindow method)</a>
+      <li><a href="library.html#lib.dlg_import_files.Dlg_ImportFiles.clear_files">clear_files() (lib.dlg_import_files.Dlg_ImportFiles method)</a>
 
       <ul>
-        <li><a href="data.html#lib.obj_data.Project.clear_files">(lib.obj_data.Project method)</a>
+        <li><a href="library.html#lib.mainwindow.MainWindow.clear_files">(lib.mainwindow.MainWindow method)</a>
+</li>
+        <li><a href="library.html#lib.obj_data.Project.clear_files">(lib.obj_data.Project method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.clear_lines">clear_lines() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.clickonline">clickonline() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
       <li><a href="app.html#app.MyApp.create_document">create_document() (app.MyApp method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveData.create_line2D">create_line2D() (lib.obj_data.CurveData method)</a>
+      <li><a href="library.html#lib.obj_data.CurveData.create_line2D">create_line2D() (lib.obj_data.CurveData method)</a>
 </li>
       <li><a href="app.html#app.MyApp.create_mainwindow">create_mainwindow() (app.MyApp method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveData">CurveData (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.dlg_operation.Dlg_Operation.curve_align">curve_align() (lib.dlg_operation.Dlg_Operation method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveType">CurveType (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.dlg_operation.Dlg_Operation.curve_offset">curve_offset() (lib.dlg_operation.Dlg_Operation method)</a>
+</li>
+      <li><a href="library.html#lib.dlg_operation.Dlg_Operation.curve_reset">curve_reset() (lib.dlg_operation.Dlg_Operation method)</a>
+</li>
+      <li><a href="library.html#lib.dlg_graph_properties.Curve_Style_Page">Curve_Style_Page (class in lib.dlg_graph_properties)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.CurveData">CurveData (class in lib.obj_data)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.CurveType">CurveType (class in lib.obj_data)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -252,23 +291,41 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.delete_files">delete_files() (lib.dockwg_data.DockWidget_Data method)</a>
+      <li><a href="library.html#lib.dlg_graph_properties.Delegate">Delegate (class in lib.dlg_graph_properties)</a>
+</li>
+      <li><a href="library.html#lib.dlg_import_files.Dlg_ImportFiles.delete_files">delete_files() (lib.dlg_import_files.Dlg_ImportFiles method)</a>
 
       <ul>
+        <li><a href="library.html#lib.dockwg_data.DockWg_Data.delete_files">(lib.dockwg_data.DockWg_Data method)</a>
+</li>
         <li><a href="library.html#lib.mainwindow.MainWindow.delete_files">(lib.mainwindow.MainWindow method)</a>
 </li>
-        <li><a href="data.html#lib.obj_data.Project.delete_files">(lib.obj_data.Project method)</a>
+        <li><a href="library.html#lib.obj_data.Project.delete_files">(lib.obj_data.Project method)</a>
+</li>
+        <li><a href="library.html#lib.wg_filepool.Wg_FilePool.delete_files">(lib.wg_filepool.Wg_FilePool method)</a>
 </li>
       </ul></li>
+      <li><a href="library.html#lib.dlg_advance_selector.Dlg_AdvancedSelector">Dlg_AdvancedSelector (class in lib.dlg_advance_selector)</a>
+</li>
+      <li><a href="library.html#lib.dlg_axis_setting.Dlg_AxisSetting">Dlg_AxisSetting (class in lib.dlg_axis_setting)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout">DockWidget_CanvasLayout (class in lib.dockwg_canvas_layout)</a>
+      <li><a href="library.html#lib.dlg_graph_properties.Dlg_GraphProperties">Dlg_GraphProperties (class in lib.dlg_graph_properties)</a>
 </li>
-      <li><a href="library.html#lib.dockwg_data.DockWidget_Data">DockWidget_Data (class in lib.dockwg_data)</a>
+      <li><a href="library.html#lib.dlg_import_files.Dlg_ImportFiles">Dlg_ImportFiles (class in lib.dlg_import_files)</a>
 </li>
-      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label">Draggable_Label (class in lib.dockwg_canvas_layout)</a>
+      <li><a href="library.html#lib.dlg_operation.Dlg_Operation">Dlg_Operation (class in lib.dlg_operation)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.Project.dump">dump() (lib.obj_data.Project method)</a>
+      <li><a href="library.html#lib.dockwg_data.DockWg_Data">DockWg_Data (class in lib.dockwg_data)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.dragEnterEvent">dragEnterEvent() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines">Draggable_lines (class in lib.wg_selfdefined)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.dropEvent">dropEvent() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.Project.dump">dump() (lib.obj_data.Project method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -276,11 +333,15 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveType.EXC">EXC (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar.edit_parameter">edit_parameter() (lib.wg_toolbar.MyToolBar method)</a>
+</li>
+      <li><a href="library.html#lib.dlg_graph_properties.Delegate.eventFilter">eventFilter() (lib.dlg_graph_properties.Delegate method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.Extended_Enum">Extended_Enum (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.obj_data.CurveType.EXC">EXC (lib.obj_data.CurveType attribute)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.Extended_Enum">Extended_Enum (class in lib.obj_data)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -288,7 +349,11 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.FileData">FileData (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.obj_data.FileData">FileData (class in lib.obj_data)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.followmouse">followmouse() (lib.wg_selfdefined.Draggable_lines method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -296,13 +361,57 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.FileData.get_import_time">get_import_time() (lib.obj_data.FileData method)</a>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.get_ax">get_ax() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvas.get_canvas">get_canvas() (lib.wg_canvas.MyCanvas method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.get_checkedItems">get_checkedItems() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.get_coords">get_coords() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.get_curveData">get_curveData() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.get_curveDatas">get_curveDatas() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.get_curveOrder">get_curveOrder() (lib.wg_curve.Wg_Curve method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveData.get_legend">get_legend() (lib.obj_data.CurveData method)</a>
+      <li><a href="library.html#lib.obj_data.FileData.get_import_time">get_import_time() (lib.obj_data.FileData method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.Project.get_path">get_path() (lib.obj_data.Project method)</a>
+      <li><a href="library.html#lib.obj_data.CurveData.get_legend">get_legend() (lib.obj_data.CurveData method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.get_measurement">get_measurement() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.get_name">get_name() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.Project.get_path">get_path() (lib.obj_data.Project method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.get_testname">get_testname() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.get_visible_curveData">get_visible_curveData() (lib.wg_file.Wg_File method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.dlg_graph_properties.Curve_Style_Page.handle_cellChanged">handle_cellChanged() (lib.dlg_graph_properties.Curve_Style_Page method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.handle_checked">handle_checked() (lib.wg_curve.Wg_Curve method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.wg_file.Wg_File.handle_checked">(lib.wg_file.Wg_File method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.handle_click">handle_click() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.handle_clicked">handle_clicked() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.handleDoubleClicked">handleDoubleClicked() (lib.wg_canvas.MyCanvasItem method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -310,20 +419,40 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveType.IMP">IMP (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.obj_data.CurveType.IMP">IMP (lib.obj_data.CurveType attribute)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.Extended_Enum.index">index() (lib.obj_data.Extended_Enum class method)</a>
+      <li><a href="library.html#lib.dlg_import_files.Dlg_ImportFiles.import_file">import_file() (lib.dlg_import_files.Dlg_ImportFiles method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.Measurement.init_channels">init_channels() (lib.obj_data.Measurement method)</a>
+      <li><a href="library.html#lib.obj_data.Extended_Enum.index">index() (lib.obj_data.Extended_Enum class method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.initUI">initUI() (lib.dockwg_canvas_layout.DockWidget_CanvasLayout method)</a>
+      <li><a href="library.html#lib.obj_data.Measurement.init_channels">init_channels() (lib.obj_data.Measurement method)</a>
+</li>
+      <li><a href="library.html#lib.dlg_advance_selector.Dlg_AdvancedSelector.initUI">initUI() (lib.dlg_advance_selector.Dlg_AdvancedSelector method)</a>
 
       <ul>
-        <li><a href="library.html#lib.dockwg_data.DockWidget_Data.initUI">(lib.dockwg_data.DockWidget_Data method)</a>
+        <li><a href="library.html#lib.dlg_axis_setting.Dlg_AxisSetting.initUI">(lib.dlg_axis_setting.Dlg_AxisSetting method)</a>
+</li>
+        <li><a href="library.html#lib.dlg_graph_properties.Curve_Style_Page.initUI">(lib.dlg_graph_properties.Curve_Style_Page method)</a>
+</li>
+        <li><a href="library.html#lib.dlg_graph_properties.Dlg_GraphProperties.initUI">(lib.dlg_graph_properties.Dlg_GraphProperties method)</a>
+</li>
+        <li><a href="library.html#lib.dlg_import_files.Dlg_ImportFiles.initUI">(lib.dlg_import_files.Dlg_ImportFiles method)</a>
+</li>
+        <li><a href="library.html#lib.dlg_operation.Dlg_Operation.initUI">(lib.dlg_operation.Dlg_Operation method)</a>
+</li>
+        <li><a href="library.html#lib.dockwg_data.DockWg_Data.initUI">(lib.dockwg_data.DockWg_Data method)</a>
 </li>
         <li><a href="library.html#lib.mainwindow.MainWindow.initUI">(lib.mainwindow.MainWindow method)</a>
+</li>
+        <li><a href="library.html#lib.wg_canvas.MyCanvas.initUI">(lib.wg_canvas.MyCanvas method)</a>
+</li>
+        <li><a href="library.html#lib.wg_curve.Wg_Curve.initUI">(lib.wg_curve.Wg_Curve method)</a>
+</li>
+        <li><a href="library.html#lib.wg_file.Wg_File.initUI">(lib.wg_file.Wg_File method)</a>
+</li>
+        <li><a href="library.html#lib.wg_filepool.Wg_FilePool.initUI">(lib.wg_filepool.Wg_FilePool method)</a>
+</li>
+        <li><a href="library.html#lib.wg_toolbar.MyToolBar.initUI">(lib.wg_toolbar.MyToolBar method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -332,11 +461,41 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_selfdefined.Lb_Draggable">Lb_Draggable (class in lib.wg_selfdefined)</a>
+</li>
       <li>
-    lib.dockwg_canvas_layout
+    lib.dlg_advance_selector
 
       <ul>
-        <li><a href="library.html#module-lib.dockwg_canvas_layout">module</a>
+        <li><a href="library.html#module-lib.dlg_advance_selector">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.dlg_axis_setting
+
+      <ul>
+        <li><a href="library.html#module-lib.dlg_axis_setting">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.dlg_graph_properties
+
+      <ul>
+        <li><a href="library.html#module-lib.dlg_graph_properties">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.dlg_import_files
+
+      <ul>
+        <li><a href="library.html#module-lib.dlg_import_files">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.dlg_operation
+
+      <ul>
+        <li><a href="library.html#module-lib.dlg_operation">module</a>
 </li>
       </ul></li>
       <li>
@@ -353,21 +512,70 @@
         <li><a href="library.html#module-lib.mainwindow">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     lib.obj_data
 
       <ul>
-        <li><a href="data.html#module-lib.obj_data">module</a>
+        <li><a href="library.html#module-lib.obj_data">module</a>
 </li>
       </ul></li>
-      <li><a href="data.html#lib.obj_data.Extended_Enum.list">list() (lib.obj_data.Extended_Enum class method)</a>
-</li>
-      <li><a href="library.html#lib.dockwg_data.DockWidget_Data.load_project">load_project() (lib.dockwg_data.DockWidget_Data method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    lib.wg_canvas
 
       <ul>
-        <li><a href="data.html#lib.obj_data.Project.load_project">(lib.obj_data.Project class method)</a>
+        <li><a href="library.html#module-lib.wg_canvas">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_curve
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_curve">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_file
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_file">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_filepool
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_filepool">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_menubar
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_menubar">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_selfdefined
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_selfdefined">module</a>
+</li>
+      </ul></li>
+      <li>
+    lib.wg_toolbar
+
+      <ul>
+        <li><a href="library.html#module-lib.wg_toolbar">module</a>
+</li>
+      </ul></li>
+      <li><a href="library.html#lib.obj_data.Extended_Enum.list">list() (lib.obj_data.Extended_Enum class method)</a>
+</li>
+      <li><a href="library.html#lib.dockwg_data.DockWg_Data.load_project">load_project() (lib.dockwg_data.DockWg_Data method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.obj_data.Project.load_project">(lib.obj_data.Project class method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -380,7 +588,7 @@
 </li>
       <li><a href="library.html#lib.mainwindow.MainWindow">MainWindow (class in lib.mainwindow)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.Measurement">Measurement (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.obj_data.Measurement">Measurement (class in lib.obj_data)</a>
 </li>
       <li>
     module
@@ -388,20 +596,50 @@
       <ul>
         <li><a href="app.html#module-app">app</a>
 </li>
-        <li><a href="library.html#module-lib.dockwg_canvas_layout">lib.dockwg_canvas_layout</a>
+        <li><a href="library.html#module-lib.dlg_advance_selector">lib.dlg_advance_selector</a>
+</li>
+        <li><a href="library.html#module-lib.dlg_axis_setting">lib.dlg_axis_setting</a>
+</li>
+        <li><a href="library.html#module-lib.dlg_graph_properties">lib.dlg_graph_properties</a>
+</li>
+        <li><a href="library.html#module-lib.dlg_import_files">lib.dlg_import_files</a>
+</li>
+        <li><a href="library.html#module-lib.dlg_operation">lib.dlg_operation</a>
 </li>
         <li><a href="library.html#module-lib.dockwg_data">lib.dockwg_data</a>
 </li>
         <li><a href="library.html#module-lib.mainwindow">lib.mainwindow</a>
 </li>
-        <li><a href="data.html#module-lib.obj_data">lib.obj_data</a>
+        <li><a href="library.html#module-lib.obj_data">lib.obj_data</a>
+</li>
+        <li><a href="library.html#module-lib.wg_canvas">lib.wg_canvas</a>
+</li>
+        <li><a href="library.html#module-lib.wg_curve">lib.wg_curve</a>
+</li>
+        <li><a href="library.html#module-lib.wg_file">lib.wg_file</a>
+</li>
+        <li><a href="library.html#module-lib.wg_filepool">lib.wg_filepool</a>
+</li>
+        <li><a href="library.html#module-lib.wg_menubar">lib.wg_menubar</a>
+</li>
+        <li><a href="library.html#module-lib.wg_selfdefined">lib.wg_selfdefined</a>
+</li>
+        <li><a href="library.html#module-lib.wg_toolbar">lib.wg_toolbar</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label.mouseMoveEvent">mouseMoveEvent() (lib.dockwg_canvas_layout.Draggable_Label method)</a>
+      <li><a href="library.html#lib.wg_selfdefined.Lb_Draggable.mouseMoveEvent">mouseMoveEvent() (lib.wg_selfdefined.Lb_Draggable method)</a>
 </li>
       <li><a href="app.html#app.MyApp">MyApp (class in app)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvas">MyCanvas (class in lib.wg_canvas)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem">MyCanvasItem (class in lib.wg_canvas)</a>
+</li>
+      <li><a href="library.html#lib.wg_menubar.MyMenuBar">MyMenuBar (class in lib.wg_menubar)</a>
+</li>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar">MyToolBar (class in lib.wg_toolbar)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -409,7 +647,19 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveType.NoType">NoType (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.wg_menubar.MyMenuBar.new_file">new_file() (lib.wg_menubar.MyMenuBar method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.obj_data.CurveType.NoType">NoType (lib.obj_data.CurveType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_menubar.MyMenuBar.open_file">open_file() (lib.wg_menubar.MyMenuBar method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -417,23 +667,49 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveType.PHS">PHS (lib.obj_data.CurveType attribute)</a>
-</li>
-      <li><a href="data.html#lib.obj_data.Channel.print">print() (lib.obj_data.Channel method)</a>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.paintEvent">paintEvent() (lib.wg_curve.Wg_Curve method)</a>
 
       <ul>
-        <li><a href="data.html#lib.obj_data.CurveData.print">(lib.obj_data.CurveData method)</a>
+        <li><a href="library.html#lib.wg_file.Wg_File.paintEvent">(lib.wg_file.Wg_File method)</a>
 </li>
-        <li><a href="data.html#lib.obj_data.FileData.print">(lib.obj_data.FileData method)</a>
+      </ul></li>
+      <li><a href="library.html#lib.obj_data.CurveType.PHS">PHS (lib.obj_data.CurveType attribute)</a>
 </li>
-        <li><a href="data.html#lib.obj_data.Measurement.print">(lib.obj_data.Measurement method)</a>
+      <li><a href="library.html#lib.obj_data.Channel.print">print() (lib.obj_data.Channel method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.obj_data.CurveData.print">(lib.obj_data.CurveData method)</a>
 </li>
-        <li><a href="data.html#lib.obj_data.Project.print">(lib.obj_data.Project method)</a>
+        <li><a href="library.html#lib.obj_data.FileData.print">(lib.obj_data.FileData method)</a>
+</li>
+        <li><a href="library.html#lib.obj_data.Measurement.print">(lib.obj_data.Measurement method)</a>
+</li>
+        <li><a href="library.html#lib.obj_data.Project.print">(lib.obj_data.Project method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.Project">Project (class in lib.obj_data)</a>
+      <li><a href="library.html#lib.obj_data.Project">Project (class in lib.obj_data)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.releaseonclick">releaseonclick() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.reload_checkstate">reload_checkstate() (lib.wg_file.Wg_File method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_canvas.MyCanvas.replot">replot() (lib.wg_canvas.MyCanvas method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.wg_canvas.MyCanvasItem.replot">(lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      </ul></li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.reset_linewidth">reset_linewidth() (lib.wg_canvas.MyCanvasItem method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -442,28 +718,80 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="library.html#lib.mainwindow.MainWindow.save_file">save_file() (lib.mainwindow.MainWindow method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.wg_menubar.MyMenuBar.save_file">(lib.wg_menubar.MyMenuBar method)</a>
 </li>
+      </ul></li>
       <li><a href="library.html#lib.mainwindow.MainWindow.save_file_as">save_file_as() (lib.mainwindow.MainWindow method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.wg_menubar.MyMenuBar.save_file_as">(lib.wg_menubar.MyMenuBar method)</a>
 </li>
-      <li><a href="library.html#lib.dockwg_canvas_layout.DockWidget_CanvasLayout.set_canvas_mode">set_canvas_mode() (lib.dockwg_canvas_layout.DockWidget_CanvasLayout method)</a>
+      </ul></li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.set_and_handle_checkState">set_and_handle_checkState() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Cbox_Color.set_color">set_color() (lib.wg_selfdefined.Cbox_Color method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.set_curveData">set_curveData() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.set_grid_status">set_grid_status() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvas.set_mode">set_mode() (lib.wg_canvas.MyCanvas method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="library.html#lib.dockwg_canvas_layout.Draggable_Label.set_text">set_text() (lib.dockwg_canvas_layout.Draggable_Label method)</a>
+      <li><a href="library.html#lib.wg_selfdefined.Lb_Draggable.set_text">set_text() (lib.wg_selfdefined.Lb_Draggable method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveData.shift">shift() (lib.obj_data.CurveData method)</a>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.set_visible">set_visible() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.CurveData.shift">shift() (lib.obj_data.CurveData method)</a>
 </li>
       <li><a href="app.html#app.MyApp.show_document">show_document() (app.MyApp method)</a>
 </li>
-      <li><a href="data.html#lib.obj_data.CurveType.SPL">SPL (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.obj_data.CurveType.SPL">SPL (lib.obj_data.CurveType attribute)</a>
 </li>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.sub_followmouse">sub_followmouse() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Draggable_lines.sub_releaseonclick">sub_releaseonclick() (lib.wg_selfdefined.Draggable_lines method)</a>
+</li>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.sync_curveData">sync_curveData() (lib.wg_curve.Wg_Curve method)</a>
+
+      <ul>
+        <li><a href="library.html#lib.wg_filepool.Wg_FilePool.sync_curveData">(lib.wg_filepool.Wg_FilePool method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.CurveType.THD">THD (lib.obj_data.CurveType attribute)</a>
+      <li><a href="library.html#lib.dlg_graph_properties.Curve_Style_Page.tb_curves_handleSelect">tb_curves_handleSelect() (lib.dlg_graph_properties.Curve_Style_Page method)</a>
+</li>
+      <li><a href="library.html#lib.obj_data.CurveType.THD">THD (lib.obj_data.CurveType attribute)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.toggle_all">toggle_all() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.toggle_ax_grid">toggle_ax_grid() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar.toggle_crosslines">toggle_crosslines() (lib.wg_toolbar.MyToolBar method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.toggle_focus_style">toggle_focus_style() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar.toggle_grid">toggle_grid() (lib.wg_toolbar.MyToolBar method)</a>
+</li>
+      <li><a href="library.html#lib.wg_file.Wg_File.toggle_link">toggle_link() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Toolbtn_Link.toggle_style">toggle_style() (lib.wg_selfdefined.Toolbtn_Link method)</a>
+</li>
+      <li><a href="library.html#lib.wg_selfdefined.Toolbtn_Link">Toolbtn_Link (class in lib.wg_selfdefined)</a>
+</li>
+      <li><a href="library.html#lib.wg_filepool.Wg_FilePool.transfer_to_list">transfer_to_list() (lib.wg_filepool.Wg_FilePool method)</a>
+</li>
+      <li><a href="library.html#lib.wg_filepool.Wg_FilePool.transfer_to_table">transfer_to_table() (lib.wg_filepool.Wg_FilePool method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -471,7 +799,29 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="data.html#lib.obj_data.Project.update_ui_conf">update_ui_conf() (lib.obj_data.Project method)</a>
+      <li><a href="library.html#lib.wg_file.Wg_File.update_canvas">update_canvas() (lib.wg_file.Wg_File method)</a>
+</li>
+      <li><a href="library.html#lib.wg_toolbar.MyToolBar.update_focus_canvas">update_focus_canvas() (lib.wg_toolbar.MyToolBar method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve.update_info">update_info() (lib.wg_curve.Wg_Curve method)</a>
+</li>
+      <li><a href="library.html#lib.wg_canvas.MyCanvasItem.update_title">update_title() (lib.wg_canvas.MyCanvasItem method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_curve.Wg_Curve">Wg_Curve (class in lib.wg_curve)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="library.html#lib.wg_file.Wg_File">Wg_File (class in lib.wg_file)</a>
+</li>
+      <li><a href="library.html#lib.wg_filepool.Wg_FilePool">Wg_FilePool (class in lib.wg_filepool)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../GUI%20introduction.html">GUI Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Data%20Source.html">SAE聲學測試軟體</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../app.html">App Module API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library.html">Library Module API</a></li>
 </ul>
 
             
@@ -156,20 +157,20 @@
            <div itemprop="articleBody">
             
   <h1>Source code for app</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding:utf-8 -*-</span>
-<span class="kn">import</span> <span class="nn">ctypes</span>
-<span class="kn">from</span> <span class="nn">lib.license_confrimation</span> <span class="kn">import</span> <span class="n">License_Confimation</span><span class="p">,</span> <span class="n">verify_due_day</span><span class="p">,</span> <span class="n">verify_license</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">lib.mainwindow</span> <span class="kn">import</span> <span class="n">MainWindow</span>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWebEngineWidgets</span> <span class="kn">import</span> <span class="n">QWebEngineView</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QUrl</span><span class="p">,</span> <span class="n">QFileInfo</span>
+<span class="kn">from</span> <span class="nn">lib.mainwindow</span> <span class="kn">import</span> <span class="n">MainWindow</span>
+<span class="kn">from</span> <span class="nn">lib.dlg_license</span> <span class="kn">import</span> <span class="n">Dlg_License</span>
+<span class="kn">from</span> <span class="nn">lib.functions</span> <span class="kn">import</span> <span class="n">verify_due_day</span><span class="p">,</span> <span class="n">verify_license</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 
-<span class="n">AP_yetilarge_path</span> <span class="o">=</span> <span class="s2">&quot;C:/Users/tong.wang/桌面/SAE_PlotTool/SAE_PlotTool/mess/AP_yetilarge.pkl&quot;</span>
+
 <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">SetCurrentProcessExplicitAppUserModelID</span><span class="p">(</span><span class="s2">&quot;myappid&quot;</span><span class="p">)</span>
 
 
@@ -248,10 +249,8 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;App Execute!!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">dlg</span> <span class="o">=</span> <span class="n">License_Confimation</span><span class="p">(</span><span class="n">conf_path</span><span class="o">=</span><span class="s2">&quot;./conf.json&quot;</span><span class="p">)</span>
+        <span class="n">dlg</span> <span class="o">=</span> <span class="n">Dlg_License</span><span class="p">(</span><span class="n">conf_path</span><span class="o">=</span><span class="s2">&quot;./conf.json&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
-
-<span class="c1"># {&quot;license&quot;: &quot;9N9M-KTVT-F49J-S989-URA4&quot;, &quot;license_due_day&quot;: &quot;dswe/ex/cx sd:we:xn&quot;}</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../app.html#app.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -279,6 +278,11 @@
 <span class="s2">        }</span>
 <span class="s2">        QTabBar::scroller QToolButton  {</span>
 <span class="s2">            background-color: white;</span>
+<span class="s2">        }</span>
+<span class="s2">        QLabel#warning_massage{</span>
+<span class="s2">            background-color: #e80000;</span>
+<span class="s2">            padding: 4px;</span>
+<span class="s2">            color: &quot;white&quot;;</span>
 <span class="s2">        }</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">check_license</span><span class="p">():</span>
